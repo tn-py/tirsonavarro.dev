@@ -7,7 +7,7 @@ import {
     SiRust,
     SiTailwindcss,
     SiTypescript,
-    SiWebgl,
+    SiDiscord,
     SiZig
 } from "react-icons/si";
 import {IconType} from "react-icons";
@@ -67,14 +67,14 @@ export const projects = [
     },
     {
         id: 3,
-        name: "Coolify Self-Hosted Server",
+        name: "Discord AI Bot",
         description:
-            "Coolify Server Running Multiple Test Apps",
-        technologies: [SiShopify],
-        techNames: ["Coolify"],
-        techLinks: ["https://coolify.io/"],
-        github: "https://github.com/coollabsio/coolify",
-        demo: "https://coolify.tirso-coolifyserver.tech/",
+            "Discord AI Bot with simple slash commands for chat and image generation",
+        technologies: [SiDiscord],
+        techNames: ["Discord AI Bot"],
+        techLinks: ["https://discord.com/oauth2/authorize?client_id=1326737661733634048"],
+        github: "https://github.com/tn-py/discord-ai-bot",
+        demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
         image: "/projects/Coolify.png",
         available: true,
     },
