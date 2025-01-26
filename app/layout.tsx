@@ -10,7 +10,7 @@ const syne = Inter({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://www.example.com/"),
+    metadataBase: new URL("https://www.tirsonavarro.dev/"),
     title: "Tirso Navarro Dev",
     description:
     "Developer portfolio template built with React, Typescript, Tailwind CSS, and Framer Motion.",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         title: "Tirso Navarro Dev",
         description:
       "Developer portfolio template built with React, Typescript, Tailwind CSS, and Framer Motion.",
-        url: "https://www.eldoraui.site/",
+        url: "https://www.tirsonavarro.dev/",
         siteName: "www.tirsonavarro.dev",
         images: [
             {
