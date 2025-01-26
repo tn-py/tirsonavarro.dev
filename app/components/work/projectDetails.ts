@@ -4,11 +4,11 @@ import {
     SiGithub, SiShopify,
     SiNextdotjs,
     SiReact,
-    SiRust,
     SiTailwindcss,
     SiTypescript,
     SiDiscord,
-    SiZig
+    SiVite,
+    SiGoogleappsscript
 } from "react-icons/si";
 import {IconType} from "react-icons";
 
@@ -57,7 +57,7 @@ export const projects = [
         name: "Shopify Dummy Data Generator Scripts",
         description:
             "Google Apps Script for generating dummy shopify data for testing",
-        technologies: [SiShopify],
+        technologies: [SiGoogleappsscript],
         techNames: ["Google Apps Script"],
         techLinks: ["https://google.com/apps/script/"],
         github: "https://gist.github.com/tn-py/33daf89971be8025ed80997660f89078",
@@ -69,13 +69,26 @@ export const projects = [
         id: 3,
         name: "Discord AI Bot",
         description:
-            "Discord AI Bot with simple slash commands for chat and image generation",
+            "Discord AI Bot with simple slash commands for chat and image generation. Deployed on a Coolify Server",
         technologies: [SiDiscord],
         techNames: ["Discord Developer API", "OpenAI", "Google Gemini", "OpenweatherAPI"],
         techLinks: ["https://discord.com/developers/", "https://openai.com/", "https://gemini.cafe/", "https://openweathermap.org/", ],
         github: "https://github.com/tn-py/discord-ai-bot",
         demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
         image: "/projects/Coolify.png",
+        available: true,
+    },
+    {
+        id: 4,
+        name: "Notes and Tasks App",
+        description:
+            "Simple Notes and Tasks App created with TypeScript, React, Vite, Tailwind CSS. Light and Dark Mode Supported.",
+        technologies: [SiVite, SiReact, SiTypescript, SiTailwindcss],
+        techNames: ["Vite", "React", "TypeScript", "Tailwind CSS"],
+        techLinks: ["https://discord.com/developers/", "https://openai.com/", "https://gemini.cafe/", "https://openweathermap.org/", ],
+        github: "https://github.com/tn-py/discord-ai-bot",
+        demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
+        image: "/projects/NotesandTasks.png",
         available: true,
     },
 ];
