@@ -28,6 +28,19 @@ export type ProjectProps = {
 export const projects = [
     {
         id: 0,
+        name: "Notes and Tasks App",
+        description:
+            "Simple Notes and Tasks App created with TypeScript, React, Vite, Tailwind CSS. Light and Dark Mode Supported.",
+        technologies: [SiVite, SiReact, SiTypescript, SiTailwindcss],
+        techNames: ["Vite", "React", "TypeScript", "Tailwind CSS"],
+        techLinks: ["https://discord.com/developers/", "https://openai.com/", "https://gemini.cafe/", "https://openweathermap.org/", ],
+        github: "https://github.com/tn-py/discord-ai-bot",
+        demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
+        image: "/projects/NotesandTasks.png",
+        available: true,
+    },
+    {
+        id: 1,
         name: "Search By VIN Tool",
         description:
             "Search By VIN Tool created with TypeScript, React, Next.js, Tailwind CSS, Supabase",
@@ -40,7 +53,7 @@ export const projects = [
         available: true,
     },
     {
-        id: 1,
+        id: 2,
         name: "Shopify Development Store",
         description:
             "Custom Shopify theme.",
@@ -53,7 +66,7 @@ export const projects = [
         available: true,
     },
     {
-        id: 2,
+        id: 3,
         name: "Shopify Dummy Data Generator Scripts",
         description:
             "Google Apps Script for generating dummy shopify data for testing",
@@ -66,7 +79,7 @@ export const projects = [
         available: true,
     },
     {
-        id: 3,
+        id: 4,
         name: "Discord AI Bot",
         description:
             "Discord AI Bot with simple slash commands for chat and image generation. Deployed on a Coolify Server",
@@ -76,19 +89,6 @@ export const projects = [
         github: "https://github.com/tn-py/discord-ai-bot",
         demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
         image: "/projects/Coolify.png",
-        available: true,
-    },
-    {
-        id: 4,
-        name: "Notes and Tasks App",
-        description:
-            "Simple Notes and Tasks App created with TypeScript, React, Vite, Tailwind CSS. Light and Dark Mode Supported.",
-        technologies: [SiVite, SiReact, SiTypescript, SiTailwindcss],
-        techNames: ["Vite", "React", "TypeScript", "Tailwind CSS"],
-        techLinks: ["https://discord.com/developers/", "https://openai.com/", "https://gemini.cafe/", "https://openweathermap.org/", ],
-        github: "https://github.com/tn-py/discord-ai-bot",
-        demo: "https://discord.com/oauth2/authorize?client_id=1326737661733634048",
-        image: "/projects/NotesandTasks.png",
         available: true,
     },
 ];

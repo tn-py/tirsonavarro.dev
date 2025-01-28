@@ -9,9 +9,9 @@
     "lib": [
       "esnext"
     ],
-    "module": "esnext",
+    "module": "NodeNext",
     "moduleDetection": "force",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "NodeNext",
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
