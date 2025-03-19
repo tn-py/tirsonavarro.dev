@@ -7,6 +7,7 @@ import AnimatedWords from "../animations/AnimatedWords";
 import { motion } from "framer-motion";
 import ContactBackground from "../components/background/ContactBackground";
 import React from "react";
+import CalendarIcon from "../components/svg/CalendarIcon";
 
 const Contact = () => {
     return (
@@ -78,7 +79,24 @@ const Contact = () => {
                                 charSpace={"mr-[0.01em]"}
                             />
                         </Link>
-                       
+                        <Link
+                            href="https://cal.com/tirso-navarro/15min-meeting"
+                            target="_blank"
+                            aria-label="Schedule a 15-minute meeting"
+                            className="flex items-center"
+                        >
+                            <AnimatedTitle
+                                text={"BOOK A MEETING"}
+                                className={
+                                    "text-[16px] font-bold text-[#e4ded7] sm:text-[20px] md:text-[16px] lg:text-[28px]"
+                                }
+                                wordSpace={"mr-[0.25em]"}
+                                charSpace={"mr-[0.01em]"}
+                            />
+                            <span className="ml-1 mt-1 inline-block">
+                                <CalendarIcon width={24} height={24} />
+                            </span>
+                        </Link>
                     </div>
                 </div>
             </div>
