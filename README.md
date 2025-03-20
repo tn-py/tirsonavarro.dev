@@ -3,19 +3,9 @@
    <h1 align="center">Tirso Navarro</h1>
   </a>
   
-  <p align="center">
-   open-source animated components built with Eldora UI, React, Typescript, Tailwind CSS, and Framer Motion.
-100% open-source, and customizable.
-  </p>
-  <p>
-   
-   <a href="https://www.tirsonavarro.dev">Visit site</a>
-    ·
-    <a href="https://github.com/tn-py/tirsonavarro.dev/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/tn-py/tirsonavarro.dev/issues">Request Feature</a>
-  </p>
-</div>
+# Portfolio 
+
+Minimalist developer portfolio using Next.js 14, React, TailwindCSS, Framer motion
 
 <!-- ABOUT THE TEMPLATE -->
 
@@ -62,14 +52,6 @@ Minimalist developer portfolio using Next.js 14, React, TailwindCSS, Framer moti
    npm run dev
    ```
 
-5. Open the [Sections](https://github.com/tn-py/tirsonavarro.dev/tree/main/app/sections) folder and make changes
-
-
-<a href="https://github.com/tn-py/tirsonavarro.dev">
-<div align="center">
-   <img src="https://github.com/user-attachments/assets/d00f15e8-cc1a-47a6-b99f-885156a55fc3" alt="Logo" width="60" height="60">
-</div>
-</a>
 
 # License
 
