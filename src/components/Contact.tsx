@@ -70,10 +70,10 @@ export const Contact = () => {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: <MdEmail className="w-6 h-6" />, label: "Email", href: "mailto:contact@example.com" },
+                { icon: <MdEmail className="w-6 h-6" />, label: "Email", href: "mailto:tirso@aiis.space" },
                 { icon: <FaGithub className="w-6 h-6" />, label: "GitHub", href: "https://github.com/tn-py" },
                 { icon: <FaLinkedin className="w-6 h-6" />, label: "LinkedIn", href: "https://linkedin.com/tirso-navarro" },
-                { icon: <FaTwitter className="w-6 h-6" />, label: "Twitter", href: "https://twitter.com" }
+                { icon: <FaTwitter className="w-6 h-6" />, label: "Twitter", href: "https://x.com/tirso_navarro" }
               ].map((social) => (
                 <a
                   key={social.label}
@@ -92,7 +92,7 @@ export const Contact = () => {
 
             {/* Calendar Block */}
             <a
-              href="#"
+              href="https://cal.com/tirso-navarro/15min-meeting"
               className="col-span-2 flex items-center justify-center md:justify-start gap-3 p-4 bg-gray-800/50 rounded-lg
                 hover:bg-gray-700/60 transition-all duration-300
                 text-gray-300 hover:text-white mt-4"
