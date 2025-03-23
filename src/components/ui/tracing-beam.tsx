@@ -19,6 +19,7 @@ export const TracingBeam = ({
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
+    smooth: 0.08
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -31,17 +32,19 @@ export const TracingBeam = ({
   }, []);
 
   const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 0.95], [50, svgHeight]),
+    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
     {
-      stiffness: 300,
-      damping: 150,
+      stiffness: 500,
+      damping: 90,
+      mass: 0.5,
     },
   );
   const y2 = useSpring(
-    useTransform(scrollYProgress, [0, 1], [50, svgHeight - 100]),
+    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight - 50]),
     {
-      stiffness: 300,
-      damping: 150,
+      stiffness: 500,
+      damping: 90,
+      mass: 0.5,
     },
   );
 
@@ -89,7 +92,7 @@ export const TracingBeam = ({
             stroke="#9091A0"
             strokeOpacity="0.16"
             transition={{
-              duration: 20,
+              duration: 10,
             }}
           ></motion.path>
           <motion.path
@@ -99,7 +102,7 @@ export const TracingBeam = ({
             strokeWidth="1.25"
             className="motion-reduce:hidden"
             transition={{
-              duration: 20,
+              duration: 10,
             }}
           ></motion.path>
           <defs>

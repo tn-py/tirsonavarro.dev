@@ -92,7 +92,7 @@ export const Contact = () => {
 
             {/* Calendar Block */}
             <a
-              href="https://cal.com/tirso-navarro/15min-meeting"
+              href="https://cal.com/tirso-navarro/15min-meeting" target="_blank" rel="noopener noreferrer"
               className="col-span-2 flex items-center justify-center md:justify-start gap-3 p-4 bg-gray-800/50 rounded-lg
                 hover:bg-gray-700/60 transition-all duration-300
                 text-gray-300 hover:text-white mt-4"
