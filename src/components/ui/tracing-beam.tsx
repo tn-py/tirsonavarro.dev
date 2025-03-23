@@ -18,8 +18,7 @@ export const TracingBeam = ({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
-    smooth: 0.08
+    offset: ["start start", "end start"]
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
