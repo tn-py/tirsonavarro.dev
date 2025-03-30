@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['picsum.photos'],
+    domains: ['tn-pull-zone.b-cdn.net'],
   },
 };
 

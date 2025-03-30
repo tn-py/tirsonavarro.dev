@@ -25,7 +25,7 @@ export const Contact = () => {
               {[
                 { icon: <MdEmail className="w-6 h-6" />, label: "Email", href: "mailto:tirso@aiis.space" },
                 { icon: <FaGithub className="w-6 h-6" />, label: "GitHub", href: "https://github.com/tn-py" },
-                { icon: <FaLinkedin className="w-6 h-6" />, label: "LinkedIn", href: "https://linkedin.com/tirso-navarro" },
+                { icon: <FaLinkedin className="w-6 h-6" />, label: "LinkedIn", href: "https://www.linkedin.com/in/tirso-navarro" },
                 { icon: <FaTwitter className="w-6 h-6" />, label: "Twitter", href: "https://x.com/tirso_navarro" }
               ].map((social) => (
                 <a

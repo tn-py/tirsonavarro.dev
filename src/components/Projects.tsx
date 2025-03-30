@@ -14,21 +14,15 @@ import { VscCode } from "react-icons/vsc";
 const projectsData = [
   {
     id: 1,
-    title: "E-Commerce Platform",
-    description: "A full-featured online store with product management, cart functionality, and secure checkout process. Includes user authentication, product catalog, shopping cart, and payment integration.",
-    image: "https://picsum.photos/seed/ecommerce/800/600",
+    title: "Portfolio Website",
+    description: "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface.",
+    image: "https://TN-Pull-Zone.b-cdn.net/TirsoNavarroDev.png",
   },
   {
     id: 2,
-    title: "Portfolio Website",
-    description: "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface.",
-    image: "https://picsum.photos/seed/portfolio/800/600",
-  },
-  {
-    id: 3,
-    title: "Task Management App",
+    title: "Notes and Tasks App",
     description: "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
-    image: "https://picsum.photos/seed/taskapp/800/600",
+    image: "https://TN-Pull-Zone.b-cdn.net/NotesandTasksApp.png",
   }
 ];
 
