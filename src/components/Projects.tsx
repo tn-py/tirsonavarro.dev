@@ -74,7 +74,8 @@ export const Projects = () => {
                   border border-slate-800/50 hover:border-slate-700
                   shadow-[0_0_15px_rgba(0,0,0,0.2)]
                   hover:shadow-[0_0_25px_rgba(50,117,248,0.2)]
-                  hover:scale-105 hover:-translate-y-1"
+                  hover:scale-105 hover:-translate-y-1
+                  min-h-[140px] isolate"
               >
                 {tool.icon}
                 <p className="text-white text-lg font-medium tracking-wide relative z-10">{tool.name}</p>
