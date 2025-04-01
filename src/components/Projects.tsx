@@ -16,13 +16,13 @@ const projectsData = [
     id: 1,
     title: "Portfolio Website",
     description: "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface.",
-    image: "https://TN-Pull-Zone.b-cdn.net/TirsoNavarroDev.png",
+    image: "https://tn-pull-zone.b-cdn.net/TirsoNavarroDev.png",
   },
   {
     id: 2,
     title: "Notes and Tasks App",
     description: "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
-    image: "https://TN-Pull-Zone.b-cdn.net/NotesandTasksApp.png",
+    image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
   }
 ];
 
