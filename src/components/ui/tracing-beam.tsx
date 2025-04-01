@@ -18,7 +18,7 @@ export const TracingBeam = ({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"]
+    offset: ["start end", "end start"]
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -31,19 +31,19 @@ export const TracingBeam = ({
   }, []);
 
   const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]),
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [50, svgHeight * 0.3, svgHeight * 0.7, svgHeight]),
     {
-      stiffness: 500,
-      damping: 90,
-      mass: 0.5,
+      stiffness: 200,
+      damping: 40,
+      mass: 1,
     },
   );
   const y2 = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight - 50]),
+    useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [150, svgHeight * 0.3 + 100, svgHeight * 0.7 + 100, svgHeight]),
     {
-      stiffness: 500,
-      damping: 90,
-      mass: 0.5,
+      stiffness: 200,
+      damping: 40,
+      mass: 1,
     },
   );
 
@@ -52,7 +52,7 @@ export const TracingBeam = ({
       ref={ref}
       className={cn("relative h-full w-full", className)}
     >
-      <div className="fixed top-3 left-4 md:left-8">
+      <div className="absolute top-3 left-2 md:left-4 lg:left-8 z-50">
         <motion.div
           transition={{
             duration: 0.2,
@@ -86,7 +86,7 @@ export const TracingBeam = ({
           aria-hidden="true"
         >
           <motion.path
-            d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -18 24V ${svgHeight}`}
+            d={`M 1 0V 0 l 18 24 V ${svgHeight} l -18 24V ${svgHeight}`}
             fill="none"
             stroke="#9091A0"
             strokeOpacity="0.16"
@@ -95,7 +95,7 @@ export const TracingBeam = ({
             }}
           ></motion.path>
           <motion.path
-            d={`M 1 0V -36 l 18 24 V ${svgHeight * 0.8} l -18 24V ${svgHeight}`}
+            d={`M 1 0V 0 l 18 24 V ${svgHeight} l -18 24V ${svgHeight}`}
             fill="none"
             stroke="url(#gradient)"
             strokeWidth="1.25"
