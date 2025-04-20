@@ -34,7 +34,7 @@ const projectsData: ProjectData[] = [
 ];
 
 export const Projects = () => (
-  <section id="projects" className="w-full min-h-screen py-20 px-8 bg-[#0a0a0a]">
+  <section id="projects" className="w-full py-20 px-4 sm:px-8 bg-[#0a0a0a]">
     <div className="max-w-6xl mx-auto">
       <h2 className="text-4xl font-bold mb-16 text-center text-white">My Projects</h2>
       <div className="flex flex-col gap-16">
@@ -42,11 +42,11 @@ export const Projects = () => (
           <ProjectCard key={project.id} {...project} />
         ))}
       </div>
-      <div className="mt-32">
-        <h2 className="text-4xl font-bold mb-12 text-center text-white">
+      <div className="mt-20 sm:mt-32">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center text-white">
           Tools I&apos;m Using
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {[
             { name: "React", icon: <FaReact className="w-8 h-8 mb-2" /> },
             { name: "Next.js", icon: <SiNextdotjs className="w-8 h-8 mb-2" /> },
@@ -63,16 +63,16 @@ export const Projects = () => (
           ].map((tool) => (
             <div
               key={tool.name}
-              className="relative overflow-hidden bg-gray-800/30 backdrop-blur-sm rounded-lg p-6 text-center
+              className="relative overflow-hidden bg-gray-800/30 backdrop-blur-sm rounded-lg p-4 sm:p-6 text-center
                 hover:bg-gray-700/40 transition-all duration-300 ease-out
                 border border-slate-800/50 hover:border-slate-700
                 shadow-[0_0_15px_rgba(0,0,0,0.2)]
                 hover:shadow-[0_0_25px_rgba(50,117,248,0.2)]
                 hover:scale-105 hover:-translate-y-1
-                min-h-[140px] isolate"
+                min-h-[120px] sm:min-h-[140px] isolate"
             >
-              {tool.icon}
-              <p className="text-white text-lg font-medium tracking-wide relative z-10">
+              <div className="flex justify-center">{tool.icon}</div>
+              <p className="text-white text-base sm:text-lg font-medium tracking-wide relative z-10">
                 {tool.name}
               </p>
               <Meteors number={8} className="absolute inset-0" />
@@ -93,9 +93,9 @@ const ProjectCard = ({ title, description, image }: ProjectCardProps) => (
     as="div"
     duration={2}
   >
-    <div className="p-8 flex flex-col items-center md:flex-row md:items-stretch gap-10 relative z-10 h-[600px]">
+    <div className="p-4 sm:p-8 flex flex-col items-center md:flex-row md:items-stretch gap-6 sm:gap-10 relative z-10">
       {/* 3D Card effect on the image */}
-      <div className="w-full md:w-1/2 flex-shrink-0 flex justify-center h-full">
+      <div className="w-full md:w-1/2 flex-shrink-0 flex justify-center h-[250px] sm:h-[300px] md:h-[400px]">
         <CardContainer containerClassName="py-0 h-full" className="h-full w-full">
           <CardBody className="!w-full !h-full">
             <CardItem
@@ -108,9 +108,10 @@ const ProjectCard = ({ title, description, image }: ProjectCardProps) => (
                   alt={title}
                   width={800}
                   height={600}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-contain sm:object-cover rounded-lg"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   priority
-                  unoptimized
+                  quality={90}
                 />
               </div>
             </CardItem>
@@ -118,9 +119,9 @@ const ProjectCard = ({ title, description, image }: ProjectCardProps) => (
         </CardContainer>
       </div>
       {/* Content section */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center py-4">
-        <h3 className="text-3xl font-bold text-white mb-4">{title}</h3>
-        <p className="text-gray-300 text-lg leading-relaxed mb-6">{description}</p>
+      <div className="w-full md:w-1/2 flex flex-col justify-center py-2 sm:py-4">
+        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">{title}</h3>
+        <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">{description}</p>
         <button className="mt-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
           View Project
         </button>

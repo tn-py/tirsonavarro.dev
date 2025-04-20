@@ -4,7 +4,7 @@ import React from "react";
 
 export const About = () => {
   return (
-    <section id="about" className="w-full h-screen flex items-center justify-center px-8" style={{ backgroundColor: "#0a0a0a" }}>
+    <section id="about" className="w-full min-h-screen py-20 flex items-center justify-center px-8" style={{ backgroundColor: "#0a0a0a" }}>
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-4xl font-bold mb-8 text-center text-white">About Me</h2>
         
