@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { MdEmail, MdCalendarMonth } from "react-icons/md";
-import { CgSoftwareDownload } from "react-icons/cg";
 
 export const Contact = () => {
   return (
