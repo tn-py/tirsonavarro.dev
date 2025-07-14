@@ -21,11 +21,25 @@ const projectsData: ProjectData[] = [
     id: 1,
     title: "Portfolio Website",
     description:
-      "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface.",
+      "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface. Tech stack includes Next.js, React, TypeScript, Tailwind CSS, and Framer Motion. Aceternity UI components.",
     image: "https://tn-pull-zone.b-cdn.net/TirsoNavarroDev.png",
   },
   {
     id: 2,
+    title: "My Shopify Store",
+    description:
+      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality.",
+    image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
+  },
+  {
+    id: 3,
+    title: "Selector Sage",
+    description:
+      "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
+    image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
+  },
+  {
+    id: 4,
     title: "Notes and Tasks App",
     description:
       "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
