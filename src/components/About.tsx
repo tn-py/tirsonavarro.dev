@@ -57,8 +57,8 @@ export const About = () => {
           <br />
           <br />
           On the learning front, I’m deep into React, Next.js, and Python for
-          automation and web scraping, and I’m also exploring low-code tools
-          like n8n and Botpress to test ideas and speed up workflows. I enjoy
+          automation and web scraping, and I’m also exploring AI and automation tools
+          like n8n, lovable and claude code to test ideas and speed up workflows. I enjoy
           tinkering with my homelab server, running Coolify to host projects,
           services, and locally served LLMs.
           <br />
