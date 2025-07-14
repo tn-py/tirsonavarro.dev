@@ -67,7 +67,7 @@ export const About = () => {
           interesting projects.
           <br />
           <br />
-          On my time off work, you’ll find me traveling or exploringin the mountains.
+          On my time off work, you’ll find me traveling or exploring in the mountains.
         </p>
       </div>
     </section>
