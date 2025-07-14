@@ -36,7 +36,7 @@ const projectsData: ProjectData[] = [
     title: "Selector Sage",
     description:
       "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
-    image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
+    image: "https://TN-Pull-Zone.b-cdn.net/Selector-Sage.png",
   },
   {
     id: 4,
