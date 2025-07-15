@@ -5,7 +5,7 @@ import Image from "next/image";
 import { HoverBorderGradient } from "./ui/hover-border-gradient";
 import { CardContainer, CardBody, CardItem } from "./ui/3d-card";
 import { Meteors } from "./ui/meteors";
-import { FaGithub, FaReact, FaNodeJs, FaGit, FaHtml5, FaCss3Alt } from "react-icons/fa";
+import { FaGithub, FaReact, FaNodeJs, FaGit, FaHtml5, FaCss3Alt, FaExternalLinkAlt } from "react-icons/fa";
 import { SiNextdotjs, SiTypescript, SiTailwindcss, SiFramer, SiJavascript } from "react-icons/si";
 import { VscCode } from "react-icons/vsc";
 
@@ -14,6 +14,8 @@ interface ProjectData {
   title: string;
   description: string;
   image: string;
+  githubUrl: string;
+  demoUrl: string;
 }
 
 const projectsData: ProjectData[] = [
@@ -23,20 +25,26 @@ const projectsData: ProjectData[] = [
     description:
       "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface. Tech stack includes Next.js, React, TypeScript, Tailwind CSS, and Framer Motion. Aceternity UI components.",
     image: "https://tn-pull-zone.b-cdn.net/TirsoNavarroDev.png",
+    githubUrl: "https://github.com/username/portfolio-website",
+    demoUrl: "https://portfolio-demo.vercel.app",
   },
   {
     id: 2,
     title: "My Shopify Store",
     description:
       "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality.",
-    image: "https://TN-Pull-Zone.b-cdn.net/MyShopifyStore.png",
+    image: "https://tn-pull-zone.b-cdn.net/MyShopifyStore.png",
+    githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
+    demoUrl: "https://welcome-this-is.myshopify.com",
   },
   {
     id: 3,
     title: "Selector Sage",
     description:
       "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
-    image: "https://TN-Pull-Zone.b-cdn.net/Selector-Sage.png",
+    image: "https://tn-pull-zone.b-cdn.net/Selector-Sage.png",
+    githubUrl: "https://github.com/tn-py/Selector-Sage",
+    demoUrl: "#",
   },
   {
     id: 4,
@@ -44,6 +52,8 @@ const projectsData: ProjectData[] = [
     description:
       "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
     image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
+    githubUrl: "https://github.com/tn-py/notes-and-tasks",
+    demoUrl: "https://notes-and-tasks.vercel.app",
   },
 ];
 
@@ -100,7 +110,7 @@ export const Projects = () => (
 
 type ProjectCardProps = ProjectData;
 
-const ProjectCard = ({ title, description, image }: ProjectCardProps) => (
+const ProjectCard = ({ title, description, image, githubUrl, demoUrl }: ProjectCardProps) => (
   <HoverBorderGradient
     containerClassName="w-full rounded-xl"
     className="w-full bg-gray-900/80 rounded-xl overflow-hidden"
@@ -136,9 +146,26 @@ const ProjectCard = ({ title, description, image }: ProjectCardProps) => (
       <div className="w-full md:w-1/2 flex flex-col justify-center py-2 sm:py-4">
         <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">{title}</h3>
         <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">{description}</p>
-        <button className="mt-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
-          View Project
-        </button>
+        <div className="mt-auto flex gap-4">
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
+          >
+            <FaGithub className="w-4 h-4" />
+            GitHub
+          </a>
+          <a
+            href={demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+          >
+            <FaExternalLinkAlt className="w-4 h-4" />
+            Live Demo
+          </a>
+        </div>
       </div>
     </div>
   </HoverBorderGradient>
