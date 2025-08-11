@@ -33,7 +33,7 @@ const projectsData: ProjectData[] = [
     title: "My Shopify Store",
     description:
       "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality.",
-    image: "https://tn-pull-zone.b-cdn.net/MyShopifyStore.png",
+    image: "https://TN-Pull-Zone.b-cdn.net/ThisisMyShopifyStore.png",
     githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
     demoUrl: "https://welcome-this-is.myshopify.com",
   },
