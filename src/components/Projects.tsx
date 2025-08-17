@@ -16,6 +16,7 @@ interface ProjectData {
   image: string;
   githubUrl: string;
   demoUrl: string;
+  tasks?: string[];
 }
 
 const projectsData: ProjectData[] = [
@@ -32,7 +33,7 @@ const projectsData: ProjectData[] = [
     id: 2,
     title: "My Shopify Store",
     description:
-      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality.",
+      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality. Password is SHOPIFY",
     image: "https://TN-Pull-Zone.b-cdn.net/ThisisMyShopifyStore.png",
     githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
     demoUrl: "https://welcome-this-is.myshopify.com",
@@ -47,7 +48,21 @@ const projectsData: ProjectData[] = [
     demoUrl: "#",
   },
   {
-    id: 4,
+  id: 4,
+  title: "Art Circuits",
+  description:
+    "A digital guide to Miami’s cultural scene, featuring Art, Entertainment, Gastronomy, and Architecture.",
+  image: "https://TN-Pull-Zone.b-cdn.net/ArtCircuits-DigitalArtGuide.png",
+  githubUrl: "#",
+  demoUrl: "https://artcircuits.com/",
+  tasks: [
+    "Set up staging site and database via SSH for streamlined development",
+    "Updated theme files to improve design consistency",
+    "Built a custom calendar component for the homepage"
+  ]
+},
+  {
+    id: 5,
     title: "Notes and Tasks App",
     description:
       "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
@@ -110,7 +125,14 @@ export const Projects = () => (
 
 type ProjectCardProps = ProjectData;
 
-const ProjectCard = ({ title, description, image, githubUrl, demoUrl }: ProjectCardProps) => (
+const ProjectCard = ({
+  title,
+  description,
+  image,
+  githubUrl,
+  demoUrl,
+  tasks,
+}: ProjectCardProps) => (
   <HoverBorderGradient
     containerClassName="w-full rounded-xl"
     className="w-full bg-gray-900/80 rounded-xl overflow-hidden"
@@ -142,10 +164,23 @@ const ProjectCard = ({ title, description, image, githubUrl, demoUrl }: ProjectC
           </CardBody>
         </CardContainer>
       </div>
+
       {/* Content section */}
       <div className="w-full md:w-1/2 flex flex-col justify-center py-2 sm:py-4">
         <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">{title}</h3>
-        <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">{description}</p>
+
+        <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
+          {description}
+        </p>
+
+        {tasks && tasks.length > 0 && (
+          <ul className="mb-4 sm:mb-6 list-disc pl-5 text-gray-300 space-y-1.5 marker:text-blue-400">
+            {tasks.map((task, idx) => (
+              <li key={idx}>{task}</li>
+            ))}
+          </ul>
+        )}
+
         <div className="mt-auto flex gap-4">
           <a
             href={githubUrl}
@@ -170,3 +205,4 @@ const ProjectCard = ({ title, description, image, githubUrl, demoUrl }: ProjectC
     </div>
   </HoverBorderGradient>
 );
+
