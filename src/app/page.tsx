@@ -13,7 +13,7 @@ export default function Home() {
         {/* Hero Section with Sparkles */}
         <section className="relative -mx-8 md:-mx-16 w-screen h-screen flex flex-col items-center justify-center p-24 overflow-hidden">
           <div className="z-10">
-            <h1 className="text-8xl font-extrabold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            <h1 className="text-6xl md:text-8xl font-extrabold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               Tirso Navarro
             </h1>
             <p className="text-xl text-center text-gray-600 dark:text-gray-400 mb-8 mx-auto max-w-md">
