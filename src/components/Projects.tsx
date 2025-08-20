@@ -49,7 +49,7 @@ const projectsData: ProjectData[] = [
   },
   {
   id: 4,
-  title: "Art Circuits",
+  title: "Art Circuits - Web Developer",
   description:
     "A digital guide to Miami’s cultural scene, featuring Art, Entertainment, Gastronomy, and Architecture.",
   image: "https://tn-pull-zone.b-cdn.net/ArtCircuits-DigitalArtGuide.png",
