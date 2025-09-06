@@ -31,7 +31,9 @@ export const About = () => {
           and by bulk-editing data with Matrixify and NetSuite.
           <br />
           <br />
-          {/*Highlights this year: swapped Searchanise for Searchspring to boost
+          {/*
+          */}
+          Highlights this year: swapped Searchanise for Searchspring to boost
           relevance; launched the UHS Hardware&nbsp;
            mobile app for&nbsp;
           <a
@@ -53,7 +55,7 @@ export const About = () => {
           </a>{" "}
           to cut ad costs; rolled out a URL-plus-cookie tagging system that
           powers granular Flows and reports; and replaced PushOwl with OneSignal
-          for unified web + mobile push at a lower spend.*/}
+          for unified web + mobile push at a lower spend.
           <br />
           <br />
           On the learning front, I’m deep into React, Next.js, and Python for

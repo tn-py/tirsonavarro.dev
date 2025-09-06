@@ -21,7 +21,22 @@ interface ProjectData {
 
 const projectsData: ProjectData[] = [
   {
-    id: 1,
+  id: 1,
+  title: "UHS Hardware - Web Operations Supervisor",
+  description:
+    "Currently working at UHS Hardware. I am responsible for managing and optimizing our Shopify website. I manage a team of 3 and I am the Web Operations Supervisor. I work closely with the Marketing and Product teams to launch promotions and make sure we execute properly on the site.",
+  image: "https://TN-Pull-Zone.b-cdn.net/UHS-Hardware.png",
+  githubUrl: "",
+  demoUrl: "https://uhs-hardware.com",
+  tasks: [
+    "Launched iOS and Android app for UHS Hardware customers",
+    "Migrated push notifications from PushOwl to OneSignal",
+    "Implemented a new customer registration system",
+    "Rolled out SearchSpring search for faster product discovery"
+  ]
+},
+  {
+    id: 2,
     title: "Portfolio Website",
     description:
       "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface. Tech stack includes Next.js, React, TypeScript, Tailwind CSS, and Framer Motion. Aceternity UI components.",
@@ -30,7 +45,7 @@ const projectsData: ProjectData[] = [
     demoUrl: "https://portfolio-demo.vercel.app",
   },
   {
-    id: 2,
+    id: 3,
     title: "My Shopify Store",
     description:
       "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality. Password is SHOPIFY",
@@ -39,7 +54,7 @@ const projectsData: ProjectData[] = [
     demoUrl: "https://welcome-this-is.myshopify.com",
   },
   {
-    id: 3,
+    id: 4,
     title: "Selector Sage",
     description:
       "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
@@ -48,7 +63,7 @@ const projectsData: ProjectData[] = [
     demoUrl: "#",
   },
   {
-  id: 4,
+  id: 5,
   title: "Art Circuits - Web Developer",
   description:
     "A digital guide to Miami’s cultural scene, featuring Art, Entertainment, Gastronomy, and Architecture.",
@@ -62,7 +77,7 @@ const projectsData: ProjectData[] = [
   ]
 },
   {
-    id: 5,
+    id: 6,
     title: "Notes and Tasks App",
     description:
       "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
