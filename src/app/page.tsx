@@ -1,5 +1,5 @@
 import { FloatingDock } from "@/components/FloatingDock";
-import { IconHome, IconUser, IconMailSpark, IconBriefcase } from "@tabler/icons-react";
+import { IconHome, IconUser, IconMailSpark, IconBriefcase, IconFileText } from "@tabler/icons-react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { About } from "../components/About";
@@ -53,6 +53,7 @@ export default function Home() {
           { title: "Home", icon: <IconHome />, href: "/" },
           { title: "About", icon: <IconUser />, href: "#about" },
           { title: "Projects", icon: <IconBriefcase />, href: "#projects" },
+          { title: "Resume", icon: <IconFileText />, href: "/resume" },
           { title: "Get in Contact", icon: <IconMailSpark />, href: "#contact" }
         ]}
         desktopClassName="fixed bottom-8 left-1/2 -translate-x-1/2"
