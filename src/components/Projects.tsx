@@ -45,25 +45,7 @@ const projectsData: ProjectData[] = [
     demoUrl: "https://portfolio-demo.vercel.app",
   },
   {
-    id: 3,
-    title: "My Shopify Store",
-    description:
-      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality. Password is SHOPIFY",
-    image: "https://tn-pull-zone.b-cdn.net/ThisisMyShopifyStore.png",
-    githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
-    demoUrl: "https://welcome-this-is.myshopify.com",
-  },
-  {
-    id: 4,
-    title: "Selector Sage",
-    description:
-      "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
-    image: "https://tn-pull-zone.b-cdn.net/Selector-Sage.png",
-    githubUrl: "https://github.com/tn-py/Selector-Sage",
-    demoUrl: "#",
-  },
-  {
-  id: 5,
+  id: 3,
   title: "Art Circuits - Web Developer",
   description:
     "A digital guide to Miami’s cultural scene, featuring Art, Entertainment, Gastronomy, and Architecture.",
@@ -76,6 +58,25 @@ const projectsData: ProjectData[] = [
     "Built a custom calendar component for the homepage"
   ]
 },
+  {
+    id: 4,
+    title: "My Shopify Store",
+    description:
+      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality. Password is SHOPIFY",
+    image: "https://tn-pull-zone.b-cdn.net/ThisisMyShopifyStore.png",
+    githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
+    demoUrl: "https://welcome-this-is.myshopify.com",
+  },
+  {
+    id: 5,
+    title: "Selector Sage",
+    description:
+      "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
+    image: "https://tn-pull-zone.b-cdn.net/Selector-Sage.png",
+    githubUrl: "https://github.com/tn-py/Selector-Sage",
+    demoUrl: "#",
+  },
+  
   {
     id: 6,
     title: "Notes and Tasks App",

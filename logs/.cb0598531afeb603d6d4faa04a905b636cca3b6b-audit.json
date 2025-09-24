@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "G:\\Coding Projects\\Deployed on Vercel\\tirsonavarro.dev\\logs\\.cb0598531afeb603d6d4faa04a905b636cca3b6b-audit.json",
+    "files": [
+        {
+            "date": 1758672239144,
+            "name": "G:\\Coding Projects\\Deployed on Vercel\\tirsonavarro.dev\\logs\\mcp-puppeteer-2025-09-23.log",
+            "hash": "ed270b7c82f2036d988d4f036ed239d9382817cdcb1f5fd3a07c900615c28d2a"
+        }
+    ],
+    "hashType": "sha256"
+}
