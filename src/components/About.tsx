@@ -5,73 +5,73 @@ import React from "react";
 export const About = () => {
   return (
     <section
-      id="about"
-      className="w-full min-h-screen py-20 flex items-center justify-center px-8"
-      style={{ backgroundColor: "#0a0a0a" }}
-    >
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8 text-center text-white">
-          About Me
-        </h2>
+    id="about"
+    className="w-full min-h-screen py-20 flex items-center justify-center px-8"
+    style={{ backgroundColor: "#0a0a0a" }}
+  >
+    <div className="max-w-3xl mx-auto text-center">
+      <h2 className="text-4xl font-bold mb-8 text-center text-white">
+        About Me
+      </h2>
 
-        <p className="text-xl text-gray-300 leading-relaxed">
-          I’m an e-commerce specialist and up-and-coming software dev in Miami working at&nbsp;
-          <a
-            href="https://www.uhs-hardware.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 underline hover:text-blue-300"
-          >
-            UHS Hardware.
-          </a>{" "}
-          <br />
-          <br />
-          I make high-SKU Shopify stores faster, smarter, and easier to run by
-          creating custom theme sections and templates for marketing campaigns,
-          and by bulk-editing data with Matrixify and NetSuite.
-          <br />
-          <br />
-          {/*
-          */}
-          Highlights this year: swapped Searchanise for Searchspring to boost
-          relevance; launched the UHS Hardware&nbsp;
-           mobile app for&nbsp;
-          <a
-            href="https://apps.apple.com/us/app/uhs-hardware/id6744415977"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 underline hover:text-blue-300"
-          >
-            iOS
-          </a>{" "}
-          &amp;&nbsp;
-          <a
-            href="https://play.google.com/store/apps/details?id=com.uFsTVLUJsqPv.natively"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-400 underline hover:text-blue-300"
-          >
-            Android
-          </a>{" "}
-          to cut ad costs; rolled out a URL-plus-cookie tagging system that
-          powers granular Flows and reports; and replaced PushOwl with OneSignal
-          for unified web + mobile push at a lower spend.
-          <br />
-          <br />
-          On the learning front, I’m deep into React, Next.js, and Python for
-          automation and web scraping, and I’m also exploring AI and automation tools
-          like n8n, lovable and claude code to test ideas and speed up workflows. I enjoy
-          tinkering with my homelab server, running Coolify to host projects,
-          services, and locally served LLMs.
-          <br />
-          <br />
-          I love tackling tough challenges, and I’m always up for teaming up on
-          interesting projects.
-          <br />
-          <br />
-          On my time off work, you’ll find me traveling or exploring in the mountains.
-        </p>
-      </div>
-    </section>
+      <p className="text-xl text-gray-300 leading-relaxed">
+        I’m a web developer and e-commerce specialist based in Miami, currently
+        working at{" "}
+        <a
+          href="https://www.uhs-hardware.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 underline hover:text-blue-300"
+        >
+          UHS Hardware
+        </a>
+        , where I’ve spent the past four years growing from Site Merchandiser to
+        Web Operations Supervisor. Along the way, I’ve learned how to make
+        high-SKU Shopify stores faster, smarter, and easier to manage through
+        custom development, automation, and data-driven improvements.
+        <br />
+        <br />
+        I focus on building solutions that cut costs and improve performance:
+        from replacing third-party apps with custom scripts, to developing Shopify
+        theme sections for marketing campaigns, to streamlining bulk data
+        operations with tools like Matrixify and NetSuite. Recent highlights
+        include overseeing the launch of UHS Hardware’s{" "}
+        <a
+          href="https://apps.apple.com/us/app/uhs-hardware/id6744415977"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 underline hover:text-blue-300"
+        >
+          iOS
+        </a>{" "}
+        &amp;{" "}
+        <a
+          href="https://play.google.com/store/apps/details?id=com.uFsTVLUJsqPv.natively"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 underline hover:text-blue-300"
+        >
+          Android
+        </a>{" "}
+        app, implementing SearchSpring for improved product discovery, and rolling
+        out a unified push notification system with OneSignal.
+        <br />
+        <br />
+        Outside of e-commerce, I’m expanding my technical toolkit. I’m diving deep
+        into <strong>React, Next.js, and Python</strong> with projects in
+        automation, web scraping, and AI-driven workflows. I also enjoy
+        experimenting with self-hosted tools on my homelab server, where I run{" "}
+        <strong>Coolify</strong> to deploy projects, services, and even local
+        LLMs.
+        <br />
+        <br />
+        I love tackling complex challenges, turning ideas into working systems,
+        and collaborating on projects that push boundaries. When I’m not building
+        or learning, you’ll usually find me{" "}
+        <strong>traveling or exploring the mountains</strong>.
+      </p>
+    </div>
+  </section>
+
   );
 };

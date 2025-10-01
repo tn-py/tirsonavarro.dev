@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { HoverBorderGradient } from "./ui/hover-border-gradient";
 import { CardContainer, CardBody, CardItem } from "./ui/3d-card";
@@ -22,47 +22,51 @@ interface ProjectData {
 const projectsData: ProjectData[] = [
   {
   id: 1,
-  title: "UHS Hardware - Web Operations Supervisor",
+  title: "UHS Hardware – Web Operations Supervisor",
   description:
-    "Currently working at UHS Hardware. I am responsible for managing and optimizing our Shopify website. I manage a team of 3 and I am the Web Operations Supervisor. I work closely with the Marketing and Product teams to launch promotions and make sure we execute properly on the site.",
+    "At UHS Hardware, I have grown from Site Merchandiser to Web Operations Supervisor over 4+ years, combining e-commerce expertise with hands-on technical development. In my current role, I oversee the technical operations of our Shopify Plus platform, ensuring seamless integrations, optimized site performance, and improved customer experience. A major highlight was leading the launch of UHS Hardware’s mobile app (iOS and Android) through a webview solution, where I managed app store deployment, handled error testing, and ensured a smooth release. Alongside the launch, I optimized our Shopify theme for mobile and built app-specific tracking systems integrated into Shopify automations. These systems enable customer segmentation, tagging, and personalized marketing based on mobile app usage.",
   image: "https://TN-Pull-Zone.b-cdn.net/UHS-Hardware.png",
   githubUrl: "",
   demoUrl: "https://uhs-hardware.com",
   tasks: [
-    "Launched iOS and Android app for UHS Hardware customers",
-    "Migrated push notifications from PushOwl to OneSignal",
-    "Implemented a new customer registration system",
-    "Rolled out SearchSpring search for faster product discovery"
+    "Oversaw the successful launch of UHS Hardware’s iOS and Android mobile app, managing deployment, testing, and post-release monitoring",
+    "Optimized Shopify theme for mobile performance to ensure a smoother in-app browsing and checkout experience",
+    "Built app-specific customer tracking and tagging system integrated into Shopify Flow, enabling personalized marketing campaigns",
+    "Implemented a new customer registration system to streamline account creation and improve data accuracy",
+    "Migrated push notifications to OneSignal, improving reliability and engagement with mobile users",
+    "Rolled out SearchSpring search for faster, more accurate product discovery across a large SKU catalog",
+    "Developed custom automations and scripts that reduced reliance on third-party apps and lowered operational costs"
   ]
-},
+}
+,
   {
     id: 2,
     title: "Portfolio Website",
     description:
-      "A modern, responsive portfolio website with interactive elements and smooth animations. Showcases projects, skills, and professional experience with a clean, user-friendly interface. Tech stack includes Next.js, React, TypeScript, Tailwind CSS, and Framer Motion. Aceternity UI components.",
+      "A modern, responsive portfolio site built with Next.js, React, TypeScript, Tailwind CSS, and Framer Motion. It features smooth animations, interactive elements, and Aceternity UI components. Designed to showcase projects, skills, and professional experience in a clean, user-friendly way.",
     image: "https://tn-pull-zone.b-cdn.net/TirsoNavarroDev.png",
     githubUrl: "https://github.com/username/portfolio-website",
     demoUrl: "https://portfolio-demo.vercel.app",
   },
   {
-  id: 3,
-  title: "Art Circuits - Web Developer",
-  description:
-    "A digital guide to Miami’s cultural scene, featuring Art, Entertainment, Gastronomy, and Architecture.",
-  image: "https://tn-pull-zone.b-cdn.net/ArtCircuits-DigitalArtGuide.png",
-  githubUrl: "#",
-  demoUrl: "https://artcircuits.com",
-  tasks: [
-    "Set up staging site and database via SSH for streamlined development",
-    "Updated theme files to improve design consistency",
-    "Built a custom calendar component for the homepage"
-  ]
-},
+    id: 3,
+    title: "Art Circuits – Web Developer",
+    description:
+      "A digital guide to Miami’s cultural scene, highlighting art, entertainment, gastronomy, and architecture.",
+    image: "https://tn-pull-zone.b-cdn.net/ArtCircuits-DigitalArtGuide.png",
+    githubUrl: "#",
+    demoUrl: "https://artcircuits.com",
+    tasks: [
+      "Configured staging site and database via SSH for development efficiency",
+      "Updated theme files to improve design consistency",
+      "Built a custom homepage calendar component"
+    ]
+  },
   {
     id: 4,
     title: "My Shopify Store",
     description:
-      "This is my development shopify store, where I test theme components, automations, apps and webhooks. It features a clean and modern design, with a focus on user experience and functionality. Password is SHOPIFY",
+      "A personal development store used to test theme components, automations, apps, and webhooks. Features a clean, modern design with a focus on usability and performance. (Password: SHOPIFY)",
     image: "https://tn-pull-zone.b-cdn.net/ThisisMyShopifyStore.png",
     githubUrl: "https://github.com/tn-py/welcome-this-is.myshopify.com",
     demoUrl: "https://welcome-this-is.myshopify.com",
@@ -71,22 +75,22 @@ const projectsData: ProjectData[] = [
     id: 5,
     title: "Selector Sage",
     description:
-      "A tool to extract data from sites using a custom selector. It uses Open AI to check check and verify the selectors are correct, provide a script to locally scrap the data, and generate a CSV file.",
+      "An AI-powered web scraping tool for extracting product data. It uses OpenAI to validate CSS selectors, generate custom scraping scripts, and export structured data to CSV.",
     image: "https://tn-pull-zone.b-cdn.net/Selector-Sage.png",
     githubUrl: "https://github.com/tn-py/Selector-Sage",
     demoUrl: "#",
   },
-  
   {
     id: 6,
     title: "Notes and Tasks App",
     description:
-      "A productivity application for managing tasks, projects, and team collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
+      "A productivity app for managing tasks, projects, and collaboration. Features include task creation, assignment, progress tracking, and deadline management.",
     image: "https://tn-pull-zone.b-cdn.net/NotesandTasksApp.png",
     githubUrl: "https://github.com/tn-py/notes-and-tasks",
     demoUrl: "https://notes-and-tasks.vercel.app",
   },
 ];
+
 
 export const Projects = () => (
   <section id="projects" className="w-full py-20 px-4 sm:px-8 bg-[#0a0a0a]">
@@ -148,77 +152,92 @@ const ProjectCard = ({
   githubUrl,
   demoUrl,
   tasks,
-}: ProjectCardProps) => (
-  <HoverBorderGradient
-    containerClassName="w-full rounded-xl"
-    className="w-full bg-gray-900/80 rounded-xl overflow-hidden"
-    as="div"
-    duration={2}
-  >
-    <div className="p-4 sm:p-8 flex flex-col items-center md:flex-row md:items-stretch gap-6 sm:gap-10 relative z-10">
-      {/* 3D Card effect on the image */}
-      <div className="w-full md:w-1/2 flex-shrink-0 flex justify-center h-[250px] sm:h-[300px] md:h-[400px]">
-        <CardContainer containerClassName="py-0 h-full" className="h-full w-full">
-          <CardBody className="!w-full !h-full">
-            <CardItem
-              translateZ={80}
-              className="w-full h-full overflow-hidden rounded-lg shadow-[0_0_15px_rgba(50,117,248,0.3)]"
+}: ProjectCardProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <HoverBorderGradient
+      containerClassName="w-full rounded-xl"
+      className="w-full bg-gray-900/80 rounded-xl overflow-hidden"
+      as="div"
+      duration={2}
+    >
+      <div className="p-4 sm:p-8 flex flex-col items-center md:flex-row md:items-stretch gap-6 sm:gap-10 relative z-10">
+        {/* 3D Card effect on the image */}
+        <div className="w-full md:w-1/2 flex-shrink-0 flex justify-center h-[250px] sm:h-[300px] md:h-[400px]">
+          <CardContainer containerClassName="py-0 h-full" className="h-full w-full">
+            <CardBody className="!w-full !h-full">
+              <CardItem
+                translateZ={80}
+                className="w-full h-full overflow-hidden rounded-lg shadow-[0_0_15px_rgba(50,117,248,0.3)]"
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image}
+                    alt={`Screenshot of ${title} project`}
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-contain sm:object-cover rounded-lg"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                    quality={90}
+                  />
+                </div>
+              </CardItem>
+            </CardBody>
+          </CardContainer>
+        </div>
+
+        {/* Content section */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center py-2 sm:py-4">
+          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">{title}</h3>
+
+          {isExpanded && (
+            <>
+              <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
+                {description}
+              </p>
+
+              {tasks && tasks.length > 0 && (
+                <ul className="mb-4 sm:mb-6 list-disc pl-5 text-gray-300 space-y-1.5 marker:text-blue-400">
+                  {tasks.map((task, idx) => (
+                    <li key={idx}>{task}</li>
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+
+          <p
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-blue-400 cursor-pointer hover:underline mb-4"
+          >
+            {isExpanded ? "Show Less" : "Click to Learn More"}
+          </p>
+
+          <div className="mt-auto flex gap-4">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
             >
-              <div className="relative w-full h-full">
-                <Image
-                  src={image}
-                  alt={`Screenshot of ${title} project`}
-                  width={800}
-                  height={600}
-                  className="w-full h-full object-contain sm:object-cover rounded-lg"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                  quality={90}
-                />
-              </div>
-            </CardItem>
-          </CardBody>
-        </CardContainer>
-      </div>
-
-      {/* Content section */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center py-2 sm:py-4">
-        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">{title}</h3>
-
-        <p className="text-gray-300 text-base sm:text-lg leading-relaxed mb-4">
-          {description}
-        </p>
-
-        {tasks && tasks.length > 0 && (
-          <ul className="mb-4 sm:mb-6 list-disc pl-5 text-gray-300 space-y-1.5 marker:text-blue-400">
-            {tasks.map((task, idx) => (
-              <li key={idx}>{task}</li>
-            ))}
-          </ul>
-        )}
-
-        <div className="mt-auto flex gap-4">
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
-          >
-            <FaGithub className="w-4 h-4" />
-            GitHub
-          </a>
-          <a
-            href={demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
-          >
-            <FaExternalLinkAlt className="w-4 h-4" />
-            Live Demo
-          </a>
+              <FaGithub className="w-4 h-4" />
+              GitHub
+            </a>
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+            >
+              <FaExternalLinkAlt className="w-4 h-4" />
+              Live Demo
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </HoverBorderGradient>
-);
+    </HoverBorderGradient>
+  );
+};
 
