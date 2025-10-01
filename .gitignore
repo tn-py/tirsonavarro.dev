@@ -83,3 +83,6 @@ temp/
 *.bak
 *.tmp
 .history/
+
+#Gemini CLI
+Gemini.md
