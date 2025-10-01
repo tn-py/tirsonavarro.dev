@@ -22,7 +22,7 @@ interface ProjectData {
 const projectsData: ProjectData[] = [
   {
   id: 1,
-  title: "UHS Hardware – Web Operations Supervisor",
+  title: "Currently Working at UHS Hardware - Web Operations Supervisor",
   description:
     "At UHS Hardware, I have grown from Site Merchandiser to Web Operations Supervisor over 4+ years, combining e-commerce expertise with hands-on technical development. In my current role, I oversee the technical operations of our Shopify Plus platform, ensuring seamless integrations, optimized site performance, and improved customer experience. A major highlight was leading the launch of UHS Hardware’s mobile app (iOS and Android) through a webview solution, where I managed app store deployment, handled error testing, and ensured a smooth release. Alongside the launch, I optimized our Shopify theme for mobile and built app-specific tracking systems integrated into Shopify automations. These systems enable customer segmentation, tagging, and personalized marketing based on mobile app usage.",
   image: "https://TN-Pull-Zone.b-cdn.net/UHS-Hardware.png",
