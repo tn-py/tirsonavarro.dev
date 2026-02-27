@@ -78,6 +78,9 @@ build/
 tmp/
 temp/
 
+# Generated screenshots (created at build time by scripts/screenshot-uhs.mjs)
+/public/screenshots/
+
 # Misc
 *.log
 *.bak

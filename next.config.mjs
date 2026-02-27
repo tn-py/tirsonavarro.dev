@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['tn-pull-zone.b-cdn.net'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'tn-pull-zone.b-cdn.net',
+      },
+    ],
   },
 };
 
