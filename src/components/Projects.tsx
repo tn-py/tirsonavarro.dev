@@ -17,11 +17,13 @@ interface ProjectData {
   githubUrl: string;
   demoUrl: string;
   tasks?: string[];
+  active?: boolean;
 }
 
 const projectsData: ProjectData[] = [
   {
   id: 1,
+  active: true,
   title: "Currently Working at UHS Hardware - Web Operations Supervisor",
   description:
     "At UHS Hardware, I have grown from Site Merchandiser to Web Operations Supervisor over 4+ years, combining e-commerce expertise with hands-on technical development. In my current role, I oversee the technical operations of our Shopify Plus platform, ensuring seamless integrations, optimized site performance, and improved customer experience. A major highlight was leading the launch of UHS Hardware’s mobile app (iOS and Android) through a webview solution, where I managed app store deployment, handled error testing, and ensured a smooth release. Alongside the launch, I optimized our Shopify theme for mobile and built app-specific tracking systems integrated into Shopify automations. These systems enable customer segmentation, tagging, and personalized marketing based on mobile app usage.",
@@ -97,7 +99,7 @@ export const Projects = () => (
     <div className="max-w-6xl mx-auto">
       <h2 className="text-4xl font-bold mb-16 text-center text-white">My Projects</h2>
       <div className="flex flex-col gap-16">
-        {projectsData.map((project) => (
+        {projectsData.filter((project) => project.active).map((project) => (
           <ProjectCard key={project.id} {...project} />
         ))}
       </div>
