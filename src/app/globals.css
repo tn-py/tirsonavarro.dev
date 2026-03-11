@@ -26,3 +26,32 @@ body {
   }
 }
 
+/* ── Resume print styles ───────────────────────────────────────────────────── */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  /* Hide non-resume elements when printing from any page */
+  nav,
+  footer {
+    display: none !important;
+  }
+
+  /* Ensure page breaks work reasonably */
+  section {
+    break-inside: avoid;
+  }
+
+  /* Reset Tailwind's bg-white/8 opacity utilities for print */
+  .print\:bg-gray-50 {
+    background-color: #f9fafb !important;
+  }
+}
+

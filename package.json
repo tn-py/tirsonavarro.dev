@@ -6,7 +6,8 @@
     "dev": "node scripts/screenshot-uhs.mjs && next dev",
     "build": "node scripts/screenshot-uhs.mjs && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-resume": "node scripts/update-resume.mjs"
   },
   "dependencies": {
     "@tabler/icons-react": "^3.31.0",
