@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/screenshot-uhs.mjs && next dev",
-    "build": "node scripts/screenshot-uhs.mjs && next build",
+    "build": "node scripts/screenshot-uhs.mjs && node scripts/update-resume.mjs && next build",
     "start": "next start",
     "lint": "next lint",
     "update-resume": "node scripts/update-resume.mjs"

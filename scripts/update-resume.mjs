@@ -2,30 +2,23 @@
 /**
  * update-resume.mjs
  *
- * AI agent that syncs your LinkedIn profile data into src/data/resume.ts.
+ * AI agent that fetches your LinkedIn profile via Firecrawl and uses
+ * Google Gemini Flash to extract and update src/data/resume.ts.
  *
  * Usage:
- *   node scripts/update-resume.mjs --linkedin-data ./linkedin-export.json
- *   node scripts/update-resume.mjs --linkedin-text "Paste your LinkedIn About/Experience text here"
- *   node scripts/update-resume.mjs --dry-run   (preview changes without writing)
+ *   node scripts/update-resume.mjs
+ *   node scripts/update-resume.mjs --linkedin-url https://www.linkedin.com/in/your-profile
+ *   node scripts/update-resume.mjs --dry-run
  *
- * Environment variables:
- *   ANTHROPIC_API_KEY  — required (Claude API key)
+ * Required environment variables:
+ *   FIRECRAWL_API_KEY   — Firecrawl API key (https://firecrawl.dev)
+ *   GEMINI_API_KEY      — Google AI Studio API key (https://aistudio.google.com)
  *
- * How it works:
- *   1. Reads your current resume data from src/data/resume.ts
- *   2. Accepts LinkedIn data as a JSON export or plain text
- *   3. Sends both to Claude, asking it to produce an updated ResumeData object
- *      that preserves the existing structure but updates the content
- *   4. Writes the result back to src/data/resume.ts
- *
- * LinkedIn data formats accepted:
- *   - LinkedIn Data Export (JSON files from Settings → Data Privacy → Get a copy of your data)
- *   - Plain text: paste your LinkedIn profile text into a .txt file
- *   - Inline text via --linkedin-text flag
+ * Optional environment variables:
+ *   GEMINI_MODEL        — Override the model (default: gemini-2.0-flash)
  */
 
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { parseArgs } from "util";
@@ -36,15 +29,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const RESUME_DATA_PATH = resolve(ROOT, "src/data/resume.ts");
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-const MODEL = "claude-opus-4-6"; // Most capable for structured data extraction
+const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? "gemini-2.0-flash";
+
+// Default LinkedIn URL — pulled from the resume data so there's one source of truth
+const DEFAULT_LINKEDIN_URL = "https://www.linkedin.com/in/tirso-navarro";
 
 // ─── CLI args ─────────────────────────────────────────────────────────────────
 
 const { values: args } = parseArgs({
   options: {
-    "linkedin-data": { type: "string" },  // path to JSON / text file
-    "linkedin-text": { type: "string" },  // inline text
+    "linkedin-url": { type: "string" },
     "dry-run": { type: "boolean", default: false },
     help: { type: "boolean", default: false },
   },
@@ -53,122 +49,148 @@ const { values: args } = parseArgs({
 
 if (args.help) {
   console.log(`
-update-resume.mjs — Sync LinkedIn data into your resume page
+update-resume.mjs — Fetch LinkedIn via Firecrawl + update resume with Gemini Flash
 
 Usage:
   node scripts/update-resume.mjs [options]
 
 Options:
-  --linkedin-data <path>   Path to LinkedIn export JSON or plain text file
-  --linkedin-text <text>   Inline LinkedIn profile text
-  --dry-run                Preview the updated TypeScript without writing it
-  --help                   Show this message
+  --linkedin-url <url>   LinkedIn profile URL (default: ${DEFAULT_LINKEDIN_URL})
+  --dry-run              Preview the updated TypeScript without writing it
+  --help                 Show this message
 
 Environment:
-  ANTHROPIC_API_KEY        Your Anthropic API key (required)
+  FIRECRAWL_API_KEY      Firecrawl API key   (https://firecrawl.dev)
+  GEMINI_API_KEY         Google AI Studio key (https://aistudio.google.com)
+  GEMINI_MODEL           Gemini model to use  (default: gemini-2.0-flash)
 
 Examples:
-  node scripts/update-resume.mjs --linkedin-data ./Profile.json
-  node scripts/update-resume.mjs --linkedin-text "$(cat linkedin-about.txt)"
-  node scripts/update-resume.mjs --linkedin-data ./Profile.json --dry-run
+  FIRECRAWL_API_KEY=fc-... GEMINI_API_KEY=AIza... node scripts/update-resume.mjs
+  FIRECRAWL_API_KEY=fc-... GEMINI_API_KEY=AIza... node scripts/update-resume.mjs --dry-run
 `);
   process.exit(0);
 }
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 
-if (!ANTHROPIC_API_KEY) {
-  console.error("❌  ANTHROPIC_API_KEY environment variable is required.");
-  process.exit(1);
+const missing = [];
+if (!FIRECRAWL_API_KEY) missing.push("FIRECRAWL_API_KEY");
+if (!GEMINI_API_KEY) missing.push("GEMINI_API_KEY");
+
+if (missing.length) {
+  // Exit 0 so the build is not broken when keys aren't configured (e.g. local dev).
+  // On Vercel, add the keys as environment variables to enable the sync.
+  console.warn(`⚠️   update-resume: skipping — missing env var(s): ${missing.join(", ")}`);
+  console.warn("    Add them to your Vercel project settings to enable LinkedIn sync on deploy.");
+  process.exit(0);
 }
 
-if (!args["linkedin-data"] && !args["linkedin-text"]) {
-  console.error(
-    "❌  Provide LinkedIn data via --linkedin-data <file> or --linkedin-text <text>.\n" +
-    "    Run with --help for usage."
-  );
-  process.exit(1);
-}
+// ─── Step 1: Firecrawl scrape ─────────────────────────────────────────────────
 
-// ─── Load inputs ──────────────────────────────────────────────────────────────
+async function scrapeLinkedIn(url) {
+  console.log(`🔍  Fetching LinkedIn profile via Firecrawl...\n    ${url}\n`);
 
-function loadLinkedInData() {
-  if (args["linkedin-text"]) return args["linkedin-text"];
-
-  const filePath = resolve(process.cwd(), args["linkedin-data"]);
-  if (!existsSync(filePath)) {
-    console.error(`❌  File not found: ${filePath}`);
-    process.exit(1);
-  }
-  const raw = readFileSync(filePath, "utf-8");
-  // If it's valid JSON, pretty-print it as a string so Claude reads it cleanly
-  try {
-    return JSON.stringify(JSON.parse(raw), null, 2);
-  } catch {
-    return raw; // treat as plain text
-  }
-}
-
-const currentResumeTs = readFileSync(RESUME_DATA_PATH, "utf-8");
-const linkedInData = loadLinkedInData();
-
-// ─── Claude call ──────────────────────────────────────────────────────────────
-
-async function callClaude(prompt) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const response = await fetch("https://api.firecrawl.dev/v1/scrape", {
     method: "POST",
     headers: {
-      "x-api-key": ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
+      Authorization: `Bearer ${FIRECRAWL_API_KEY}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 8192,
-      messages: [{ role: "user", content: prompt }],
+      url,
+      formats: ["markdown"],
+      // Firecrawl's managed browser handles LinkedIn's auth wall as best it can;
+      // for a fully authenticated scrape you can use their /connect endpoint.
+      onlyMainContent: true,
     }),
   });
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`Anthropic API error ${response.status}: ${err}`);
+    throw new Error(`Firecrawl error ${response.status}: ${err}`);
   }
 
   const data = await response.json();
-  return data.content[0].text;
+
+  if (!data.success) {
+    throw new Error(`Firecrawl returned success=false: ${JSON.stringify(data)}`);
+  }
+
+  const markdown = data.data?.markdown ?? "";
+  if (!markdown.trim()) {
+    throw new Error(
+      "Firecrawl returned empty content. LinkedIn may have blocked the request.\n" +
+      "    Tip: Try authenticating via Firecrawl's /connect endpoint for LinkedIn."
+    );
+  }
+
+  console.log(`✅  Scraped ${markdown.length} characters of profile content.\n`);
+  return markdown;
+}
+
+// ─── Step 2: Gemini extraction ────────────────────────────────────────────────
+
+async function callGemini(prompt) {
+  const url =
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent` +
+    `?key=${GEMINI_API_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        maxOutputTokens: 8192,
+        temperature: 0.1, // low temperature — we want deterministic structured output
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Gemini API error ${response.status}: ${err}`);
+  }
+
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+  if (!text) {
+    throw new Error(
+      `Gemini returned no text. Full response:\n${JSON.stringify(data, null, 2)}`
+    );
+  }
+
+  return text;
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are a resume data extraction agent. Your job is to:
+const EXTRACTION_PROMPT = (currentResumeTs, linkedInMarkdown) => `
+You are a resume data extraction agent. Your job is to:
 
-1. Read the CURRENT resume TypeScript file (which defines a \`ResumeData\` object)
-2. Read the LinkedIn profile data provided
+1. Read the CURRENT resume TypeScript file (defines a \`ResumeData\` object)
+2. Read the LinkedIn profile markdown scraped from the live profile page
 3. Return an UPDATED version of ONLY the \`resumeData\` const assignment — starting from
    \`export const resumeData: ResumeData = {\` and ending with the closing \`};\`
 
-CRITICAL RULES — you must follow these exactly:
-- Preserve the exact TypeScript structure (keys, types, interfaces). Do NOT change field names.
-- Update content values with accurate information from LinkedIn.
-- If LinkedIn data is missing a field, keep the existing value from the current file.
-- The \`lastUpdated\` field must be set to today's date in YYYY-MM-DD format: ${new Date().toISOString().split("T")[0]}
+CRITICAL RULES — follow these exactly:
+- Preserve the exact TypeScript structure (keys, types). Do NOT rename any fields.
+- Update content values with accurate information from the LinkedIn markdown.
+- If a field has no matching LinkedIn data, keep the existing value from the current file.
+- The \`lastUpdated\` field must be set to today's date: ${new Date().toISOString().split("T")[0]}
 - Do NOT include the interface definitions or any code above \`export const resumeData\`.
-- Do NOT wrap output in markdown code blocks — return raw TypeScript only.
-- Preserve existing IDs for entries when updating. For new entries, generate a simple slug ID.
-- experience[].endDate must be \`null\` for current positions, or a string like "Jan 2023" for past ones.
-- Keep the summary concise (2-3 sentences).
-- highlights arrays should have 4-7 bullet points per entry.
+- Do NOT wrap output in markdown code fences — return raw TypeScript only.
+- Preserve existing \`id\` values for matched entries. Generate simple slug IDs for new ones.
+- \`experience[].endDate\` must be \`null\` for current roles, or a string e.g. "Jan 2023" for past ones.
+- Keep \`personal.summary\` concise (2-3 sentences).
+- Each \`highlights\` array should have 4-7 bullet points.
 
-Output only the raw TypeScript for the \`resumeData\` const, nothing else.`;
-
-async function main() {
-  console.log("🤖  Calling Claude to parse LinkedIn data and update resume...\n");
-
-  const prompt = `${SYSTEM_PROMPT}
+Output ONLY the raw TypeScript const block, nothing else.
 
 ---
 
-## CURRENT resume.ts file:
+## CURRENT resume.ts:
 
 \`\`\`typescript
 ${currentResumeTs}
@@ -176,38 +198,60 @@ ${currentResumeTs}
 
 ---
 
-## LINKEDIN PROFILE DATA:
+## LINKEDIN PROFILE (scraped markdown):
 
-${linkedInData}
+${linkedInMarkdown}
 
 ---
 
-Now produce the updated \`export const resumeData: ResumeData = { ... };\` block.`;
+Now output the updated \`export const resumeData: ResumeData = { ... };\` block.
+`.trim();
 
-  let updatedBlock;
+async function main() {
+  const linkedInUrl = args["linkedin-url"] ?? DEFAULT_LINKEDIN_URL;
+  const currentResumeTs = readFileSync(RESUME_DATA_PATH, "utf-8");
+
+  // 1. Scrape LinkedIn
+  let linkedInMarkdown;
   try {
-    updatedBlock = await callClaude(prompt);
+    linkedInMarkdown = await scrapeLinkedIn(linkedInUrl);
   } catch (err) {
-    console.error("❌  Claude API call failed:", err.message);
-    process.exit(1);
+    // Non-fatal during a build — keep existing resume data and continue.
+    console.warn("⚠️   Firecrawl scrape failed — deploying with existing resume data.");
+    console.warn("    ", err.message);
+    process.exit(0);
   }
 
-  // ── Strip any accidental markdown fences ──────────────────────────────────
+  // 2. Call Gemini
+  console.log(`🤖  Calling ${GEMINI_MODEL} to extract and update resume data...\n`);
+  let updatedBlock;
+  try {
+    updatedBlock = await callGemini(
+      EXTRACTION_PROMPT(currentResumeTs, linkedInMarkdown)
+    );
+  } catch (err) {
+    console.warn("⚠️   Gemini API call failed — deploying with existing resume data.");
+    console.warn("    ", err.message);
+    process.exit(0);
+  }
+
+  // 3. Strip any accidental markdown fences
   updatedBlock = updatedBlock
     .replace(/^```(?:typescript|ts)?\n?/m, "")
     .replace(/```\s*$/m, "")
     .trim();
 
-  // ── Validate the response starts where expected ───────────────────────────
+  // 4. Validate structure
   if (!updatedBlock.startsWith("export const resumeData")) {
-    console.error(
-      "❌  Unexpected response format from Claude. Got:\n",
-      updatedBlock.slice(0, 300)
+    console.warn(
+      "⚠️   Unexpected output from Gemini — deploying with existing resume data.\n" +
+      "    Got:\n" +
+      updatedBlock.slice(0, 400)
     );
-    process.exit(1);
+    process.exit(0);
   }
 
-  // ── Reconstruct the full file: keep everything before the const, replace after ──
+  // 5. Reconstruct full file (keep interfaces + comments, replace only the const)
   const exportConstIndex = currentResumeTs.indexOf(
     "export const resumeData: ResumeData ="
   );
@@ -216,7 +260,7 @@ Now produce the updated \`export const resumeData: ResumeData = { ... };\` block
       "❌  Could not find `export const resumeData: ResumeData =` in resume.ts.\n" +
       "    Ensure the file structure is intact."
     );
-    process.exit(1);
+    process.exit(1); // This one IS fatal — the file structure itself is broken.
   }
 
   const preamble = currentResumeTs.slice(0, exportConstIndex);
@@ -231,9 +275,11 @@ Now produce the updated \`export const resumeData: ResumeData = { ... };\` block
   }
 
   writeFileSync(RESUME_DATA_PATH, updatedFile, "utf-8");
-  console.log(`✅  src/data/resume.ts updated successfully.`);
+  console.log("✅  src/data/resume.ts updated successfully.");
   console.log(`    → lastUpdated set to ${new Date().toISOString().split("T")[0]}`);
-  console.log(`\n    Commit the change and deploy to publish the updated resume.`);
+  console.log("\n    Review the diff, then commit and deploy to publish the updated resume:");
+  console.log("    git diff src/data/resume.ts");
+  console.log("    git add src/data/resume.ts && git commit -m 'chore: sync resume from LinkedIn'");
 }
 
 main().catch((err) => {
