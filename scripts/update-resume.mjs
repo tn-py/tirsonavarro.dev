@@ -78,9 +78,11 @@ if (!FIRECRAWL_API_KEY) missing.push("FIRECRAWL_API_KEY");
 if (!GEMINI_API_KEY) missing.push("GEMINI_API_KEY");
 
 if (missing.length) {
-  console.error(`❌  Missing required environment variable(s): ${missing.join(", ")}`);
-  console.error("    Run with --help for usage.");
-  process.exit(1);
+  // Exit 0 so the build is not broken when keys aren't configured (e.g. local dev).
+  // On Vercel, add the keys as environment variables to enable the sync.
+  console.warn(`⚠️   update-resume: skipping — missing env var(s): ${missing.join(", ")}`);
+  console.warn("    Add them to your Vercel project settings to enable LinkedIn sync on deploy.");
+  process.exit(0);
 }
 
 // ─── Step 1: Firecrawl scrape ─────────────────────────────────────────────────
@@ -214,8 +216,10 @@ async function main() {
   try {
     linkedInMarkdown = await scrapeLinkedIn(linkedInUrl);
   } catch (err) {
-    console.error("❌  Firecrawl scrape failed:", err.message);
-    process.exit(1);
+    // Non-fatal during a build — keep existing resume data and continue.
+    console.warn("⚠️   Firecrawl scrape failed — deploying with existing resume data.");
+    console.warn("    ", err.message);
+    process.exit(0);
   }
 
   // 2. Call Gemini
@@ -226,8 +230,9 @@ async function main() {
       EXTRACTION_PROMPT(currentResumeTs, linkedInMarkdown)
     );
   } catch (err) {
-    console.error("❌  Gemini API call failed:", err.message);
-    process.exit(1);
+    console.warn("⚠️   Gemini API call failed — deploying with existing resume data.");
+    console.warn("    ", err.message);
+    process.exit(0);
   }
 
   // 3. Strip any accidental markdown fences
@@ -238,12 +243,12 @@ async function main() {
 
   // 4. Validate structure
   if (!updatedBlock.startsWith("export const resumeData")) {
-    console.error(
-      "❌  Unexpected output from Gemini — does not start with `export const resumeData`.\n" +
+    console.warn(
+      "⚠️   Unexpected output from Gemini — deploying with existing resume data.\n" +
       "    Got:\n" +
       updatedBlock.slice(0, 400)
     );
-    process.exit(1);
+    process.exit(0);
   }
 
   // 5. Reconstruct full file (keep interfaces + comments, replace only the const)
@@ -255,7 +260,7 @@ async function main() {
       "❌  Could not find `export const resumeData: ResumeData =` in resume.ts.\n" +
       "    Ensure the file structure is intact."
     );
-    process.exit(1);
+    process.exit(1); // This one IS fatal — the file structure itself is broken.
   }
 
   const preamble = currentResumeTs.slice(0, exportConstIndex);
