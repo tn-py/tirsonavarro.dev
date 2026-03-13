@@ -1,5 +1,5 @@
 import { FloatingDock } from "@/components/FloatingDock";
-import { IconHome, IconUser, IconMailSpark, IconBriefcase/*, IconFileText*/ } from "@tabler/icons-react";
+import { IconHome, IconUser, IconMailSpark, IconBriefcase } from "@tabler/icons-react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { About } from "../components/About";
