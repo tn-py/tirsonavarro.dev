@@ -56,7 +56,7 @@ A modern, interactive portfolio website built with Next.js and React, featuring 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/portfolio-website.git
+   git clone https://github.com/tn-py/portfolio-website.git
    ```
 
 2. **Install dependencies**
