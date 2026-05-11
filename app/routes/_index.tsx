@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { AgentLog } from "~/components/AgentLog";
+import { MCPViz } from "~/components/MCPViz";
 import styles from "../styles/Home.module.css";
 
 export const meta: MetaFunction = () => {
@@ -21,6 +22,7 @@ export default function Index() {
 
       <section className={styles.content}>
         <AgentLog />
+        <MCPViz />
       </section>
     </div>
   );

@@ -1,0 +1,75 @@
+.container {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  margin: 0 0 1.5rem 0;
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  letter-spacing: 0.1em;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+}
+
+.node {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nodeCircle {
+  fill: var(--bg-primary);
+  stroke: var(--border-color);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.nodeCircle.active {
+  stroke: var(--accent-blue);
+  filter: drop-shadow(0 0 8px var(--accent-blue));
+}
+
+.nodeCircle.highlight {
+  stroke: var(--accent-green);
+  filter: drop-shadow(0 0 8px var(--accent-green));
+}
+
+.label {
+  fill: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  pointer-events: none;
+  transition: fill 0.3s ease;
+}
+
+.label.active {
+  fill: var(--text-primary);
+}
+
+.link {
+  stroke: var(--border-color);
+  stroke-width: 1;
+  stroke-dasharray: 4;
+  transition: all 0.3s ease;
+}
+
+.link.active {
+  stroke: var(--accent-blue);
+  stroke-width: 2;
+  stroke-dasharray: 0;
+  opacity: 1;
+}
+
+.link.hidden {
+  opacity: 0.2;
+}
