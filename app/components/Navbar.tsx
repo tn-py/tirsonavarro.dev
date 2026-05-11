@@ -19,6 +19,7 @@ export function Navbar() {
           <NavLink
             key={link.to}
             to={link.to}
+            end={link.to === "/"}
             className={({ isActive }) =>
               `${styles.link} ${isActive ? styles.active : ""}`
             }
