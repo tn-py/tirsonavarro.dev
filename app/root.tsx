@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Links,
   Meta,
@@ -9,6 +10,7 @@ import type { LinksFunction } from "@remix-run/node";
 
 import "./styles/global.css";
 import { Layout } from "./components/Layout";
+import { CommandPalette } from "./components/CommandPalette";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +26,20 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   return (
     <html lang="en">
       <head>
@@ -36,6 +52,7 @@ export default function App() {
         <Layout>
           <Outlet />
         </Layout>
+        <CommandPalette open={open} setOpen={setOpen} />
         <ScrollRestoration />
         <Scripts />
       </body>
