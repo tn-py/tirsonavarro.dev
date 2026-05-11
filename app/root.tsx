@@ -6,7 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 
 import "./styles/global.css";
 import { Layout } from "./components/Layout";
@@ -24,6 +24,13 @@ export const links: LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap",
   },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Agentic Architect // E-Commerce Ops" },
+    { name: "description", content: "Portfolio of an Agentic Architect specializing in E-Commerce Operations and Autonomous Systems." },
+  ];
+};
 
 export default function App() {
   const [open, setOpen] = React.useState(false);

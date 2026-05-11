@@ -1,3 +1,4 @@
+import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import styles from "~/styles/Projects.module.css";
 
@@ -8,6 +9,13 @@ interface ProjectModule {
     tags: string[];
   };
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Projects | Agentic Architect" },
+    { name: "description", content: "A collection of engineering projects, harnesses, and autonomous systems." },
+  ];
+};
 
 export default function ProjectsIndex() {
   const projectFiles = import.meta.glob<ProjectModule>("../../content/projects/*.mdx", {

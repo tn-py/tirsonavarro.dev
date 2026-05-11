@@ -1,3 +1,4 @@
+import type { MetaFunction } from "@remix-run/node";
 import { StatusTerminal } from "~/components/StatusTerminal";
 import styles from "~/styles/Research.module.css";
 
@@ -24,6 +25,13 @@ const RESEARCH_POSTS = [
     tags: ["Gemini", "CLI", "Autonomous Coding"],
   },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Research | Agentic Architect" },
+    { name: "description", content: "Deep dives into autonomous agents, MCP, and the future of agentic software engineering." },
+  ];
+};
 
 export default function ResearchIndex() {
   return (

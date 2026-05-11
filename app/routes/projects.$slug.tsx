@@ -1,8 +1,37 @@
-import { Link, useParams } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData, useParams } from "@remix-run/react";
 import styles from "~/styles/Projects.module.css";
+
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  const { slug } = params;
+  const projects = import.meta.glob("../../content/projects/*.mdx", { eager: true });
+  const projectPath = `../../content/projects/${slug}.mdx`;
+  const project = projects[projectPath] as any;
+
+  if (!project) {
+    throw new Response("Not Found", { status: 404 });
+  }
+
+  return json({
+    frontmatter: project.frontmatter,
+  });
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+  if (!data) {
+    return [{ title: "Project Not Found" }];
+  }
+
+  return [
+    { title: `${data.frontmatter.title} | Projects` },
+    { name: "description", content: data.frontmatter.description },
+  ];
+};
 
 export default function ProjectDetail() {
   const { slug } = useParams();
+  const { frontmatter } = useLoaderData<typeof loader>();
   
   // Use import.meta.glob to get all projects
   const projects = import.meta.glob("../../content/projects/*.mdx", { eager: true });
