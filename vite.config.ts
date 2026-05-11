@@ -6,6 +6,9 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 export default defineConfig({
+  server: {
+    allowedHosts: [".tunnelmole.net"],
+  },
   plugins: [
     mdx({
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
