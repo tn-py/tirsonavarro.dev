@@ -61,6 +61,17 @@ export default function ProjectDetail() {
       <div className={styles.mdxContent}>
         <Component />
       </div>
+
+      {frontmatter.githubUrl && (
+        <a 
+          href={frontmatter.githubUrl} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={styles.githubButton}
+        >
+          [ View Source on GitHub ]
+        </a>
+      )}
     </div>
   );
 }
