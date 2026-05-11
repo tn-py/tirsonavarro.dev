@@ -2,10 +2,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 99px;
   font-family: var(--font-mono);
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  min-width: 320px;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 .links {
@@ -16,15 +27,121 @@
 .link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.2s;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
 }
 
 .link:hover {
   color: var(--accent-blue);
+  text-shadow: 0 0 8px var(--accent-blue);
 }
 
 .active {
   color: var(--text-primary);
   border-bottom: 2px solid var(--accent-blue);
+}
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.menuToggle:hover {
+  text-shadow: 0 0 8px var(--accent-blue);
+}
+
+.terminalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 17, 23, 0.98);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.overlayContent {
+  margin: auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.terminalHeader {
+  margin-bottom: 3rem;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+}
+
+.terminalPrompt {
+  color: var(--accent-green);
+}
+
+.terminalCursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.overlayLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.overlayLink {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.cmdPrefix {
+  color: var(--accent-blue);
+  margin-right: 1rem;
+  opacity: 0.7;
+}
+
+.overlayLink:hover {
+  color: var(--accent-blue);
+  transform: translateX(10px);
+  text-shadow: 0 0 15px var(--accent-blue);
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    width: calc(100% - 2rem);
+    min-width: unset;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+    top: 1rem;
+    padding: 0.5rem 1.25rem;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .menuToggle {
+    display: block;
+  }
 }
