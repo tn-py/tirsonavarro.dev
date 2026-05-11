@@ -6,7 +6,7 @@
 
 .main {
   flex: 1;
-  padding: 2rem var(--page-gutter);
+  padding: 6rem var(--page-gutter) 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
