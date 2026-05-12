@@ -76,27 +76,53 @@
   cursor: grabbing;
 }
 
-.nodeHitArea {
-  pointer-events: auto;
-  cursor: pointer;
+.customNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.nodeLabel {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.nodeLabel.active {
+  color: var(--text-primary);
+  text-shadow: 0 0 5px var(--accent-blue);
 }
 
 .nodeCircle {
-  fill: var(--bg-primary);
-  stroke: var(--border-color);
-  stroke-width: 2;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
   transition: all 0.3s ease;
-  pointer-events: none; /* Let hit area handle events */
+}
+
+.nodeCircle.harness {
+  width: 20px;
+  height: 20px;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
 }
 
 .nodeCircle.active {
-  stroke: var(--accent-blue);
-  filter: drop-shadow(0 0 8px var(--accent-blue));
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
 }
 
 .nodeCircle.highlight {
-  stroke: var(--accent-green);
-  filter: drop-shadow(0 0 8px var(--accent-green));
+  border-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
 }
 
 .label {

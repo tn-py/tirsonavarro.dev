@@ -1,101 +1,114 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useForceGraph } from "~/hooks/useForceGraph";
+import {
+  ReactFlow,
+  MiniMap,
+  Controls,
+  Background,
+  useNodesState,
+  useEdgesState,
+  type Node as RFNode,
+  type Edge as RFEdge,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { TerminalNode } from "./TerminalNode";
 import styles from "./MCPViz.module.css";
 
-type Node = {
-  id: string;
-  label: string;
-  description: string;
-  type: string;
-  x: number;
-  y: number;
+const nodeTypes = {
+  terminal: TerminalNode,
 };
 
-type Link = {
-  source: string;
-  target: string;
-};
-
-const INITIAL_NODES: Node[] = [
+const INITIAL_NODES: RFNode[] = [
   { 
     id: "harness", 
-    label: "AGENT HARNESS", 
-    description: "Core orchestration engine and agent runtime environment.",
-    type: "CORE",
-    x: 400, 
-    y: 200 
+    type: "terminal",
+    position: { x: 400, y: 200 },
+    data: { 
+      label: "AGENT HARNESS", 
+      description: "Core orchestration engine and agent runtime environment.",
+      type: "CORE",
+      isHarness: true
+    }
   },
   { 
     id: "shopify", 
-    label: "SHOPIFY", 
-    description: "E-commerce platform integration for product and order management.",
-    type: "INTEGRATION",
-    x: 200, 
-    y: 100 
+    type: "terminal",
+    position: { x: 100, y: 50 },
+    data: { 
+      label: "SHOPIFY", 
+      description: "E-commerce platform integration for product and order management.",
+      type: "INTEGRATION"
+    }
   },
   { 
     id: "n8n", 
-    label: "N8N", 
-    description: "Workflow automation tool for connecting disparate services.",
-    type: "AUTOMATION",
-    x: 200, 
-    y: 300 
+    type: "terminal",
+    position: { x: 100, y: 350 },
+    data: { 
+      label: "N8N", 
+      description: "Workflow automation tool for connecting disparate services.",
+      type: "AUTOMATION"
+    }
   },
   { 
     id: "ollama", 
-    label: "OLLAMA", 
-    description: "Local LLM runner for private and secure inference.",
-    type: "MODEL",
-    x: 600, 
-    y: 100 
+    type: "terminal",
+    position: { x: 700, y: 50 },
+    data: { 
+      label: "OLLAMA", 
+      description: "Local LLM runner for private and secure inference.",
+      type: "MODEL"
+    }
   },
   { 
     id: "claude", 
-    label: "CLAUDE CODE", 
-    description: "Advanced CLI tool for agentic software engineering.",
-    type: "TOOL",
-    x: 600, 
-    y: 300 
+    type: "terminal",
+    position: { x: 700, y: 350 },
+    data: { 
+      label: "CLAUDE CODE", 
+      description: "Advanced CLI tool for agentic software engineering.",
+      type: "TOOL"
+    }
   },
   { 
     id: "mcp", 
-    label: "MCP SERVERS", 
-    description: "Standardized Model Context Protocol servers for tool discovery.",
-    type: "PROTOCOL",
-    x: 400, 
-    y: 50 
+    type: "terminal",
+    position: { x: 400, y: 20 },
+    data: { 
+      label: "MCP SERVERS", 
+      description: "Standardized Model Context Protocol servers for tool discovery.",
+      type: "PROTOCOL"
+    }
   },
 ];
 
-const INITIAL_LINKS: Link[] = [
-  { source: "harness", target: "shopify" },
-  { source: "harness", target: "n8n" },
-  { source: "harness", target: "ollama" },
-  { source: "harness", target: "claude" },
-  { source: "harness", target: "mcp" },
+const INITIAL_EDGES: RFEdge[] = [
+  { id: "e-harness-shopify", source: "harness", target: "shopify" },
+  { id: "e-harness-n8n", source: "harness", target: "n8n" },
+  { id: "e-harness-ollama", source: "harness", target: "ollama" },
+  { id: "e-harness-claude", source: "harness", target: "claude" },
+  { id: "e-harness-mcp", source: "harness", target: "mcp" },
 ];
 
 export function MCPViz() {
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState(INITIAL_NODES);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(INITIAL_EDGES);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Use useMemo to ensure nodes/links are stable for the hook
-  const nodes = useMemo(() => INITIAL_NODES.map(n => ({ ...n })), []);
-  const links = useMemo(() => INITIAL_LINKS.map(l => ({ ...l })), []);
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
-  const { coords, dragNode } = useForceGraph(nodes, links);
-
-  const isNodeActive = (id: string) => hoveredNode === id || selectedNodeId === id;
-  const isLinkActive = (link: any) => {
-    const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-    const targetId = typeof link.target === 'object' ? link.target.id : link.target;
-    const activeId = hoveredNode || selectedNodeId;
-    return activeId === sourceId || activeId === targetId;
-  };
-
-  const selectedNode = coords.find(n => n.id === selectedNodeId);
+  const selectedNode = useMemo(
+    () => nodes.find((n) => n.id === selectedNodeId),
+    [nodes, selectedNodeId]
+  );
 
   const toggleFullscreen = () => {
     if (!containerRef.current) return;
@@ -107,107 +120,39 @@ export function MCPViz() {
   };
 
   return (
-    <div ref={containerRef} className={styles.container}>
+    <div ref={containerRef} className={`${styles.container} ${isFullscreen ? styles.fullscreen : ''}`}>
       <div className={styles.header}>
         <h2 className={styles.title}>&gt; MCP_ARCHITECTURE_VISUALIZATION</h2>
         <button className={styles.fullscreenBtn} onClick={toggleFullscreen}>
-          [ FULLSCREEN ]
+          {isFullscreen ? "[ EXIT FULLSCREEN ]" : "[ FULLSCREEN ]"}
         </button>
       </div>
 
-      <svg
-        viewBox="0 0 800 400"
-        className={styles.svg}
-        onMouseLeave={() => setHoveredNode(null)}
-        onClick={() => setSelectedNodeId(null)}
-      >
-        {/* Links */}
-        {links.map((link: any, i) => {
-          const sourceNode = coords.find(n => n.id === (typeof link.source === 'object' ? link.source.id : link.source));
-          const targetNode = coords.find(n => n.id === (typeof link.target === 'object' ? link.target.id : link.target));
-          
-          if (!sourceNode || !targetNode) return null;
-          
-          const active = isLinkActive(link);
-
-          return (
-            <motion.line
-              key={`${sourceNode.id}-${targetNode.id}`}
-              x1={sourceNode.x}
-              y1={sourceNode.y}
-              x2={targetNode.x}
-              y2={targetNode.y}
-              className={`${styles.link} ${active ? styles.active : ""} ${
-                (hoveredNode || selectedNodeId) && !active ? styles.hidden : ""
-              }`}
-              initial={false}
-              animate={{
-                x1: sourceNode.x,
-                y1: sourceNode.y,
-                x2: targetNode.x,
-                y2: targetNode.y
-              }}
-            />
-          );
-        })}
-
-        {/* Nodes */}
-        {coords.map((node) => {
-          const active = isNodeActive(node.id);
-          const connected =
-            (hoveredNode || selectedNodeId) &&
-            links.some((l: any) => {
-              const sId = typeof l.source === 'object' ? l.source.id : l.source;
-              const tId = typeof l.target === 'object' ? l.target.id : l.target;
-              const activeId = hoveredNode || selectedNodeId;
-              return (sId === node.id && tId === activeId) ||
-                     (tId === node.id && sId === activeId);
-            });
-
-          return (
-            <motion.g
-              key={node.id}
-              className={styles.node}
-              initial={false}
-              animate={{ x: node.x, y: node.y }}
-              drag
-              dragConstraints={containerRef}
-              onDrag={(e, info) => {
-                // Approximate global to local SVG coordinates
-                // This is a simplification; for precision we'd use getScreenCTM
-                dragNode(node.id, node.x + info.delta.x, node.y + info.delta.y);
-              }}
-              onDragEnd={() => dragNode(node.id, null, null)}
-              onMouseEnter={() => setHoveredNode(node.id)}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedNodeId(node.id);
-              }}
-            >
-              <circle
-                r={22}
-                fill="transparent"
-                className={styles.nodeHitArea}
+      <div style={{ width: '100%', height: isFullscreen ? 'calc(100vh - 100px)' : '400px', position: 'relative' }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          nodeTypes={nodeTypes}
+          onNodeClick={(_, node) => setSelectedNodeId(node.id)}
+          onPaneClick={() => setSelectedNodeId(null)}
+          fitView
+          colorMode="dark"
+        >
+          <Background color="#1a1a1a" gap={20} />
+          {isFullscreen && (
+            <>
+              <MiniMap 
+                style={{ background: '#0a0a0a', border: '1px solid #333' }}
+                nodeColor={(n) => n.id === 'harness' ? '#00f2ff' : '#666'}
+                maskColor="rgba(0, 0, 0, 0.7)"
               />
-              <circle
-                r={node.id === "harness" ? 10 : 6}
-                className={`${styles.nodeCircle} ${
-                  active ? styles.active : ""
-                } ${connected ? styles.highlight : ""}`}
-              />
-              <text
-                y={25}
-                textAnchor="middle"
-                className={`${styles.label} ${
-                  active || connected ? styles.active : ""
-                }`}
-              >
-                {node.label}
-              </text>
-            </motion.g>
-          );
-        })}
-      </svg>
+              <Controls />
+            </>
+          )}
+        </ReactFlow>
+      </div>
 
       <AnimatePresence>
         {selectedNode && (
@@ -225,11 +170,11 @@ export function MCPViz() {
               &times;
             </button>
             <div className={styles.detailHeader}>
-              <span className={styles.detailTitle}>{selectedNode.label}</span>
-              <span>{selectedNode.type}</span>
+              <span className={styles.detailTitle}>{selectedNode.data.label as string}</span>
+              <span>{selectedNode.data.type as string}</span>
             </div>
             <div className={styles.detailContent}>
-              {selectedNode.description}
+              {selectedNode.data.description as string}
             </div>
             <div className={styles.detailMeta}>
               ID: {selectedNode.id.toUpperCase()}<br />
