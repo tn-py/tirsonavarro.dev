@@ -10,29 +10,24 @@ export const meta: MetaFunction = () => {
 
 const stackData = [
   {
-    category: "Languages",
-    description: "The core syntax that defines the logic and structure of my systems.",
-    items: ["TypeScript", "Python", "Rust", "SQL", "MDX", "CSS"],
+    category: "AI & Agentic Systems",
+    description: "Orchestrating autonomous workflows and high-performance retrieval.",
+    items: ["LangGraph", "Multi-agent Systems", "Agentic RAG", "ChromaDB", "Bias Detection", "Embedding Models", "Prompt Engineering"],
+  },
+  {
+    category: "E-Commerce Ops",
+    description: "Scaling and managing enterprise-grade retail systems.",
+    items: ["Shopify Liquid", "NetSuite", "SearchSpring", "OneSignal", "Matrixify", "Shopify Metafields"],
   },
   {
     category: "Frameworks & UI",
     description: "Building interfaces that are both functional and performant.",
-    items: ["Remix", "React", "Next.js", "Vite", "Vanilla CSS", "Tailwind"],
-  },
-  {
-    category: "AI & Agentic Systems",
-    description: "Tools for building autonomous agents and integrating LLMs.",
-    items: ["MCP (Model Context Protocol)", "OpenClaw", "Hermes", "LangChain", "OpenAI", "Claude"],
-  },
-  {
-    category: "Automation",
-    description: "Orchestrating workflows and background tasks.",
-    items: ["n8n", "GitHub Actions", "Node-RED", "Cron"],
+    items: ["Remix", "React", "Next.js", "Vite", "Vanilla CSS", "Tailwind", "Framer Motion"],
   },
   {
     category: "Infrastructure",
     description: "The bedrock upon which my applications and agents reside.",
-    items: ["Proxmox", "Docker", "Vercel", "Cloudflare", "Linux", "PostgreSQL"],
+    items: ["Proxmox", "Docker", "Vercel", "Cloudflare", "Linux", "PostgreSQL", "GitHub Actions"],
   },
 ];
 
