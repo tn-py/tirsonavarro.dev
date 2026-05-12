@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <filter id="g" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="32" height="32" rx="3" fill="#080810"/>
+  <text font-family="'Courier New', monospace" font-size="16" font-weight="bold" fill="#00a3ff" filter="url(#g)">
+    <tspan x="3" y="22">&gt;_</tspan>
+  </text>
+</svg>
