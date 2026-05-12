@@ -19,75 +19,173 @@ const nodeTypes = {
 };
 
 const INITIAL_NODES: RFNode[] = [
-  { 
-    id: "harness", 
-    type: "terminal",
-    position: { x: 400, y: 200 },
-    data: { 
-      label: "AGENT HARNESS", 
-      description: "Core orchestration engine and agent runtime environment.",
-      type: "CORE",
-      isHarness: true
-    }
+  // ─── CORE HUB ───
+  {
+    id: "ops", type: "terminal", position: { x: 550, y: 380 },
+    data: { label: "E-COMMERCE OPS", description: "Central command for catalog, inventory, and agentic automation workflows.", type: "CORE", isHarness: true },
   },
-  { 
-    id: "shopify", 
-    type: "terminal",
-    position: { x: 100, y: 50 },
-    data: { 
-      label: "SHOPIFY", 
-      description: "E-commerce platform integration for product and order management.",
-      type: "INTEGRATION"
-    }
+
+  // ─── DOMAIN HUBS ───
+  {
+    id: "agentic-ai", type: "terminal", position: { x: 550, y: 130 },
+    data: { label: "AGENTIC AI", description: "Multi-agent orchestration, RAG pipelines, and LLM-driven tooling.", type: "HUB", isHarness: true },
   },
-  { 
-    id: "n8n", 
-    type: "terminal",
-    position: { x: 100, y: 350 },
-    data: { 
-      label: "N8N", 
-      description: "Workflow automation tool for connecting disparate services.",
-      type: "AUTOMATION"
-    }
+  {
+    id: "ecomm", type: "terminal", position: { x: 200, y: 380 },
+    data: { label: "E-COMMERCE SYSTEMS", description: "Core business platforms for storefront and enterprise resource management.", type: "HUB", isHarness: true },
   },
-  { 
-    id: "ollama", 
-    type: "terminal",
-    position: { x: 700, y: 50 },
-    data: { 
-      label: "OLLAMA", 
-      description: "Local LLM runner for private and secure inference.",
-      type: "MODEL"
-    }
+  {
+    id: "frontend", type: "terminal", position: { x: 900, y: 380 },
+    data: { label: "FRONTEND", description: "Modern UI stack for performant, interactive web applications.", type: "HUB", isHarness: true },
   },
-  { 
-    id: "claude", 
-    type: "terminal",
-    position: { x: 700, y: 350 },
-    data: { 
-      label: "CLAUDE CODE", 
-      description: "Advanced CLI tool for agentic software engineering.",
-      type: "TOOL"
-    }
+  {
+    id: "backend", type: "terminal", position: { x: 300, y: 600 },
+    data: { label: "BACKEND & SCRIPTING", description: "Server-side logic, automation scripts, and API integrations.", type: "HUB", isHarness: true },
   },
-  { 
-    id: "mcp", 
-    type: "terminal",
-    position: { x: 400, y: 20 },
-    data: { 
-      label: "MCP SERVERS", 
-      description: "Standardized Model Context Protocol servers for tool discovery.",
-      type: "PROTOCOL"
-    }
+  {
+    id: "infra", type: "terminal", position: { x: 800, y: 600 },
+    data: { label: "INFRASTRUCTURE", description: "Self-hosted containerized stack running on homelab hardware.", type: "HUB", isHarness: true },
+  },
+
+  // ─── AGENTIC AI ───
+  {
+    id: "langgraph", type: "terminal", position: { x: 300, y: 20 },
+    data: { label: "LANGGRAPH", description: "Stateful multi-agent orchestration framework for complex, cyclic AI workflows.", type: "AI_TOOL" },
+  },
+  {
+    id: "chromadb", type: "terminal", position: { x: 800, y: 20 },
+    data: { label: "CHROMADB", description: "Vector database powering high-performance RAG and semantic knowledge retrieval.", type: "DB" },
+  },
+  {
+    id: "claude", type: "terminal", position: { x: 550, y: -60 },
+    data: { label: "CLAUDE AI", description: "Anthropic LLM used for agentic coding, tool use, and multi-step orchestration.", type: "LLM" },
+  },
+  {
+    id: "selector-sage", type: "terminal", position: { x: 820, y: 130 },
+    data: { label: "SELECTOR SAGE", description: "AI-powered hardware product recommendation agent built with Python and LLM tool calling.", type: "PROJECT" },
+  },
+
+  // ─── E-COMMERCE ───
+  {
+    id: "shopify", type: "terminal", position: { x: -60, y: 240 },
+    data: { label: "SHOPIFY", description: "Primary storefront platform — custom themes, Shopify Liquid, and embedded app development.", type: "STOREFRONT" },
+  },
+  {
+    id: "netsuite", type: "terminal", position: { x: -60, y: 380 },
+    data: { label: "NETSUITE", description: "Enterprise ERP for synchronized inventory management and financial operations.", type: "ERP" },
+  },
+  {
+    id: "matrixify", type: "terminal", position: { x: -60, y: 510 },
+    data: { label: "MATRIXIFY", description: "Bulk catalog import/export pipeline tool for high-SKU Shopify operations.", type: "OPS_TOOL" },
+  },
+  {
+    id: "searchspring", type: "terminal", position: { x: 100, y: 130 },
+    data: { label: "SEARCHSPRING", description: "Product discovery platform — custom relevance rules, merchandising, and A/B testing.", type: "SEARCH" },
+  },
+  {
+    id: "onesignal", type: "terminal", position: { x: 100, y: 630 },
+    data: { label: "ONESIGNAL", description: "Cross-platform push notification delivery for iOS, Android, and web channels.", type: "NOTIFY" },
+  },
+
+  // ─── FRONTEND ───
+  {
+    id: "react", type: "terminal", position: { x: 1100, y: 240 },
+    data: { label: "REACT", description: "Component-based UI library for building dynamic, stateful interfaces.", type: "FRAMEWORK" },
+  },
+  {
+    id: "nextjs", type: "terminal", position: { x: 1250, y: 380 },
+    data: { label: "NEXT.JS", description: "Full-stack React framework with SSR, file-based routing, and built-in API routes.", type: "FRAMEWORK" },
+  },
+  {
+    id: "typescript", type: "terminal", position: { x: 1100, y: 510 },
+    data: { label: "TYPESCRIPT", description: "Typed JavaScript superset for safer, scalable frontend and backend codebases.", type: "LANGUAGE" },
+  },
+  {
+    id: "tailwind", type: "terminal", position: { x: 900, y: 200 },
+    data: { label: "TAILWIND CSS", description: "Utility-first CSS framework enabling rapid, consistent UI development.", type: "STYLING" },
+  },
+  {
+    id: "framer", type: "terminal", position: { x: 900, y: 560 },
+    data: { label: "FRAMER MOTION", description: "Animation library for fluid React transitions, gestures, and layout animations.", type: "ANIMATION" },
+  },
+
+  // ─── BACKEND & SCRIPTING ───
+  {
+    id: "python", type: "terminal", position: { x: 100, y: 690 },
+    data: { label: "PYTHON", description: "Primary scripting language for agentic tools, automation pipelines, and data processing.", type: "LANGUAGE" },
+  },
+  {
+    id: "nodejs", type: "terminal", position: { x: 200, y: 790 },
+    data: { label: "NODE.JS", description: "JavaScript runtime for backend services, REST APIs, and server-side automation.", type: "RUNTIME" },
+  },
+  {
+    id: "puppeteer", type: "terminal", position: { x: 420, y: 790 },
+    data: { label: "PUPPETEER", description: "Headless browser automation for web scraping, data extraction, and UI testing.", type: "AUTOMATION" },
+  },
+
+  // ─── INFRASTRUCTURE ───
+  {
+    id: "docker", type: "terminal", position: { x: 680, y: 760 },
+    data: { label: "DOCKER", description: "Containerization layer for reproducible, portable service deployments.", type: "CONTAINER" },
+  },
+  {
+    id: "coolify", type: "terminal", position: { x: 900, y: 760 },
+    data: { label: "COOLIFY", description: "Self-hosted PaaS managing containerized apps and deployments on homelab hardware.", type: "PAAS" },
+  },
+  {
+    id: "linux", type: "terminal", position: { x: 1050, y: 640 },
+    data: { label: "LINUX", description: "Primary OS for server management, shell scripting, and homelab operations.", type: "OS" },
+  },
+  {
+    id: "github", type: "terminal", position: { x: 660, y: 510 },
+    data: { label: "GITHUB", description: "Version control and CI/CD hub for all active projects and open-source work.", type: "VCS" },
   },
 ];
 
 const INITIAL_EDGES: RFEdge[] = [
-  { id: "e-harness-shopify", source: "harness", target: "shopify" },
-  { id: "e-harness-n8n", source: "harness", target: "n8n" },
-  { id: "e-harness-ollama", source: "harness", target: "ollama" },
-  { id: "e-harness-claude", source: "harness", target: "claude" },
-  { id: "e-harness-mcp", source: "harness", target: "mcp" },
+  // Core hub → domain hubs
+  { id: "e-ops-ai",       source: "ops", target: "agentic-ai", animated: true },
+  { id: "e-ops-ecomm",    source: "ops", target: "ecomm" },
+  { id: "e-ops-frontend", source: "ops", target: "frontend" },
+  { id: "e-ops-backend",  source: "ops", target: "backend" },
+  { id: "e-ops-infra",    source: "ops", target: "infra" },
+
+  // Agentic AI → leaves
+  { id: "e-ai-langgraph", source: "agentic-ai", target: "langgraph", animated: true },
+  { id: "e-ai-chromadb",  source: "agentic-ai", target: "chromadb" },
+  { id: "e-ai-claude",    source: "agentic-ai", target: "claude", animated: true },
+  { id: "e-ai-sage",      source: "agentic-ai", target: "selector-sage" },
+
+  // E-Commerce → leaves
+  { id: "e-ecomm-shopify",      source: "ecomm", target: "shopify" },
+  { id: "e-ecomm-netsuite",     source: "ecomm", target: "netsuite" },
+  { id: "e-ecomm-matrixify",    source: "ecomm", target: "matrixify" },
+  { id: "e-ecomm-searchspring", source: "ecomm", target: "searchspring" },
+  { id: "e-ecomm-onesignal",    source: "ecomm", target: "onesignal" },
+
+  // Frontend → leaves
+  { id: "e-fe-react",  source: "frontend", target: "react" },
+  { id: "e-fe-nextjs", source: "frontend", target: "nextjs" },
+  { id: "e-fe-ts",     source: "frontend", target: "typescript" },
+  { id: "e-fe-tw",     source: "frontend", target: "tailwind" },
+  { id: "e-fe-framer", source: "frontend", target: "framer" },
+
+  // Backend → leaves
+  { id: "e-be-python",    source: "backend", target: "python" },
+  { id: "e-be-nodejs",    source: "backend", target: "nodejs" },
+  { id: "e-be-puppeteer", source: "backend", target: "puppeteer" },
+
+  // Infrastructure → leaves
+  { id: "e-infra-docker",  source: "infra", target: "docker" },
+  { id: "e-infra-coolify", source: "infra", target: "coolify" },
+  { id: "e-infra-linux",   source: "infra", target: "linux" },
+  { id: "e-infra-github",  source: "infra", target: "github" },
+
+  // Cross-links (knowledge graph flavor)
+  { id: "e-python-sage",     source: "python",    target: "selector-sage" },
+  { id: "e-chromadb-sage",   source: "chromadb",  target: "selector-sage" },
+  { id: "e-docker-coolify",  source: "docker",    target: "coolify" },
+  { id: "e-ts-react",        source: "typescript", target: "react" },
 ];
 
 export function MCPViz() {
@@ -122,13 +220,13 @@ export function MCPViz() {
   return (
     <div ref={containerRef} className={`${styles.container} ${isFullscreen ? styles.fullscreen : ''}`}>
       <div className={styles.header}>
-        <h2 className={styles.title}>&gt; MCP_ARCHITECTURE_VISUALIZATION</h2>
+        <h2 className={styles.title}>&gt; ARCHITECTURE_VISUALIZATION</h2>
         <button className={styles.fullscreenBtn} onClick={toggleFullscreen}>
           {isFullscreen ? "[ EXIT FULLSCREEN ]" : "[ FULLSCREEN ]"}
         </button>
       </div>
 
-      <div style={{ width: '100%', height: isFullscreen ? 'calc(100vh - 100px)' : '400px', position: 'relative' }}>
+      <div style={{ width: '100%', height: isFullscreen ? 'calc(100vh - 100px)' : '520px', position: 'relative' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}

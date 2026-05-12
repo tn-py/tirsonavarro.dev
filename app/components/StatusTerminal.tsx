@@ -24,14 +24,6 @@ interface UnifiedLogEntry {
   timestamp: string;
 }
 
-const OPERATIONAL_LOGS: UnifiedLogEntry[] = [
-  { id: 'op1', type: 'CATALOG_SYNC', message: '10,000+ SKUs synchronized to UHS_CORE_SHOPIFY', timestamp: '08:00:00' },
-  { id: 'op2', type: 'AI_ORCHESTRATION', message: 'LangGraph: Initializing multi-agent state machine', timestamp: '08:05:22' },
-  { id: 'op3', type: 'AGENTIC_RAG', message: 'ChromaDB: Vector search executed with custom chunking strategy', timestamp: '08:12:45' },
-  { id: 'op4', type: 'GOVERNANCE', message: 'Risk Scoring & Bias Detection: PASS (Threshold: 0.98)', timestamp: '08:15:10' },
-  { id: 'op5', type: 'RELEVANCE_ENGINE', message: 'SearchSpring API: Processing custom relevance rules', timestamp: '08:20:33' },
-  { id: 'op6', type: 'MOBILE_BRIDGE', message: 'OneSignal: Dispatching unified push notification', timestamp: '08:25:00' },
-];
 
 const formatGitHubEvent = (event: GitHubEvent): UnifiedLogEntry => {
   const timestamp = new Date(event.created_at).toLocaleTimeString([], {
@@ -78,14 +70,13 @@ export function StatusTerminal() {
           throw new Error("Failed to fetch GitHub activity");
         }
         const data = await response.json();
-        const gitHubEvents = Array.isArray(data) 
-          ? data.slice(0, 10).map(formatGitHubEvent) 
+        const gitHubEvents = Array.isArray(data)
+          ? data.slice(0, 10).map(formatGitHubEvent)
           : [];
-        
-        setEvents([...OPERATIONAL_LOGS, ...gitHubEvents]);
+
+        setEvents(gitHubEvents);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Connection failed");
-        setEvents(OPERATIONAL_LOGS);
       } finally {
         setLoading(false);
       }
@@ -97,13 +88,13 @@ export function StatusTerminal() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.dot} />
-        <span>TERMINAL // LIVE_GITHUB_ACTIVITY // STATUS: CONNECTED</span>
+        <span>TERMINAL // GITHUB_ACTIVITY // STATUS: CONNECTED</span>
       </div>
       <div className={styles.logEntries}>
         {loading ? (
           <div className={styles.loading}>Initializing terminal connection...</div>
-        ) : error && events.length === OPERATIONAL_LOGS.length ? (
-          <div className={styles.error}>Error: {error} (Showing operational logs only)</div>
+        ) : error ? (
+          <div className={styles.error}>Error: {error}</div>
         ) : (
           events.map((event) => (
             <div key={event.id} className={styles.entry}>
