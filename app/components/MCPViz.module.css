@@ -18,7 +18,7 @@
   border-radius: 0;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
+  background: #050505;
   z-index: 9999;
 }
 
@@ -35,6 +35,7 @@
   font-size: 0.9rem;
   color: var(--accent-blue);
   letter-spacing: 0.1em;
+  font-family: var(--font-mono);
 }
 
 .fullscreenBtn {
@@ -55,105 +56,99 @@
   background: rgba(0, 163, 255, 0.1);
 }
 
-.svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 500px;
-  flex: 1;
-  touch-action: none; /* Prevent scrolling while dragging nodes */
-}
-
-.container:fullscreen .svg {
-  max-height: none;
-}
-
-.node {
-  cursor: grab;
-}
-
-.node:active {
-  cursor: grabbing;
-}
-
 .customNode {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-}
-
-.nodeLabel {
-  margin-top: 8px;
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-}
-
-.nodeLabel.active {
-  color: var(--text-primary);
-  text-shadow: 0 0 5px var(--accent-blue);
+  pointer-events: auto;
 }
 
 .nodeCircle {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  transition: all 0.3s ease;
+  background-color: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.nodeCircle.harness {
+.harness {
   width: 20px;
   height: 20px;
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 10px var(--accent-blue);
+  box-shadow: 0 0 15px var(--accent-blue);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .nodeCircle.active {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 8px var(--accent-blue);
+  transform: scale(1.2);
+  box-shadow: 0 0 20px var(--accent-blue);
+  border-color: white;
 }
 
-.nodeCircle.highlight {
-  border-color: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
-}
-
-.label {
-  fill: var(--text-secondary);
+.nodeLabel {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  margin-top: 8px;
+  text-transform: uppercase;
+  white-space: nowrap;
   pointer-events: none;
-  transition: fill 0.3s ease;
-}
-
-.label.active {
-  fill: var(--text-primary);
-}
-
-.link {
-  stroke: var(--border-color);
-  stroke-width: 1;
-  stroke-dasharray: 4;
   transition: all 0.3s ease;
-  pointer-events: none;
+  opacity: 0.7;
 }
 
-.link.active {
-  stroke: var(--accent-blue);
-  stroke-width: 2;
-  stroke-dasharray: 0;
+.nodeLabel.active {
   opacity: 1;
+  color: var(--accent-blue);
+  text-shadow: 0 0 8px var(--accent-blue);
 }
 
-.link.hidden {
-  opacity: 0.2;
+/* Override React Flow defaults */
+:global(.react-flow__edge-path) {
+  stroke: var(--accent-blue) !important;
+  stroke-width: 1.5px !important;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+:global(.react-flow__edge.selected .react-flow__edge-path) {
+  opacity: 1;
+  stroke-width: 2px !important;
+}
+
+:global(.react-flow__minimap) {
+  background-color: rgba(10, 10, 12, 0.9) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  margin: 10px !important;
+}
+
+:global(.react-flow__controls) {
+  box-shadow: none !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 4px !important;
+  overflow: hidden;
+  background: var(--bg-secondary) !important;
+  margin: 10px !important;
+}
+
+:global(.react-flow__controls-button) {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  fill: currentColor !important;
+  transition: all 0.2s ease !important;
+}
+
+:global(.react-flow__controls-button:hover) {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--accent-blue) !important;
+}
+
+:global(.react-flow__controls-button:last-child) {
+  border-bottom: none !important;
 }
 
 .nodeDetail {
@@ -161,13 +156,14 @@
   bottom: 2rem;
   right: 2rem;
   width: 300px;
-  background: rgba(10, 10, 12, 0.98);
+  background: rgba(10, 10, 12, 0.95);
   border: 1px solid var(--accent-blue);
   padding: 1.5rem;
   font-family: var(--font-mono);
   z-index: 100;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 163, 255, 0.1);
   pointer-events: auto;
+  backdrop-filter: blur(4px);
 }
 
 .closeBtn {
@@ -182,7 +178,6 @@
   padding: 4px;
   line-height: 0.8;
   transition: color 0.2s ease;
-  display: block;
 }
 
 .closeBtn:hover {
