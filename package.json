@@ -16,8 +16,8 @@
     "@remix-run/react": "^2.15.2",
     "@remix-run/serve": "^2.15.2",
     "@types/mdx": "^2.0.13",
+    "@xyflow/react": "^12.10.2",
     "cmdk": "^1.1.1",
-    "d3-force": "^3.0.0",
     "framer-motion": "^12.38.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
@@ -26,7 +26,6 @@
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",
     "@remix-run/dev": "^2.15.2",
-    "@types/d3-force": "^3.0.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
