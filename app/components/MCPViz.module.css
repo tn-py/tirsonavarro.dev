@@ -18,6 +18,8 @@
   border-radius: 0;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
+  z-index: 9999;
 }
 
 .header {
@@ -25,6 +27,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  flex-shrink: 0;
 }
 
 .title {
@@ -40,23 +43,25 @@
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  padding: 4px 8px;
+  padding: 4px 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  border-radius: 4px;
 }
 
 .fullscreenBtn:hover {
   border-color: var(--accent-blue);
   color: var(--accent-blue);
-  background: rgba(0, 163, 255, 0.05);
+  background: rgba(0, 163, 255, 0.1);
 }
 
 .svg {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 400px;
+  max-height: 500px;
   flex: 1;
+  touch-action: none; /* Prevent scrolling while dragging nodes */
 }
 
 .container:fullscreen .svg {
@@ -65,11 +70,15 @@
 
 .node {
   cursor: grab;
-  transition: all 0.3s ease;
 }
 
 .node:active {
   cursor: grabbing;
+}
+
+.nodeHitArea {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .nodeCircle {
@@ -77,6 +86,7 @@
   stroke: var(--border-color);
   stroke-width: 2;
   transition: all 0.3s ease;
+  pointer-events: none; /* Let hit area handle events */
 }
 
 .nodeCircle.active {
@@ -106,6 +116,7 @@
   stroke-width: 1;
   stroke-dasharray: 4;
   transition: all 0.3s ease;
+  pointer-events: none;
 }
 
 .link.active {
@@ -124,23 +135,43 @@
   bottom: 2rem;
   right: 2rem;
   width: 300px;
-  background: rgba(10, 10, 12, 0.95);
+  background: rgba(10, 10, 12, 0.98);
   border: 1px solid var(--accent-blue);
-  padding: 1rem;
+  padding: 1.5rem;
   font-family: var(--font-mono);
   z-index: 100;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  pointer-events: auto;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0.8;
+  transition: color 0.2s ease;
+  display: block;
+}
+
+.closeBtn:hover {
+  color: var(--accent-blue);
 }
 
 .detailHeader {
   color: var(--accent-blue);
   font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(0, 163, 255, 0.2);
-  padding-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 163, 255, 0.3);
+  padding-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
+  padding-right: 1.5rem;
 }
 
 .detailTitle {
@@ -149,12 +180,40 @@
 
 .detailContent {
   color: var(--text-primary);
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .detailMeta {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   font-size: 0.7rem;
   color: var(--text-secondary);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.5rem;
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 0.7rem;
+  }
+
+  .nodeDetail {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    margin: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: 16px 16px 0 0;
+    padding-bottom: 2.5rem;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+  }
+}
+

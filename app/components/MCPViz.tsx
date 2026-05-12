@@ -185,6 +185,11 @@ export function MCPViz() {
               }}
             >
               <circle
+                r={22}
+                fill="transparent"
+                className={styles.nodeHitArea}
+              />
+              <circle
                 r={node.id === "harness" ? 10 : 6}
                 className={`${styles.nodeCircle} ${
                   active ? styles.active : ""
@@ -212,6 +217,13 @@ export function MCPViz() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
+            <button 
+              className={styles.closeBtn} 
+              onClick={() => setSelectedNodeId(null)}
+              aria-label="Close detail"
+            >
+              &times;
+            </button>
             <div className={styles.detailHeader}>
               <span className={styles.detailTitle}>{selectedNode.label}</span>
               <span>{selectedNode.type}</span>
