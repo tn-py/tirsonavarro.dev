@@ -17,8 +17,53 @@ interface GitHubEvent {
   };
 }
 
+interface UnifiedLogEntry {
+  id: string;
+  type: string;
+  message: string;
+  timestamp: string;
+}
+
+const OPERATIONAL_LOGS: UnifiedLogEntry[] = [
+  { id: 'op1', type: 'CATALOG_SYNC', message: '10,000+ SKUs synchronized to UHS_CORE_SHOPIFY', timestamp: '08:00:00' },
+  { id: 'op2', type: 'AI_ORCHESTRATION', message: 'LangGraph: Initializing multi-agent state machine', timestamp: '08:05:22' },
+  { id: 'op3', type: 'AGENTIC_RAG', message: 'ChromaDB: Vector search executed with custom chunking strategy', timestamp: '08:12:45' },
+  { id: 'op4', type: 'GOVERNANCE', message: 'Risk Scoring & Bias Detection: PASS (Threshold: 0.98)', timestamp: '08:15:10' },
+  { id: 'op5', type: 'RELEVANCE_ENGINE', message: 'SearchSpring API: Processing custom relevance rules', timestamp: '08:20:33' },
+  { id: 'op6', type: 'MOBILE_BRIDGE', message: 'OneSignal: Dispatching unified push notification', timestamp: '08:25:00' },
+];
+
+const formatGitHubEvent = (event: GitHubEvent): UnifiedLogEntry => {
+  const timestamp = new Date(event.created_at).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  
+  let message = "";
+  switch (event.type) {
+    case "PushEvent":
+      const count = event.payload.commits?.length || 0;
+      message = `Pushed ${count} commit${count !== 1 ? "s" : ""} to ${event.repo.name}`;
+      break;
+    case "CreateEvent":
+      message = `Created ${event.payload.ref_type} ${event.payload.ref || ""} in ${event.repo.name}`;
+      break;
+    case "WatchEvent":
+      message = `Starred ${event.repo.name}`;
+      break;
+    case "IssuesEvent":
+      message = `${event.payload.action} issue #${event.payload.issue?.number} in ${event.repo.name}`;
+      break;
+    default:
+      message = `${event.type.replace("Event", "")} in ${event.repo.name}`;
+  }
+
+  return { id: event.id, timestamp, type: event.type.replace("Event", ""), message };
+};
+
 export function StatusTerminal() {
-  const [events, setEvents] = useState<GitHubEvent[]>([]);
+  const [events, setEvents] = useState<UnifiedLogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,44 +78,20 @@ export function StatusTerminal() {
           throw new Error("Failed to fetch GitHub activity");
         }
         const data = await response.json();
-        setEvents(Array.isArray(data) ? data.slice(0, 10) : []);
+        const gitHubEvents = Array.isArray(data) 
+          ? data.slice(0, 10).map(formatGitHubEvent) 
+          : [];
+        
+        setEvents([...OPERATIONAL_LOGS, ...gitHubEvents]);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Connection failed");
+        setEvents(OPERATIONAL_LOGS);
       } finally {
         setLoading(false);
       }
     }
     fetchEvents();
   }, []);
-
-  const formatEvent = (event: GitHubEvent) => {
-    const timestamp = new Date(event.created_at).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    
-    let message = "";
-    switch (event.type) {
-      case "PushEvent":
-        const count = event.payload.commits?.length || 0;
-        message = `Pushed ${count} commit${count !== 1 ? "s" : ""} to ${event.repo.name}`;
-        break;
-      case "CreateEvent":
-        message = `Created ${event.payload.ref_type} ${event.payload.ref || ""} in ${event.repo.name}`;
-        break;
-      case "WatchEvent":
-        message = `Starred ${event.repo.name}`;
-        break;
-      case "IssuesEvent":
-        message = `${event.payload.action} issue #${event.payload.issue?.number} in ${event.repo.name}`;
-        break;
-      default:
-        message = `${event.type.replace("Event", "")} in ${event.repo.name}`;
-    }
-
-    return { timestamp, type: event.type.replace("Event", ""), message };
-  };
 
   return (
     <div className={styles.container}>
@@ -81,21 +102,16 @@ export function StatusTerminal() {
       <div className={styles.logEntries}>
         {loading ? (
           <div className={styles.loading}>Initializing terminal connection...</div>
-        ) : error ? (
-          <div className={styles.error}>Error: {error}</div>
-        ) : events.length === 0 ? (
-          <div className={styles.loading}>No recent activity found.</div>
+        ) : error && events.length === OPERATIONAL_LOGS.length ? (
+          <div className={styles.error}>Error: {error} (Showing operational logs only)</div>
         ) : (
-          events.map((event) => {
-            const formatted = formatEvent(event);
-            return (
-              <div key={event.id} className={styles.entry}>
-                <span className={styles.timestamp}>[{formatted.timestamp}]</span>
-                <span className={styles.type}>[{formatted.type}]</span>
-                <span className={styles.message}>{formatted.message}</span>
-              </div>
-            );
-          })
+          events.map((event) => (
+            <div key={event.id} className={styles.entry}>
+              <span className={styles.timestamp}>[{event.timestamp}]</span>
+              <span className={styles.type}>[{event.type}]</span>
+              <span className={styles.message}>{event.message}</span>
+            </div>
+          ))
         )}
       </div>
     </div>
