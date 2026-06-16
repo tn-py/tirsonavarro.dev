@@ -104,29 +104,56 @@
 /* ─── SKILL GRID ─── */
 
 .skillGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
 }
 
-.skillBadge {
+.skillCard {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
-  cursor: default;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
 }
 
-.skillBadge:hover {
-  color: var(--text-primary);
+.skillCard:hover {
   border-color: var(--accent-blue);
-  background: rgba(88, 166, 255, 0.08);
-  box-shadow: 0 0 12px rgba(88, 166, 255, 0.1);
-  transform: translateY(-1px);
+  background: rgba(88, 166, 255, 0.05);
+  box-shadow: 0 0 20px rgba(88, 166, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.cardTitle {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.cardSubtitle {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.cardLink {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.skillCard:hover .cardLink {
+  opacity: 1;
 }
 
 /* ─── PLACEHOLDER CARDS ─── */
