@@ -23,7 +23,6 @@ export default function Index() {
           />
           <div className={styles.statusIndicator}>
             <div className={styles.statusDot} />
-            [ STATUS: ACTIVE ]
           </div>
         </div>
         
