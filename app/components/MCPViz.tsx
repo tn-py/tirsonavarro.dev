@@ -140,6 +140,44 @@ const INITIAL_NODES: RFNode[] = [
     id: "github", type: "terminal", position: { x: 660, y: 510 },
     data: { label: "GITHUB", description: "Version control and CI/CD hub for all active projects and open-source work.", type: "VCS" },
   },
+
+  // ─── NEW AGENTIC AI ───
+  {
+    id: "ollama", type: "terminal", position: { x: 400, y: 0 },
+    data: { label: "OLLAMA", description: "Local LLM inference server running open-weight models for private, low-latency agentic workflows.", type: "LLM" },
+  },
+  {
+    id: "openai", type: "terminal", position: { x: 700, y: -60 },
+    data: { label: "OPENAI", description: "GPT-series and o-series models used for agentic reasoning, structured outputs, and API-driven automation.", type: "LLM" },
+  },
+  {
+    id: "langchain", type: "terminal", position: { x: 300, y: 90 },
+    data: { label: "LANGCHAIN", description: "Orchestration framework for chaining LLM calls, tools, and memory in composable agentic pipelines.", type: "AI_TOOL" },
+  },
+  {
+    id: "mcp-servers", type: "terminal", position: { x: 400, y: -60 },
+    data: { label: "MCP SERVERS", description: "Model Context Protocol servers bridging AI agents to external tools, APIs, and real-time data sources.", type: "AI_TOOL" },
+  },
+  {
+    id: "tavily", type: "terminal", position: { x: 800, y: 60 },
+    data: { label: "TAVILY", description: "AI-optimized web search API delivering real-time context for agentic research and retrieval-augmented generation.", type: "AI_TOOL" },
+  },
+
+  // ─── NEW E-COMMERCE ───
+  {
+    id: "n8n", type: "terminal", position: { x: -60, y: 70 },
+    data: { label: "N8N", description: "Visual workflow automation platform connecting APIs, databases, and e-commerce systems with custom logic.", type: "AUTOMATION" },
+  },
+
+  // ─── NEW INFRASTRUCTURE ───
+  {
+    id: "proxmox", type: "terminal", position: { x: 1050, y: 760 },
+    data: { label: "PROXMOX", description: "Open-source virtualization platform managing homelab VMs and LXC containers for self-hosted infrastructure.", type: "HYPERVISOR" },
+  },
+  {
+    id: "cloudflare", type: "terminal", position: { x: 1050, y: 870 },
+    data: { label: "CLOUDFLARE", description: "Edge CDN, DNS, DDoS protection, and Workers-based serverless compute for global application delivery.", type: "NETWORK" },
+  },
 ];
 
 const INITIAL_EDGES: RFEdge[] = [
@@ -186,6 +224,26 @@ const INITIAL_EDGES: RFEdge[] = [
   { id: "e-chromadb-sage",   source: "chromadb",  target: "selector-sage" },
   { id: "e-docker-coolify",  source: "docker",    target: "coolify" },
   { id: "e-ts-react",        source: "typescript", target: "react" },
+
+  // Agentic AI → new leaves
+  { id: "e-ai-ollama",    source: "agentic-ai", target: "ollama", animated: true },
+  { id: "e-ai-openai",    source: "agentic-ai", target: "openai", animated: true },
+  { id: "e-ai-langchain", source: "agentic-ai", target: "langchain", animated: true },
+  { id: "e-ai-mcp",       source: "agentic-ai", target: "mcp-servers", animated: true },
+  { id: "e-ai-tavily",    source: "agentic-ai", target: "tavily" },
+
+  // E-Commerce → new leaves
+  { id: "e-ecomm-n8n", source: "ecomm", target: "n8n", animated: true },
+
+  // Infrastructure → new leaves
+  { id: "e-infra-proxmox",    source: "infra", target: "proxmox" },
+  { id: "e-infra-cloudflare", source: "infra", target: "cloudflare" },
+
+  // Cross-links (new)
+  { id: "e-langchain-langgraph", source: "langchain", target: "langgraph" },
+  { id: "e-mcp-claude",          source: "mcp-servers", target: "claude" },
+  { id: "e-proxmox-coolify",     source: "proxmox", target: "coolify" },
+  { id: "e-proxmox-linux",       source: "proxmox", target: "linux" },
 ];
 
 export function MCPViz() {
