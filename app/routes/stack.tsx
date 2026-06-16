@@ -12,12 +12,12 @@ const stackData = [
   {
     category: "AI & Agentic Systems",
     description: "Orchestrating autonomous workflows and high-performance retrieval.",
-    items: ["LangGraph", "Multi-agent Systems", "Agentic RAG", "ChromaDB", "Bias Detection", "Embedding Models", "Prompt Engineering"],
+    items: ["LangGraph", "LangChain", "Multi-agent Systems", "Agentic RAG", "ChromaDB", "Ollama", "OpenAI", "MCP Servers", "Tavily", "Bias Detection", "Embedding Models", "Prompt Engineering"],
   },
   {
     category: "E-Commerce Ops",
     description: "Scaling and managing enterprise-grade retail systems.",
-    items: ["Shopify Liquid", "NetSuite", "SearchSpring", "OneSignal", "Matrixify", "Shopify Metafields"],
+    items: ["Shopify Liquid", "Shopify Flow", "NetSuite", "SearchSpring", "OneSignal", "Matrixify", "Shopify Metafields", "n8n"],
   },
   {
     category: "Frameworks & UI",
