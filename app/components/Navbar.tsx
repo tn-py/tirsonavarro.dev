@@ -9,6 +9,7 @@ export function Navbar() {
     { to: "/", label: "Home", cmd: "HOME" },
     { to: "/projects", label: "Projects", cmd: "LIST PROJECTS" },
     { to: "/stack", label: "Stack", cmd: "VIEW STACK" },
+    { to: "/skills", label: "Skills", cmd: "LOAD SKILLS" },
   ];
 
   // Prevent scroll when menu is open

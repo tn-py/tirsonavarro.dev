@@ -1,0 +1,210 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+/* ─── HERO ─── */
+
+.hero {
+  margin-bottom: 4rem;
+  border-left: 4px solid var(--accent-blue);
+  padding-left: 1.5rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-top: 1.25rem;
+  max-width: 640px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.cta:hover {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 20px rgba(88, 166, 255, 0.15), inset 0 0 20px rgba(88, 166, 255, 0.05);
+  color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+
+.ctaPrefix {
+  color: var(--accent-green);
+  font-weight: bold;
+}
+
+/* ─── SECTIONS ─── */
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sectionTitle {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sectionTitle::before {
+  content: "> ";
+  color: var(--accent-blue);
+}
+
+.sectionCount {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid var(--border-color);
+}
+
+/* ─── SKILL GRID ─── */
+
+.skillGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skillBadge {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.skillBadge:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+  background: rgba(88, 166, 255, 0.08);
+  box-shadow: 0 0 12px rgba(88, 166, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* ─── PLACEHOLDER CARDS ─── */
+
+.placeholderGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.placeholderCard {
+  background: var(--bg-secondary);
+  border: 1.5px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  min-height: 140px;
+}
+
+.placeholderCard:hover {
+  border-color: var(--accent-blue);
+  background: rgba(88, 166, 255, 0.03);
+  box-shadow: 0 0 15px rgba(88, 166, 255, 0.08);
+}
+
+.placeholderIcon {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  opacity: 0.4;
+  font-family: var(--font-mono);
+  line-height: 1;
+  transition: opacity 0.2s ease;
+}
+
+.placeholderCard:hover .placeholderIcon {
+  opacity: 0.8;
+  color: var(--accent-blue);
+}
+
+.placeholderLabel {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+.placeholderCard:hover .placeholderLabel {
+  opacity: 0.8;
+}
+
+/* ─── RESPONSIVE ─── */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem 3rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .sectionTitle {
+    font-size: 1rem;
+  }
+
+  .placeholderGrid {
+    grid-template-columns: 1fr;
+  }
+}
