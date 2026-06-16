@@ -101,26 +101,6 @@ export default function SkillsIndex() {
         </div>
       </section>
 
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>More skills coming soon</h2>
-          <span className={styles.sectionCount}>categories</span>
-        </div>
-        <div className={styles.placeholderGrid}>
-          <div className={styles.placeholderCard}>
-            <div className={styles.placeholderIcon}>+</div>
-            <p className={styles.placeholderLabel}>Add a category</p>
-          </div>
-          <div className={styles.placeholderCard}>
-            <div className={styles.placeholderIcon}>+</div>
-            <p className={styles.placeholderLabel}>Add a category</p>
-          </div>
-          <div className={styles.placeholderCard}>
-            <div className={styles.placeholderIcon}>+</div>
-            <p className={styles.placeholderLabel}>Add a category</p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
