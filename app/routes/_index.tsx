@@ -21,9 +21,7 @@ export default function Index() {
             alt="Tirso Navarro" 
             className={styles.avatar} 
           />
-          <div className={styles.statusIndicator}>
-            <div className={styles.statusDot} />
-          </div>
+
         </div>
         
         <div className={styles.identityInfo}>
