@@ -88,7 +88,7 @@ export function StatusTerminal() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.dot} />
-        <span>TERMINAL // GITHUB_ACTIVITY // STATUS: CONNECTED</span>
+        <span>TERMINAL // GITHUB_ACTIVITY</span>
       </div>
       <div className={styles.logEntries}>
         {loading ? (
