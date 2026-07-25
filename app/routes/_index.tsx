@@ -27,7 +27,7 @@ export default function Index() {
         <div className={styles.identityInfo}>
           <h1>TIRSO NAVARRO</h1>
           <div className={styles.identityTitle}>
-            WEB OPERATIONS SUPERVISOR // E-COMMERCE ARCHITECT
+            WEB OPERATIONS // E-COMMERCE ARCHITECT
           </div>
           <p className={styles.identityBio}>
             Miami-based developer specialized in scaling high-SKU Shopify stores. 
