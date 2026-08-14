@@ -16,6 +16,8 @@
     "@remix-run/react": "^2.15.2",
     "@remix-run/serve": "^2.15.2",
     "@types/mdx": "^2.0.13",
+    "@wterm/dom": "^0.3.4",
+    "@wterm/react": "^0.3.4",
     "@xyflow/react": "^12.10.2",
     "cmdk": "^1.1.1",
     "framer-motion": "^12.38.0",

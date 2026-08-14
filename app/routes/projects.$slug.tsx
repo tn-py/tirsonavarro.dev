@@ -44,8 +44,8 @@ export default function ProjectDetail() {
     return (
       <div className={styles.container}>
         <h1>Project not found</h1>
-        <Link to="/projects" className={styles.backLink}>
-          ← Back to Projects
+        <Link to="/" className={styles.backLink}>
+          ← Back to Home
         </Link>
       </div>
     );
@@ -55,8 +55,8 @@ export default function ProjectDetail() {
   
   return (
     <div className={styles.container}>
-      <Link to="/projects" className={styles.backLink}>
-        ← Back to Projects
+      <Link to="/" className={styles.backLink}>
+        ← Back to Home
       </Link>
       <div className={styles.mdxContent}>
         <Component />
