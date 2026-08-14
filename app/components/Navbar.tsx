@@ -5,12 +5,7 @@ import styles from "./Navbar.module.css";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const links = [
-    { to: "/", label: "Home", cmd: "HOME" },
-    { to: "/projects", label: "Projects", cmd: "LIST PROJECTS" },
-    { to: "/stack", label: "Stack", cmd: "VIEW STACK" },
-    { to: "/skills", label: "Skills", cmd: "LOAD SKILLS" },
-  ];
+  const links = [{ to: "/", label: "Home", cmd: "HOME" }];
 
   // Prevent scroll when menu is open
   useEffect(() => {
