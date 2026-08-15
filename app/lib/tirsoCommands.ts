@@ -11,7 +11,8 @@ export interface ProjectEntry {
 export type TirsoAction =
   | { type: "navigate"; to: string }
   | { type: "open"; url: string }
-  | { type: "clear" };
+  | { type: "clear" }
+  | { type: "contributions"; username?: string };
 
 export interface TirsoResult {
   lines: string[];
@@ -22,6 +23,7 @@ const HELP_LINES = [
   "Available commands:",
   "",
   "  tirso --help                   show this help",
+  "  tirso git-contributions       show GitHub contribution graph",
   "  tirso stack                    list the tech stack",
   "  tirso skills                   list agent skills",
   "  tirso skill <name>             show details for a skill",
@@ -148,6 +150,14 @@ export function runTirsoCommand(rawInput: string, projects: ProjectEntry[]): Tir
       lines.push("");
       lines.push(`Run \`tirso project ${project.slug} --open\` to view the full write-up.`);
       return { lines };
+    }
+
+    case "git-contributions": {
+      const username = positional[0] || undefined;
+      return {
+        lines: [`Fetching contributions for @${username ?? "tn-py"} ...`],
+        action: { type: "contributions", username },
+      };
     }
 
     default:
