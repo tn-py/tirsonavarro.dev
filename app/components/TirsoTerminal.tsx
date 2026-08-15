@@ -3,6 +3,7 @@ import { useNavigate } from "@remix-run/react";
 import { Terminal, type TerminalHandle } from "@wterm/react";
 import "@wterm/react/css";
 import { runTirsoCommand, type ProjectEntry } from "~/lib/tirsoCommands";
+import { renderContributionGraph, type ContributionsPayload } from "~/lib/gitContributions";
 import styles from "./TirsoTerminal.module.css";
 
 const PROMPT = "\x1b[1;32mvisitor@tirso\x1b[0m:\x1b[1;34m~\x1b[0m$ ";
@@ -50,6 +51,26 @@ export function TirsoTerminal() {
     write(PROMPT);
   }, [writeLines, write]);
 
+  const showContributions = useCallback(
+    async (username?: string) => {
+      const query = username ? `?user=${encodeURIComponent(username)}` : "";
+      try {
+        const res = await fetch(`/api/contributions${query}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const payload = (await res.json()) as ContributionsPayload;
+        writeLines(renderContributionGraph(payload.days, payload.username));
+      } catch (err) {
+        writeLines([
+          "\x1b[1;31mFailed to load GitHub contributions.\x1b[0m",
+          err instanceof Error ? err.message : "Unknown error",
+        ]);
+      } finally {
+        write(PROMPT);
+      }
+    },
+    [writeLines, write],
+  );
+
   const handleData = useCallback(
     (data: string) => {
       if (data === "\x03") {
@@ -67,6 +88,10 @@ export function TirsoTerminal() {
           const result = runTirsoCommand(input, projects);
           if (result.action?.type === "clear") {
             write("\x1b[2J\x1b[H");
+          } else if (result.action?.type === "contributions") {
+            writeLines(result.lines);
+            void showContributions(result.action.username);
+            return;
           } else {
             if (result.lines.length) writeLines(result.lines);
             if (result.action?.type === "navigate") {
@@ -98,24 +123,18 @@ export function TirsoTerminal() {
       bufferRef.current += data;
       write(data);
     },
-    [projects, navigate, write, writeLines],
+    [projects, navigate, write, writeLines, showContributions],
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.dot} />
-        <span>TIRSO_SHELL // INTERACTIVE</span>
-      </div>
-      <Terminal
-        ref={termRef}
-        className={styles.terminal}
-        autoResize
-        cursorBlink
-        onData={handleData}
-        onReady={handleReady}
-        onClick={focus}
-      />
-    </div>
+    <Terminal
+      ref={termRef}
+      className={styles.terminal}
+      autoResize
+      cursorBlink
+      onData={handleData}
+      onReady={handleReady}
+      onClick={focus}
+    />
   );
 }

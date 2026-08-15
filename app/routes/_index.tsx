@@ -65,11 +65,14 @@ export default function Index() {
       </header>
 
       <section className={styles.terminalSection}>
+        <TirsoTerminal />
+      </section>
+
+      <section className={styles.terminalSection}>
         <StatusTerminal />
       </section>
 
       <section className={styles.content}>
-        <TirsoTerminal />
         <MCPViz />
       </section>
     </div>
