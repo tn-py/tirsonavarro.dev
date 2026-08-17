@@ -76,6 +76,45 @@ export const stackData: StackCategory[] = [
   },
 ];
 
+export interface Profile {
+  name: string;
+  title: string;
+  bio: string;
+  location: string;
+  timezone: string;
+}
+
+export const profile: Profile = {
+  name: "Tirso Navarro",
+  title: "Web Operations // E-Commerce Architect",
+  bio: "Miami-based developer specialized in scaling high-SKU Shopify stores. I build custom full-stack systems and agentic workflows to automate complex e-commerce operations.",
+  location: "Miami, FL",
+  timezone: "EST",
+};
+
+export interface ContactEntry {
+  key: string;
+  label: string;
+  value: string;
+  url: string;
+}
+
+export const contactLinks: ContactEntry[] = [
+  { key: "github", label: "GitHub", value: "github.com/tn-py", url: "https://github.com/tn-py" },
+  {
+    key: "linkedin",
+    label: "LinkedIn",
+    value: "linkedin.com/in/tirso-navarro",
+    url: "https://www.linkedin.com/in/tirso-navarro",
+  },
+  {
+    key: "schedule",
+    label: "Schedule a call",
+    value: "cal.com/tirso-navarro/15min-meeting",
+    url: "https://cal.com/tirso-navarro/15min-meeting",
+  },
+];
+
 export function slugify(value: string): string {
   return value
     .toLowerCase()

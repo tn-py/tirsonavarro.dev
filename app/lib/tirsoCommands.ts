@@ -1,4 +1,12 @@
-import { skills, stackData, slugify, type SkillEntry } from "./tirsoData";
+import {
+  skills,
+  stackData,
+  slugify,
+  profile,
+  contactLinks,
+  type SkillEntry,
+  type ContactEntry,
+} from "./tirsoData";
 
 export interface ProjectEntry {
   slug: string;
@@ -12,7 +20,8 @@ export type TirsoAction =
   | { type: "navigate"; to: string }
   | { type: "open"; url: string }
   | { type: "clear" }
-  | { type: "contributions"; username?: string };
+  | { type: "contributions"; username?: string }
+  | { type: "git-stats"; username?: string };
 
 export interface TirsoResult {
   lines: string[];
@@ -23,7 +32,11 @@ const HELP_LINES = [
   "Available commands:",
   "",
   "  tirso --help                   show this help",
+  "  tirso whoami                   show a quick bio",
+  "  tirso contact                  list contact links",
+  "  tirso contact <key> --open     open a contact link",
   "  tirso git-contributions       show GitHub contribution graph",
+  "  tirso git-stats [user]         show GitHub profile stats",
   "  tirso stack                    list the tech stack",
   "  tirso skills                   list agent skills",
   "  tirso skill <name>             show details for a skill",
@@ -33,6 +46,32 @@ const HELP_LINES = [
   "  tirso project <slug> --open    open the project's full write-up",
   "  clear                          clear the terminal",
 ];
+
+function padLine(text: string, width: number): string {
+  return text.length >= width ? text.slice(0, width) : text + " ".repeat(width - text.length);
+}
+
+function wrapText(text: string, width: number): string[] {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > width) {
+      if (current) lines.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+function findContact(query: string): ContactEntry | undefined {
+  const q = query.toLowerCase();
+  return contactLinks.find((c) => c.key === q);
+}
 
 function findSkill(query: string): SkillEntry | undefined {
   const q = slugify(query);
@@ -157,6 +196,70 @@ export function runTirsoCommand(rawInput: string, projects: ProjectEntry[]): Tir
       return {
         lines: [`Fetching contributions for @${username ?? "tn-py"} ...`],
         action: { type: "contributions", username },
+      };
+    }
+
+    case "git-stats": {
+      const username = positional[0] || undefined;
+      return {
+        lines: [`Fetching GitHub stats for @${username ?? "tn-py"} ...`],
+        action: { type: "git-stats", username },
+      };
+    }
+
+    case "whoami": {
+      const width = 56;
+      const top = `┌${"─".repeat(width + 2)}┐`;
+      const mid = `├${"─".repeat(width + 2)}┤`;
+      const bottom = `└${"─".repeat(width + 2)}┘`;
+      const row = (text: string, color?: string) => {
+        const padded = padLine(text, width);
+        return `│ ${color ? `${color}${padded}\x1b[0m` : padded} │`;
+      };
+
+      const bioLines = wrapText(profile.bio, width);
+      return {
+        lines: [
+          top,
+          row(profile.name, "\x1b[1;32m"),
+          row(profile.title, "\x1b[1;34m"),
+          mid,
+          ...bioLines.map((line) => row(line)),
+          mid,
+          row(`LOC: ${profile.location}   TZ: ${profile.timezone}`),
+          bottom,
+        ],
+      };
+    }
+
+    case "contact": {
+      if (positional.length === 0) {
+        const lines = ["Contact:", ""];
+        for (const c of contactLinks) {
+          lines.push(`  \x1b[1;32m${c.key}\x1b[0m — ${c.label}: ${c.value}`);
+        }
+        lines.push("");
+        lines.push("Run `tirso contact <key> --open` to open a link.");
+        return { lines };
+      }
+      const contact = findContact(positional.join(" "));
+      if (!contact) {
+        return {
+          lines: [`contact not found: ${positional.join(" ")}`, "Run `tirso contact` to list them."],
+        };
+      }
+      if (flags.includes("--open")) {
+        return { lines: [`Opening ${contact.url} ...`], action: { type: "open", url: contact.url } };
+      }
+      return { lines: [`\x1b[1;32m${contact.label}\x1b[0m`, contact.value, contact.url] };
+    }
+
+    case "sudo": {
+      return {
+        lines: [
+          "We trust you have received the usual lecture from the local System Administrator.",
+          "\x1b[1;31mvisitor is not in the sudoers file. This incident will be reported.\x1b[0m",
+        ],
       };
     }
 
