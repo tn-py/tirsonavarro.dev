@@ -31,7 +31,7 @@ const formatGitHubEvent = (event: GitHubEvent): UnifiedLogEntry => {
     minute: "2-digit",
     second: "2-digit",
   });
-  
+
   let message = "";
   switch (event.type) {
     case "PushEvent":
@@ -88,7 +88,7 @@ export function StatusTerminal() {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.dot} />
-        <span>TERMINAL // GITHUB_ACTIVITY</span>
+        <span>Live Github Activity</span>
       </div>
       <div className={styles.logEntries}>
         {loading ? (

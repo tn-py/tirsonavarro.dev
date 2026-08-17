@@ -278,7 +278,7 @@ export function MCPViz() {
   return (
     <div ref={containerRef} className={`${styles.container} ${isFullscreen ? styles.fullscreen : ''}`}>
       <div className={styles.header}>
-        <h2 className={styles.title}>&gt; ARCHITECTURE_VISUALIZATION</h2>
+        <h2 className={styles.title}>&gt; ARCHITECTURE</h2>
         <button className={styles.fullscreenBtn} onClick={toggleFullscreen}>
           {isFullscreen ? "[ EXIT FULLSCREEN ]" : "[ FULLSCREEN ]"}
         </button>
@@ -299,7 +299,7 @@ export function MCPViz() {
           <Background color="#1a1a1a" gap={20} />
           {isFullscreen && (
             <>
-              <MiniMap 
+              <MiniMap
                 style={{ background: '#0a0a0a', border: '1px solid #333' }}
                 nodeColor={(n) => n.id === 'harness' ? '#00f2ff' : '#666'}
                 maskColor="rgba(0, 0, 0, 0.7)"
@@ -312,14 +312,14 @@ export function MCPViz() {
 
       <AnimatePresence>
         {selectedNode && (
-          <motion.div 
+          <motion.div
             className={styles.nodeDetail}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
           >
-            <button 
-              className={styles.closeBtn} 
+            <button
+              className={styles.closeBtn}
               onClick={() => setSelectedNodeId(null)}
               aria-label="Close detail"
             >
