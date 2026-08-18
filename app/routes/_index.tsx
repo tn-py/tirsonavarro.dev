@@ -1,4 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
+import { json, type MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { MCPViz } from "~/components/MCPViz";
 import { StatusTerminal } from "~/components/StatusTerminal";
 import { TirsoTerminal } from "~/components/TirsoTerminal";
@@ -8,17 +9,40 @@ export const meta: MetaFunction = () => {
   return [
     { title: "Agentic Architect // E-Commerce Ops" },
     { name: "description", content: "Command Center for E-Commerce Operations" },
+    { property: "og:title", content: "Agentic Architect // E-Commerce Ops" },
+    { property: "og:description", content: "Command Center for E-Commerce Operations" },
+    { property: "og:image", content: "https://tirsonavarro.dev/home-preview.png" },
+    { name: "twitter:card", content: "summary_large_image" },
   ];
 };
 
+interface ProjectModule {
+  frontmatter: {
+    title: string;
+    description: string;
+    tags?: string[];
+    githubUrl?: string;
+  };
+}
+
+export const loader = async () => {
+  const modules = import.meta.glob<ProjectModule>("../../content/projects/*.mdx", { eager: true });
+  const projects = Object.entries(modules).map(([path, mod]) => {
+    const slug = path.split("/").pop()!.replace(".mdx", "");
+    return { slug, ...mod.frontmatter };
+  });
+  return json({ projects });
+};
+
 export default function Index() {
+  const { projects } = useLoaderData<typeof loader>();
   return (
     <div className="home-page">
       <header className={styles.hero}>
         <div className={styles.avatarContainer}>
           <img 
             src="https://github.com/tn-py.png" 
-            alt="Tirso Navarro" 
+            alt="" 
             className={styles.avatar} 
           />
 
@@ -64,15 +88,18 @@ export default function Index() {
         </div>
       </header>
 
-      <section className={styles.terminalSection}>
-        <TirsoTerminal />
+      <section className={styles.terminalSection} aria-label="Interactive Terminal">
+        <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Interactive Terminal</h2>
+        <TirsoTerminal projects={projects as any} />
       </section>
 
-      <section className={styles.terminalSection}>
+      <section className={styles.terminalSection} aria-label="Status Dashboard">
+        <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Status Dashboard</h2>
         <StatusTerminal />
       </section>
 
-      <section className={styles.content}>
+      <section className={styles.content} aria-label="Architecture Graph">
+        <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Architecture Graph</h2>
         <MCPViz />
       </section>
     </div>

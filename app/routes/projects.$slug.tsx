@@ -72,6 +72,14 @@ export default function ProjectDetail() {
           [ View Source on GitHub ]
         </a>
       )}
+
+      <div style={{ marginTop: "3rem", padding: "1.5rem", border: "1px solid rgba(126, 231, 135, 0.3)", borderRadius: "8px", backgroundColor: "rgba(126, 231, 135, 0.05)", textAlign: "center" }}>
+        <h3 style={{ margin: "0 0 0.5rem 0", color: "#7ee787" }}>Ready to scale your store?</h3>
+        <p style={{ margin: "0 0 1.5rem 0", color: "#c9d1d9" }}>Let's discuss how we can build custom solutions for your business.</p>
+        <a href="https://cal.com/tirso-navarro/15min-meeting" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", background: "#7ee787", color: "#0d1117", padding: "0.5rem 1.5rem", borderRadius: "4px", textDecoration: "none", fontWeight: "bold" }}>
+          Schedule a Call
+        </a>
+      </div>
     </div>
   );
 }

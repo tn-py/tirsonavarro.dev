@@ -1,21 +1,21 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { skills, stackData, profile, contactLinks, slugify } from "~/lib/tirsoData";
 
-interface ProjectModule {
-  frontmatter: {
-    title: string;
-    description: string;
-    tags?: string[];
-    githubUrl?: string;
-  };
-}
+// Simple in-memory rate limiter to prevent API abuse
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 20;
+const ipHits = new Map<string, { count: number; resetAt: number }>();
 
-function getProjectsList() {
-  const modules = import.meta.glob<ProjectModule>("../../content/projects/*.mdx", { eager: true });
-  return Object.entries(modules).map(([path, mod]) => {
-    const slug = path.split("/").pop()!.replace(".mdx", "");
-    return { slug, ...mod.frontmatter };
-  });
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = ipHits.get(ip);
+  if (!record || record.resetAt < now) {
+    ipHits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+  if (record.count >= MAX_REQUESTS) return false;
+  record.count++;
+  return true;
 }
 
 const SYSTEM_PROMPT = `
@@ -122,6 +122,11 @@ function cleanOutput(raw?: string): string | null {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  if (!checkRateLimit(ip)) {
+    return json({ suggestion: null }, { status: 429 });
+  }
+
   const url = new URL(request.url);
   const q = url.searchParams.get("q")?.trim();
 

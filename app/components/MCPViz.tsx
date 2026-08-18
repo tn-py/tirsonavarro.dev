@@ -101,10 +101,6 @@ const INITIAL_NODES: RFNode[] = [
     data: { label: "TYPESCRIPT", description: "Typed JavaScript superset for safer, scalable frontend and backend codebases.", type: "LANGUAGE" },
   },
   {
-    id: "tailwind", type: "terminal", position: { x: 900, y: 200 },
-    data: { label: "TAILWIND CSS", description: "Utility-first CSS framework enabling rapid, consistent UI development.", type: "STYLING" },
-  },
-  {
     id: "framer", type: "terminal", position: { x: 900, y: 560 },
     data: { label: "FRAMER MOTION", description: "Animation library for fluid React transitions, gestures, and layout animations.", type: "ANIMATION" },
   },
@@ -205,7 +201,6 @@ const INITIAL_EDGES: RFEdge[] = [
   { id: "e-fe-react",  source: "frontend", target: "react" },
   { id: "e-fe-nextjs", source: "frontend", target: "nextjs" },
   { id: "e-fe-ts",     source: "frontend", target: "typescript" },
-  { id: "e-fe-tw",     source: "frontend", target: "tailwind" },
   { id: "e-fe-framer", source: "frontend", target: "framer" },
 
   // Backend → leaves
@@ -284,7 +279,18 @@ export function MCPViz() {
         </button>
       </div>
 
-      <div style={{ width: '100%', height: isFullscreen ? 'calc(100vh - 100px)' : '520px', position: 'relative' }}>
+      <div style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>
+        <h3>Architecture Details</h3>
+        <ul>
+          {INITIAL_NODES.map(node => (
+            <li key={node.id}>
+              <strong>{node.data.label as string}</strong> ({node.data.type as string}): {node.data.description as string}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div style={{ width: '100%', height: isFullscreen ? 'calc(100vh - 100px)' : '520px', position: 'relative' }} aria-hidden="true">
         <ReactFlow
           nodes={nodes}
           edges={edges}
