@@ -43,6 +43,13 @@ export function TirsoTerminal({ projects }: { projects: ProjectEntry[] }) {
   const handleReady = useCallback(() => {
     writeLines(["tirso shell v1.0 — type `tirso --help` to get started", ""]);
     write(PROMPT);
+    
+    // Prevent mobile keyboard from popping up on load by explicitly blurring
+    setTimeout(() => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    }, 50);
   }, [writeLines, write]);
 
   const showContributions = useCallback(
