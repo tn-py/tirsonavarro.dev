@@ -90,21 +90,21 @@ export function StatusTerminal() {
         <div className={styles.dot} />
         <span>Live Github Activity</span>
       </div>
-      <div className={styles.logEntries}>
+      <ul className={styles.logEntries} aria-live="polite" aria-atomic="false">
         {loading ? (
-          <div className={styles.loading}>Initializing terminal connection...</div>
+          <li className={styles.loading}>Initializing terminal connection...</li>
         ) : error ? (
-          <div className={styles.error}>Error: {error}</div>
+          <li className={styles.error}>Error: {error}</li>
         ) : (
           events.map((event) => (
-            <div key={event.id} className={styles.entry}>
+            <li key={event.id} className={styles.entry}>
               <span className={styles.timestamp}>[{event.timestamp}]</span>
               <span className={styles.type}>[{event.type}]</span>
               <span className={styles.message}>{event.message}</span>
-            </div>
+            </li>
           ))
         )}
-      </div>
+      </ul>
     </div>
   );
 }

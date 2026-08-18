@@ -11,16 +11,7 @@ import styles from "./TirsoTerminal.module.css";
 const PROMPT = "\x1b[1;32mvisitor@tirso\x1b[0m:\x1b[1;34m~\x1b[0m$ ";
 const BACKSPACE = "\b \b";
 
-interface ProjectModule {
-  frontmatter: {
-    title: string;
-    description: string;
-    tags?: string[];
-    githubUrl?: string;
-  };
-}
-
-export function TirsoTerminal() {
+export function TirsoTerminal({ projects }: { projects: ProjectEntry[] }) {
   const navigate = useNavigate();
   const termRef = useRef<TerminalHandle>(null);
   const bufferRef = useRef("");
@@ -40,14 +31,6 @@ export function TirsoTerminal() {
 
   const focus = useCallback(() => {
     termRef.current?.focus();
-  }, []);
-
-  const projects = useMemo<ProjectEntry[]>(() => {
-    const modules = import.meta.glob<ProjectModule>("../../content/projects/*.mdx", { eager: true });
-    return Object.entries(modules).map(([path, mod]) => {
-      const slug = path.split("/").pop()!.replace(".mdx", "");
-      return { slug, ...mod.frontmatter };
-    });
   }, []);
 
   const writeLines = useCallback(
@@ -289,15 +272,44 @@ export function TirsoTerminal() {
     [projects, navigate, write, writeLines, showContributions, showGitStats, replaceLine, triggerAutocomplete],
   );
 
+  const triggerCommand = useCallback((cmd: string) => {
+    bufferRef.current = cmd;
+    handleData("\r");
+  }, [handleData]);
+
+  const pillStyle: React.CSSProperties = {
+    background: "rgba(88, 166, 255, 0.1)",
+    border: "1px solid rgba(88, 166, 255, 0.3)",
+    color: "#58a6ff",
+    borderRadius: "999px",
+    padding: "4px 12px",
+    fontSize: "0.85rem",
+    cursor: "pointer",
+    fontFamily: "var(--font-mono, monospace)",
+  };
+
   return (
-    <Terminal
-      ref={termRef}
-      className={styles.terminal}
-      autoResize
-      cursorBlink
-      onData={handleData}
-      onReady={handleReady}
-      onClick={focus}
-    />
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <button onClick={() => triggerCommand("tirso --help")} style={pillStyle}>--help</button>
+        <button onClick={() => triggerCommand("tirso projects")} style={pillStyle}>projects</button>
+        <button onClick={() => triggerCommand("tirso stack")} style={pillStyle}>stack</button>
+        <button onClick={() => triggerCommand("tirso whoami")} style={pillStyle}>whoami</button>
+      </div>
+      <div aria-live="polite" style={{ position: "relative" }}>
+        <span style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>
+          Interactive terminal. Type 'tirso --help' to get started. Use up and down arrow keys for history.
+        </span>
+        <Terminal
+          ref={termRef}
+          className={styles.terminal}
+          autoResize
+          cursorBlink
+          onData={handleData}
+          onReady={handleReady}
+          onClick={focus}
+        />
+      </div>
+    </div>
   );
 }
