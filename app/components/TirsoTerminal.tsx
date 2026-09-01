@@ -302,6 +302,8 @@ export function TirsoTerminal({ projects }: { projects: ProjectEntry[] }) {
         <button onClick={() => triggerCommand("tirso projects")} style={pillStyle}>projects</button>
         <button onClick={() => triggerCommand("tirso stack")} style={pillStyle}>stack</button>
         <button onClick={() => triggerCommand("tirso whoami")} style={pillStyle}>whoami</button>
+        <button onClick={() => triggerCommand("tirso experience")} style={pillStyle}>experience</button>
+        <button onClick={() => triggerCommand("tirso education")} style={pillStyle}>education</button>
       </div>
       <div aria-live="polite" style={{ position: "relative" }}>
         <span style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>

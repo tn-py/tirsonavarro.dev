@@ -92,6 +92,73 @@ export const profile: Profile = {
   timezone: "EST",
 };
 
+export interface ExperienceEntry {
+  title: string;
+  company: string;
+  dateRange: string;
+  location: string;
+  description: string;
+}
+
+export const experience: ExperienceEntry[] = [
+  {
+    title: "Web Operations Supervisor",
+    company: "UHS Hardware (Automotive Keys Group)",
+    dateRange: "Sep 2024 — Present",
+    location: "Hollywood, FL (Hybrid)",
+    description:
+      "Leads technical and development work for UHS's e-commerce platform: custom Shopify pages, scripts, and automations (Shopify Flow), system integrations, and SEO/performance optimization.",
+  },
+  {
+    title: "Junior Web Developer & E-Commerce Specialist",
+    company: "UHS Hardware (Automotive Keys Group)",
+    dateRange: "Nov 2022 — Sep 2024",
+    location: "Hollywood, FL (Hybrid)",
+    description:
+      "Built custom Shopify pages and automations with Liquid, Shopify Flow, and Google Apps Script. Managed large-scale product data imports/exports and SKU/catalog accuracy.",
+  },
+];
+
+export interface EducationEntry {
+  school: string;
+  degree: string;
+  dateRange: string;
+}
+
+export const education: EducationEntry[] = [
+  {
+    school: "University of Colorado Boulder",
+    degree: "BFA, Cinematography and Film/Video Production",
+    dateRange: "2015 — 2020",
+  },
+  {
+    school: "University of Miami",
+    degree: "Film Editing (Motion Picture Editing, 3 credits)",
+    dateRange: "",
+  },
+];
+
+export interface CertificationEntry {
+  title: string;
+  issuer: string;
+  date: string;
+  credentialId?: string;
+}
+
+export const certifications: CertificationEntry[] = [
+  {
+    title: "Certificate Program in Agentic AI",
+    issuer: "The Johns Hopkins University",
+    date: "Mar 2026",
+    credentialId: "MBFLLGTF",
+  },
+  {
+    title: "Master Docker Bootcamp",
+    issuer: "Thinkcloudly",
+    date: "Jun 2024",
+  },
+];
+
 export interface ContactEntry {
   key: string;
   label: string;

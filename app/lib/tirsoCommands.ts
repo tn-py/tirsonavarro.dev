@@ -4,6 +4,9 @@ import {
   slugify,
   profile,
   contactLinks,
+  experience,
+  education,
+  certifications,
   type SkillEntry,
   type ContactEntry,
 } from "./tirsoData";
@@ -33,6 +36,8 @@ const HELP_LINES = [
   "",
   "  tirso --help                   show this help",
   "  tirso whoami                   show a quick bio",
+  "  tirso experience                list work experience",
+  "  tirso education                 list education & certifications",
   "  tirso contact                  list contact links",
   "  tirso contact <key> --open     open a contact link",
   "  tirso git-contributions       show GitHub contribution graph",
@@ -230,6 +235,35 @@ export function runTirsoCommand(rawInput: string, projects: ProjectEntry[]): Tir
           bottom,
         ],
       };
+    }
+
+    case "experience": {
+      const lines = ["Experience:", ""];
+      for (const job of experience) {
+        lines.push(`  \x1b[1;32m${job.title}\x1b[0m — ${job.company}`);
+        lines.push(`  ${job.dateRange} · ${job.location}`);
+        for (const line of wrapText(job.description, 68)) {
+          lines.push(`  ${line}`);
+        }
+        lines.push("");
+      }
+      return { lines };
+    }
+
+    case "education": {
+      const lines = ["Education:", ""];
+      for (const school of education) {
+        const range = school.dateRange ? ` — ${school.dateRange}` : "";
+        lines.push(`  \x1b[1;32m${school.school}\x1b[0m${range}`);
+        lines.push(`  ${school.degree}`);
+        lines.push("");
+      }
+      lines.push("Certifications:", "");
+      for (const cert of certifications) {
+        const credential = cert.credentialId ? ` (Credential ID: ${cert.credentialId})` : "";
+        lines.push(`  \x1b[1;32m${cert.title}\x1b[0m — ${cert.issuer}, ${cert.date}${credential}`);
+      }
+      return { lines };
     }
 
     case "contact": {

@@ -13,6 +13,8 @@ export function getAllAvailableCommands(projects: ProjectEntry[]): string[] {
   const baseCommands = [
     "tirso --help",
     "tirso whoami",
+    "tirso experience",
+    "tirso education",
     "tirso contact",
     "tirso git-contributions",
     "tirso git-stats",
@@ -102,6 +104,14 @@ export function getLocalSuggestion(
     skills: "tirso skills",
     projects: "tirso projects",
     help: "tirso --help",
+    experience: "tirso experience",
+    work: "tirso experience",
+    job: "tirso experience",
+    resume: "tirso experience",
+    education: "tirso education",
+    degree: "tirso education",
+    certifications: "tirso education",
+    certs: "tirso education",
   };
 
   for (const [key, cmd] of Object.entries(keywordMappings)) {

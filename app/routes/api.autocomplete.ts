@@ -25,6 +25,8 @@ Your job is to take whatever the user has typed and output the single best CLI c
 Available Commands:
 - tirso --help
 - tirso whoami
+- tirso experience
+- tirso education
 - tirso contact
 - tirso contact <github|linkedin|schedule> [--open]
 - tirso git-contributions [username]
