@@ -68,7 +68,7 @@ const INITIAL_NODES: RFNode[] = [
   // ─── E-COMMERCE ───
   {
     id: "shopify", type: "terminal", position: { x: -60, y: 240 },
-    data: { label: "SHOPIFY", description: "Primary storefront platform — custom themes, Shopify Liquid, and embedded app development.", type: "STOREFRONT" },
+    data: { label: "SHOPIFY", description: "Primary storefront platform — custom themes, Shopify Liquid, Shopify Flow automation, customer segments, and embedded app development.", type: "STOREFRONT" },
   },
   {
     id: "netsuite", type: "terminal", position: { x: -60, y: 380 },
@@ -174,6 +174,168 @@ const INITIAL_NODES: RFNode[] = [
     id: "cloudflare", type: "terminal", position: { x: 1050, y: 870 },
     data: { label: "CLOUDFLARE", description: "Edge CDN, DNS, DDoS protection, and Workers-based serverless compute for global application delivery.", type: "NETWORK" },
   },
+
+  // ─── AGENT HARNESSES (sub-hub of Agentic AI) ───
+  {
+    id: "agent-harnesses", type: "terminal", position: { x: 80, y: -220 },
+    data: { label: "AGENT HARNESSES", description: "Daily-driver CLI and IDE harnesses used to run LLMs against real coding and automation workflows.", type: "SUB_HUB", isHarness: true },
+  },
+  {
+    id: "claude-code", type: "terminal", position: { x: -180, y: -320 },
+    data: { label: "CLAUDE CODE", description: "Anthropic's official agentic CLI — primary daily driver for terminal-based software engineering.", type: "AGENT_HARNESS" },
+  },
+  {
+    id: "opencode", type: "terminal", position: { x: -20, y: -380 },
+    data: { label: "OPENCODE", description: "Open-source, model-agnostic terminal coding agent supporting multiple LLM backends.", type: "AGENT_HARNESS" },
+  },
+  {
+    id: "antigravity-cli", type: "terminal", position: { x: 160, y: -380 },
+    data: { label: "ANTIGRAVITY CLI", description: "Agentic coding CLI harness used for autonomous, multi-step development workflows.", type: "AGENT_HARNESS" },
+  },
+  {
+    id: "codex", type: "terminal", position: { x: 320, y: -320 },
+    data: { label: "CODEX", description: "OpenAI's agentic coding CLI — terminal-based harness for autonomous development tasks.", type: "AGENT_HARNESS" },
+  },
+  {
+    id: "openclaw", type: "terminal", position: { x: -180, y: -140 },
+    data: { label: "OPENCLAW", description: "Self-hosted autonomous agent runtime, monitored and controlled via a custom local dashboard.", type: "AGENT_HARNESS" },
+  },
+  {
+    id: "hermes", type: "terminal", position: { x: 320, y: -140 },
+    data: { label: "HERMES", description: "Daily-driver agent harness used for everyday task orchestration and automation.", type: "AGENT_HARNESS" },
+  },
+
+  // ─── AGENTIC AI (ADDITIONAL) ───
+  {
+    id: "pinecone", type: "terminal", position: { x: 980, y: 20 },
+    data: { label: "PINECONE", description: "Managed vector database for scalable similarity search in production RAG pipelines.", type: "DB" },
+  },
+  {
+    id: "crewai", type: "terminal", position: { x: 130, y: 20 },
+    data: { label: "CREWAI", description: "Role-based multi-agent framework for orchestrating collaborative AI agent crews.", type: "AI_TOOL" },
+  },
+  {
+    id: "browser-agents", type: "terminal", position: { x: 980, y: 130 },
+    data: { label: "BROWSER AGENTS", description: "AI-driven browser automation — agents that perceive and act on live web pages via computer-use style control.", type: "AI_TOOL" },
+  },
+
+  // ─── E-COMMERCE (ADDITIONAL) ───
+  {
+    id: "klaviyo", type: "terminal", position: { x: -220, y: 630 },
+    data: { label: "KLAVIYO", description: "Email/SMS lifecycle marketing platform — flows, segments, lists, and campaign orchestration.", type: "MARKETING" },
+  },
+  {
+    id: "stripe", type: "terminal", position: { x: -220, y: 310 },
+    data: { label: "STRIPE", description: "Payment processing integration — checkout, subscriptions, and webhook-driven order flows.", type: "PAYMENT" },
+  },
+  {
+    id: "authorize-net", type: "terminal", position: { x: -220, y: 460 },
+    data: { label: "AUTHORIZE.NET", description: "Payment gateway integration for card-present and card-not-present transactions.", type: "PAYMENT" },
+  },
+  {
+    id: "meilisearch", type: "terminal", position: { x: 100, y: 240 },
+    data: { label: "MEILISEARCH", description: "Fast, typo-tolerant open-source search engine used as a lightweight alternative to hosted search platforms.", type: "SEARCH" },
+  },
+
+  // ─── FRONTEND (ADDITIONAL) ───
+  {
+    id: "remix", type: "terminal", position: { x: 1400, y: 240 },
+    data: { label: "REMIX", description: "Full-stack React framework built on web standards — nested routing, loaders/actions, and progressive enhancement. Powers this site.", type: "FRAMEWORK" },
+  },
+  {
+    id: "tailwind", type: "terminal", position: { x: 1400, y: 380 },
+    data: { label: "TAILWIND CSS", description: "Utility-first CSS framework for rapid, consistent UI styling.", type: "STYLING" },
+  },
+  {
+    id: "vite", type: "terminal", position: { x: 1400, y: 510 },
+    data: { label: "VITE", description: "Fast dev server and build tool powering modern frontend tooling.", type: "BUILD_TOOL" },
+  },
+  {
+    id: "shadcn", type: "terminal", position: { x: 1550, y: 380 },
+    data: { label: "SHADCN/UI", description: "Composable, unstyled component primitives for building accessible design systems on top of Tailwind.", type: "UI_KIT" },
+  },
+
+  // ─── MOBILE ───
+  {
+    id: "mobile", type: "terminal", position: { x: 1400, y: 650 },
+    data: { label: "MOBILE", description: "Cross-platform mobile development for consumer-facing e-commerce apps.", type: "HUB", isHarness: true },
+  },
+  {
+    id: "expo", type: "terminal", position: { x: 1550, y: 600 },
+    data: { label: "EXPO", description: "React Native tooling and managed workflow for building and shipping cross-platform mobile apps.", type: "FRAMEWORK" },
+  },
+  {
+    id: "react-native", type: "terminal", position: { x: 1550, y: 730 },
+    data: { label: "REACT NATIVE", description: "Cross-platform mobile framework for building native iOS/Android apps from a shared React codebase.", type: "FRAMEWORK" },
+  },
+
+  // ─── DATABASES ───
+  {
+    id: "databases", type: "terminal", position: { x: 0, y: 950 },
+    data: { label: "DATABASES", description: "Data persistence layer spanning relational, embedded, and backend-as-a-service systems.", type: "HUB", isHarness: true },
+  },
+  {
+    id: "postgres", type: "terminal", position: { x: -180, y: 1050 },
+    data: { label: "POSTGRES", description: "Primary relational database for structured application data and transactional workloads.", type: "DB" },
+  },
+  {
+    id: "redis", type: "terminal", position: { x: 0, y: 1080 },
+    data: { label: "REDIS", description: "In-memory data store for caching, queues, and session state.", type: "DB" },
+  },
+  {
+    id: "sqlite", type: "terminal", position: { x: 180, y: 1050 },
+    data: { label: "SQLITE", description: "Embedded file-based database for lightweight local and edge applications.", type: "DB" },
+  },
+  {
+    id: "supabase", type: "terminal", position: { x: 350, y: 1080 },
+    data: { label: "SUPABASE", description: "Postgres-backed backend-as-a-service — auth, storage, and realtime subscriptions for rapid app development.", type: "DB" },
+  },
+  {
+    id: "pocketbase", type: "terminal", position: { x: 520, y: 1050 },
+    data: { label: "POCKETBASE", description: "Lightweight self-hosted backend with embedded SQLite, realtime subscriptions, and built-in auth.", type: "DB" },
+  },
+
+  // ─── DEVOPS / CI-CD ───
+  {
+    id: "devops-cicd", type: "terminal", position: { x: 900, y: 950 },
+    data: { label: "DEVOPS / CI-CD", description: "Automated pipelines and configuration management for shipping and provisioning infrastructure.", type: "HUB", isHarness: true },
+  },
+  {
+    id: "github-actions", type: "terminal", position: { x: 800, y: 1080 },
+    data: { label: "GITHUB ACTIONS", description: "CI/CD pipelines for automated testing, builds, and deployments triggered on GitHub events.", type: "CI_CD" },
+  },
+  {
+    id: "ansible", type: "terminal", position: { x: 1000, y: 1080 },
+    data: { label: "ANSIBLE", description: "Configuration management for declaratively provisioning homelab services.", type: "IAC" },
+  },
+
+  // ─── TESTING / QA ───
+  {
+    id: "testing-qa", type: "terminal", position: { x: 600, y: 1000 },
+    data: { label: "TESTING / QA", description: "Automated verification tooling for UI, workflow, and regression coverage.", type: "HUB", isHarness: true },
+  },
+  {
+    id: "playwright", type: "terminal", position: { x: 600, y: 1120 },
+    data: { label: "PLAYWRIGHT", description: "Cross-browser end-to-end testing framework for automated UI and workflow verification.", type: "TESTING" },
+  },
+
+  // ─── FLAGSHIP PROJECTS ───
+  {
+    id: "agentpoker", type: "terminal", position: { x: 1150, y: -60 },
+    data: { label: "AGENTPOKER", description: "Texas Hold'em platform built for autonomous AI agents — stateless REST API with EVM/Solana wallet authentication.", type: "PROJECT" },
+  },
+  {
+    id: "graphiti-mcpserver", type: "terminal", position: { x: 550, y: -220 },
+    data: { label: "GRAPHITI MCP SERVER", description: "Self-hosted MCP server exposing a temporal knowledge graph to AI agents, deployed via Coolify.", type: "PROJECT" },
+  },
+  {
+    id: "openclaw-dashboard", type: "terminal", position: { x: 900, y: 130 },
+    data: { label: "OPENCLAW DASHBOARD", description: "Real-time management UI for monitoring and controlling local OpenClaw agent instances.", type: "PROJECT" },
+  },
+  {
+    id: "search-by-vin", type: "terminal", position: { x: 1550, y: 130 },
+    data: { label: "SEARCH BY VIN", description: "Vehicle lookup application built on Next.js and Supabase with a shadcn/ui component layer.", type: "PROJECT" },
+  },
 ];
 
 const INITIAL_EDGES: RFEdge[] = [
@@ -239,6 +401,82 @@ const INITIAL_EDGES: RFEdge[] = [
   { id: "e-mcp-claude",          source: "mcp-servers", target: "claude" },
   { id: "e-proxmox-coolify",     source: "proxmox", target: "coolify" },
   { id: "e-proxmox-linux",       source: "proxmox", target: "linux" },
+
+  // Core hub → new domain hubs
+  { id: "e-ops-mobile",  source: "ops", target: "mobile" },
+  { id: "e-ops-db",      source: "ops", target: "databases" },
+  { id: "e-ops-devops",  source: "ops", target: "devops-cicd" },
+  { id: "e-ops-testing", source: "ops", target: "testing-qa" },
+
+  // Agentic AI → additional leaves
+  { id: "e-ai-pinecone",  source: "agentic-ai", target: "pinecone" },
+  { id: "e-ai-crewai",    source: "agentic-ai", target: "crewai", animated: true },
+  { id: "e-ai-browser",   source: "agentic-ai", target: "browser-agents", animated: true },
+  { id: "e-ai-harnesses", source: "agentic-ai", target: "agent-harnesses", animated: true },
+  { id: "e-ai-agentpoker",source: "agentic-ai", target: "agentpoker" },
+  { id: "e-ai-graphiti",  source: "agentic-ai", target: "graphiti-mcpserver" },
+
+  // Agent Harnesses → leaves
+  { id: "e-harness-claudecode",  source: "agent-harnesses", target: "claude-code" },
+  { id: "e-harness-opencode",    source: "agent-harnesses", target: "opencode" },
+  { id: "e-harness-antigravity", source: "agent-harnesses", target: "antigravity-cli" },
+  { id: "e-harness-codex",       source: "agent-harnesses", target: "codex" },
+  { id: "e-harness-openclaw",    source: "agent-harnesses", target: "openclaw" },
+  { id: "e-harness-hermes",      source: "agent-harnesses", target: "hermes" },
+
+  // Harness cross-links
+  { id: "e-claudecode-claude", source: "claude-code", target: "claude" },
+  { id: "e-codex-openai",      source: "codex", target: "openai" },
+  { id: "e-openclaw-dashboard",source: "openclaw", target: "openclaw-dashboard" },
+
+  // E-Commerce → additional leaves
+  { id: "e-ecomm-klaviyo",     source: "ecomm", target: "klaviyo" },
+  { id: "e-ecomm-stripe",      source: "ecomm", target: "stripe" },
+  { id: "e-ecomm-authnet",     source: "ecomm", target: "authorize-net" },
+  { id: "e-ecomm-meilisearch", source: "ecomm", target: "meilisearch" },
+
+  // Frontend → additional leaves
+  { id: "e-fe-remix",    source: "frontend", target: "remix" },
+  { id: "e-fe-tailwind", source: "frontend", target: "tailwind" },
+  { id: "e-fe-vite",     source: "frontend", target: "vite" },
+  { id: "e-fe-shadcn",   source: "frontend", target: "shadcn" },
+
+  // Frontend → flagship projects
+  { id: "e-fe-openclawdashboard", source: "frontend", target: "openclaw-dashboard" },
+  { id: "e-fe-searchbyvin",       source: "frontend", target: "search-by-vin" },
+
+  // Mobile → leaves
+  { id: "e-mobile-expo",         source: "mobile", target: "expo" },
+  { id: "e-mobile-reactnative",  source: "mobile", target: "react-native" },
+  { id: "e-reactnative-react",   source: "react-native", target: "react" },
+  { id: "e-expo-shopify",        source: "expo", target: "shopify" },
+
+  // Databases → leaves
+  { id: "e-db-postgres",   source: "databases", target: "postgres" },
+  { id: "e-db-redis",      source: "databases", target: "redis" },
+  { id: "e-db-sqlite",     source: "databases", target: "sqlite" },
+  { id: "e-db-supabase",   source: "databases", target: "supabase" },
+  { id: "e-db-pocketbase", source: "databases", target: "pocketbase" },
+  { id: "e-supabase-searchbyvin", source: "supabase", target: "search-by-vin" },
+
+  // DevOps/CI-CD → leaves
+  { id: "e-devops-ghactions", source: "devops-cicd", target: "github-actions" },
+  { id: "e-devops-ansible",   source: "devops-cicd", target: "ansible" },
+  { id: "e-ghactions-github", source: "github-actions", target: "github" },
+  { id: "e-ansible-proxmox",  source: "ansible", target: "proxmox" },
+
+  // Testing/QA → leaf
+  { id: "e-testing-playwright", source: "testing-qa", target: "playwright" },
+  { id: "e-playwright-nodejs",  source: "playwright", target: "nodejs" },
+
+  // Flagship project cross-links
+  { id: "e-agentpoker-typescript", source: "agentpoker", target: "typescript" },
+  { id: "e-graphiti-mcp",          source: "graphiti-mcpserver", target: "mcp-servers" },
+  { id: "e-graphiti-python",       source: "graphiti-mcpserver", target: "python" },
+  { id: "e-graphiti-coolify",      source: "graphiti-mcpserver", target: "coolify" },
+  { id: "e-openclawdashboard-tailwind", source: "openclaw-dashboard", target: "tailwind" },
+  { id: "e-searchbyvin-nextjs",    source: "search-by-vin", target: "nextjs" },
+  { id: "e-searchbyvin-shadcn",    source: "search-by-vin", target: "shadcn" },
 ];
 
 export function MCPViz() {
