@@ -336,6 +336,34 @@ const INITIAL_NODES: RFNode[] = [
     id: "search-by-vin", type: "terminal", position: { x: 1550, y: 130 },
     data: { label: "SEARCH BY VIN", description: "Vehicle lookup application built on Next.js and Supabase with a shadcn/ui component layer.", type: "PROJECT" },
   },
+
+  // ─── E-COMMERCE ANALYTICS & MARKETING (ADDITIONAL) ───
+  {
+    id: "google-analytics", type: "terminal", position: { x: -380, y: 630 },
+    data: { label: "GOOGLE ANALYTICS (GA4)", description: "Event-based web and app analytics — conversion tracking, audiences, and e-commerce funnel reporting.", type: "ANALYTICS" },
+  },
+  {
+    id: "merchant-center", type: "terminal", position: { x: -380, y: 460 },
+    data: { label: "GOOGLE MERCHANT CENTER", description: "Product feed management for Google Shopping ads and free listings.", type: "MARKETING" },
+  },
+
+  // ─── MOBILE (ADDITIONAL) ───
+  {
+    id: "appsflyer", type: "terminal", position: { x: 1250, y: 600 },
+    data: { label: "APPSFLYER", description: "Mobile attribution and marketing analytics — campaign performance and install tracking across app channels.", type: "ANALYTICS" },
+  },
+  {
+    id: "natively", type: "terminal", position: { x: 1250, y: 730 },
+    data: { label: "NATIVELY", description: "No-code platform for packaging and releasing an existing storefront as a native mobile app.", type: "APP_BUILDER" },
+  },
+  {
+    id: "play-console", type: "terminal", position: { x: 1400, y: 820 },
+    data: { label: "GOOGLE PLAY CONSOLE", description: "Android app release management — store listings, staged rollouts, and release tracks.", type: "APP_STORE" },
+  },
+  {
+    id: "apple-developer", type: "terminal", position: { x: 1550, y: 850 },
+    data: { label: "APPLE DEVELOPER", description: "iOS app release management via App Store Connect — provisioning, TestFlight, and App Store submissions.", type: "APP_STORE" },
+  },
 ];
 
 const INITIAL_EDGES: RFEdge[] = [
@@ -477,6 +505,20 @@ const INITIAL_EDGES: RFEdge[] = [
   { id: "e-openclawdashboard-tailwind", source: "openclaw-dashboard", target: "tailwind" },
   { id: "e-searchbyvin-nextjs",    source: "search-by-vin", target: "nextjs" },
   { id: "e-searchbyvin-shadcn",    source: "search-by-vin", target: "shadcn" },
+
+  // E-Commerce → analytics/marketing leaves
+  { id: "e-ecomm-ga4",             source: "ecomm", target: "google-analytics" },
+  { id: "e-ecomm-merchantcenter",  source: "ecomm", target: "merchant-center" },
+
+  // Mobile → additional leaves
+  { id: "e-mobile-appsflyer",      source: "mobile", target: "appsflyer" },
+  { id: "e-mobile-natively",       source: "mobile", target: "natively" },
+  { id: "e-mobile-playconsole",    source: "mobile", target: "play-console" },
+  { id: "e-mobile-appledeveloper", source: "mobile", target: "apple-developer" },
+  { id: "e-mobile-onesignal",      source: "mobile", target: "onesignal" },
+  { id: "e-natively-shopify",      source: "natively", target: "shopify" },
+  { id: "e-playconsole-reactnative",    source: "play-console", target: "react-native" },
+  { id: "e-appledeveloper-reactnative", source: "apple-developer", target: "react-native" },
 ];
 
 export function MCPViz() {
