@@ -7,10 +7,12 @@ import {
 import styles from "./ContributionHeatmap.module.css";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const REVEAL_GLYPHS = ["0", "1", "+", "*", "#"];
 
 export function ContributionHeatmap() {
   const [payload, setPayload] = useState<ContributionsPayload | null>(null);
   const [error, setError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +43,25 @@ export function ContributionHeatmap() {
       scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
     }
   }, [weeks.length]);
+
+  useEffect(() => {
+    const scrollArea = scrollRef.current;
+    if (!payload || !scrollArea) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    });
+    observer.observe(scrollArea);
+    return () => observer.disconnect();
+  }, [payload]);
 
   let previousMonth = -1;
   const monthLabels = weeks.map((week) => {
@@ -82,13 +103,15 @@ export function ContributionHeatmap() {
                 <div className={styles.months} aria-hidden="true">
                   {monthLabels.map((label, index) => <span key={index}>{label}</span>)}
                 </div>
-                <div className={styles.weeks}>
+                <div className={`${styles.weeks} ${isVisible ? styles.revealing : ""}`}>
                   {weeks.map((week, weekIndex) => (
                     <div className={styles.week} key={weekIndex}>
                       {week.map((day, weekday) => (
                         <span
                           key={weekday}
-                          className={`${styles.day} ${day ? styles[`level${Math.min(4, Math.max(0, day.level))}`] : styles.outside}`}
+                          className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
+                          data-glyph={day ? REVEAL_GLYPHS[(weekIndex + weekday) % REVEAL_GLYPHS.length] : undefined}
+                          style={day ? { "--reveal-delay": `${weekIndex * 18 + weekday * 24}ms` } as React.CSSProperties : undefined}
                           title={day ? `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}` : undefined}
                         />
                       ))}

@@ -83,14 +83,58 @@
   height: 11px;
   flex: 0 0 11px;
   border-radius: 2px;
+  background: var(--tile-color, transparent);
 }
 
-.level0 { background: #2d333b; }
-.level1 { background: #0e4429; }
-.level2 { background: #006d32; }
-.level3 { background: #26a641; }
-.level4 { background: #39d353; }
-.outside { background: transparent; }
+.level0 { --tile-color: #2d333b; }
+.level1 { --tile-color: #0e4429; }
+.level2 { --tile-color: #006d32; }
+.level3 { --tile-color: #26a641; }
+.level4 { --tile-color: #39d353; }
+
+.revealDay {
+  position: relative;
+  background: transparent;
+}
+
+.revealing .revealDay {
+  animation: decodeTile 700ms steps(1, end) var(--reveal-delay) both;
+}
+
+.revealing .revealDay::after {
+  position: absolute;
+  inset: 0;
+  color: var(--accent-green);
+  content: attr(data-glyph);
+  font-size: 10px;
+  line-height: 11px;
+  text-align: center;
+  text-shadow: 0 0 5px var(--accent-green);
+  pointer-events: none;
+  animation: decodeGlyph 700ms steps(1, end) var(--reveal-delay) both;
+}
+
+@keyframes decodeTile {
+  0%, 42% { background: transparent; }
+  43%, 65% { background: var(--accent-green); }
+  66%, 100% { background: var(--tile-color); }
+}
+
+@keyframes decodeGlyph {
+  0%, 14% { opacity: 0; }
+  15%, 42% { opacity: 1; }
+  43%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealDay,
+  .revealing .revealDay {
+    background: var(--tile-color);
+    animation: none;
+  }
+
+  .revealing .revealDay::after { content: none; }
+}
 
 .footer {
   margin-top: 0.75rem;
