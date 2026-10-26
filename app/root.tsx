@@ -73,6 +73,7 @@ export default function App() {
             hoverEffect="reveal"
             enableRipples
             edgeFade={0.18}
+            dpr={1.5}
           />
         </div>
         <Layout>

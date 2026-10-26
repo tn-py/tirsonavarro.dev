@@ -530,7 +530,7 @@ const PixelBlast = ({
   intro = true,
   variation = undefined,
   lightMode = false,
-  dpr = undefined
+  dpr = /** @type {number | undefined} */ (undefined)
 }) => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -608,7 +608,8 @@ const PixelBlast = ({
     });
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const motionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    let reduce = motionQuery?.matches ?? false;
     const view = { width: 1, height: 1, ratio: 1, plane: null, tiltKey: '' };
     const cells = { x: 0, y: 0, w: 1, h: 1, key: '' };
     const pointer = { x: 0, y: 0, inside: false };
@@ -630,6 +631,7 @@ const PixelBlast = ({
     let nextAuto = 1.2;
     let raf = 0;
     let last = 0;
+    let lastRender = 0;
     let visible = true;
     let quiet = 0;
 
@@ -731,7 +733,7 @@ const PixelBlast = ({
       gl.uniform1fv(cu.uClickAge, clickAge);
       gl.uniform2i(cu.uOrigin, cells.x, cells.y);
       gl.uniform2f(cu.uDrift, driftX, driftY);
-      gl.uniform1i(cu.uHover, s.hoverEffect);
+      gl.uniform1i(cu.uHover, reduce ? 0 : s.hoverEffect);
       gl.uniform2f(cu.uMouse, mx, my);
       gl.uniform1f(cu.uMouseRadius, s.hoverRadius * view.ratio);
       gl.uniform1f(cu.uMousePresence, presence);
@@ -772,7 +774,7 @@ const PixelBlast = ({
       gl.uniform1f(mu.uLightMode, s.lightMode ? 1 : 0);
       gl.uniform1f(mu.uTransparent, s.transparent ? 1 : 0);
       gl.uniform1f(mu.uNoise, s.noiseAmount);
-      gl.uniform1i(mu.uHover, s.hoverEffect);
+      gl.uniform1i(mu.uHover, reduce ? 0 : s.hoverEffect);
       gl.uniform1f(mu.uTilted, view.plane ? 1 : 0);
       if (view.plane) {
         const m = view.plane;
@@ -822,6 +824,11 @@ const PixelBlast = ({
       const s = settingsRef.current;
       if (!visible && s.autoPauseOffscreen) return;
       if (document.hidden) return;
+      if (lastRender && now - lastRender < 1000 / 30) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+      lastRender = now;
       const dt = last ? clamp((now - last) / 1000, 0, 1 / 20) : 0;
       last = now;
       if (!reduce) elapsed += dt;
@@ -853,6 +860,7 @@ const PixelBlast = ({
       const decay = s.hoverEffect ? Math.exp(-dt / 0.45) : 0;
       stepCells(s, decay);
       draw();
+      if (reduce) return;
       if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
       let busy = !reduce && (s.speed !== 0 || s.drift !== 0 || s.twinkle > 0 || (s.autoRipple > 0 && s.enableRipples));
       busy = busy || introClock < 1 || presence > 0.001;
@@ -865,6 +873,7 @@ const PixelBlast = ({
       quiet = 0;
       if (!raf && (visible || !settingsRef.current.autoPauseOffscreen) && !document.hidden) {
         last = 0;
+        lastRender = 0;
         raf = requestAnimationFrame(frame);
       }
     }
@@ -877,6 +886,7 @@ const PixelBlast = ({
     };
 
     const onPointerMove = event => {
+      if (reduce) return;
       const { x, y, inside } = locate(event);
       const was = pointer.inside;
       pointer.inside = inside;
@@ -913,6 +923,18 @@ const PixelBlast = ({
 
     const onVisibility = () => wake();
 
+    const onMotionPreference = event => {
+      reduce = event.matches;
+      if (reduce) {
+        pointer.inside = false;
+        presence = 0;
+        clickPos.fill(-1);
+        introClock = 1;
+      }
+      fresh = true;
+      wake();
+    };
+
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
     const intersection = new IntersectionObserver(entries => {
@@ -924,6 +946,7 @@ const PixelBlast = ({
     window.addEventListener('pointerdown', onPointerDown, { passive: true });
     document.documentElement.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
+    motionQuery?.addEventListener('change', onMotionPreference);
     resize();
     wakeRef.current = wake;
 
@@ -936,6 +959,7 @@ const PixelBlast = ({
       window.removeEventListener('pointerdown', onPointerDown);
       document.documentElement.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
+      motionQuery?.removeEventListener('change', onMotionPreference);
       for (const target of targets) {
         gl.deleteTexture(target.texture);
         gl.deleteFramebuffer(target.framebuffer);

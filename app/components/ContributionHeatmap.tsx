@@ -111,7 +111,7 @@ export function ContributionHeatmap() {
                           key={weekday}
                           className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
                           data-glyph={day ? REVEAL_GLYPHS[(weekIndex + weekday) % REVEAL_GLYPHS.length] : undefined}
-                          style={day ? { "--reveal-delay": `${weekIndex * 18 + weekday * 24}ms` } as React.CSSProperties : undefined}
+                          style={day ? { "--reveal-delay": `${(weeks.length - 1 - weekIndex) * 18 + weekday * 24}ms` } as React.CSSProperties : undefined}
                           title={day ? `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}` : undefined}
                         />
                       ))}

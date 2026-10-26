@@ -91,6 +91,7 @@
 .level2 { --tile-color: #006d32; }
 .level3 { --tile-color: #26a641; }
 .level4 { --tile-color: #39d353; }
+.outside { background: transparent; }
 
 .revealDay {
   position: relative;
