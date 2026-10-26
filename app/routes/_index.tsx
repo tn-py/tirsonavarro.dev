@@ -41,8 +41,8 @@ export default function Index() {
       <header className={styles.hero}>
         <div className={styles.avatarContainer}>
           <img 
-            src="https://github.com/tn-py.png" 
-            alt="" 
+            src="/avatar.webp" 
+            alt="Tirso Navarro" 
             className={styles.avatar} 
           />
 
