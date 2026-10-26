@@ -86,25 +86,35 @@
   font-family: var(--font-mono);
 }
 
+.identityPanel {
+  max-width: 730px;
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid rgba(198, 232, 255, 0.65);
+  border-radius: 8px;
+  background: rgba(139, 196, 235, 0.68);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(10px);
+}
+
 .identityBio {
   font-size: 1.1rem;
-  color: var(--text-secondary);
-  margin-top: 1.5rem;
-  max-width: 700px;
+  color: #081b2c;
+  margin: 0;
   line-height: 1.6;
 }
 
 .identityMeta {
   font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 1rem;
+  color: #081b2c;
+  margin-top: 0.85rem;
   font-family: var(--font-mono);
 }
 
 .socialLinks {
   display: flex;
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: 1rem;
   flex-wrap: wrap;
 }
 
@@ -113,8 +123,9 @@
   align-items: center;
   gap: 6px;
   padding: 5px 12px;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  border: 1px solid rgba(16, 40, 60, 0.35);
+  background: rgba(255, 255, 255, 0.28);
+  color: #081b2c;
   text-decoration: none;
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -130,13 +141,20 @@
 }
 
 .socialLink:hover {
-  border-color: var(--accent-blue);
-  color: var(--accent-blue);
-  background: rgba(0, 163, 255, 0.08);
-  box-shadow: 0 0 10px rgba(0, 163, 255, 0.15);
+  border-color: #225781;
+  color: #123c5b;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 10px rgba(34, 87, 129, 0.15);
+}
+
+.socialLink:focus-visible {
+  outline: 2px solid #123c5b;
+  outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
+  .identityPanel { padding: 1rem; }
+
   .socialLinks {
     justify-content: center;
   }
