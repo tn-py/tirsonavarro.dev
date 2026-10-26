@@ -50,6 +50,28 @@ function iso(d: Date): string {
   return `${y}-${m}-${day}`;
 }
 
+export function buildContributionCalendar(days: ContributionDay[]): {
+  weeks: (ContributionDay | null)[][];
+  total: number;
+} {
+  if (days.length === 0) return { weeks: [], total: 0 };
+
+  const sortedDays = [...days].sort((a, b) => a.date.localeCompare(b.date));
+  const byDate = new Map(sortedDays.map((day) => [day.date, day]));
+  const first = toUtc(sortedDays[0].date);
+  const last = toUtc(sortedDays[sortedDays.length - 1].date);
+  const startSunday = new Date(first.getTime() - first.getUTCDay() * DAY_MS);
+  const weekCount = Math.floor((last.getTime() - startSunday.getTime()) / DAY_MS / 7) + 1;
+  const weeks = Array.from({ length: weekCount }, (_, week) =>
+    Array.from({ length: 7 }, (_, weekday) => {
+      const date = iso(new Date(startSunday.getTime() + (week * 7 + weekday) * DAY_MS));
+      return byDate.get(date) ?? null;
+    }),
+  );
+
+  return { weeks, total: days.reduce((sum, day) => sum + day.count, 0) };
+}
+
 export function parseContributionsHtml(html: string): ContributionDay[] {
   const dateByCell = new Map<string, string>();
   const levelByCell = new Map<string, number>();
