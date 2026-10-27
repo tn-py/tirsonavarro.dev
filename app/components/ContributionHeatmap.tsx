@@ -7,7 +7,31 @@ import {
 import styles from "./ContributionHeatmap.module.css";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const REVEAL_GLYPHS = ["0", "1", "+", "*", "#"];
+
+/**
+ * Skeleton = "dither" · Reveal = "blueprint" — ported from the ascii-reveal vocabulary
+ * without pulling in the dependency (kept bespoke so it stays theme-integrated + 0 deps).
+ * - Dither skeleton: a block of the box-glyph ramp ( ░▒▓█ ) faint under a sweeping shimmer band,
+ *   mirroring SKELETON_VARIANTS.dither (base ░░░░▒, wave ▒▓▓█▓▒, ~55% band).
+ * - Blueprint reveal: accent-blue · - + = x # scramble that dissolves onto each tile's level
+ *   color, inside a dot-field sheet framed by rounded corner brackets (the preset's "surface").
+ */
+const DITHER_RAMP = "░▒▓█";
+const BP_GLYPHS = ["·", "-", "+", "=", "x", "#"]; // blueprint ramp, scrambled (mode: "random")
+
+/** Deterministic faint block of box glyphs. Bias toward the lighter end, like the dither base. */
+function ditherField(rows: number, cols: number, seed = 7): string {
+  const out: string[] = [];
+  for (let r = 0; r < rows; r++) {
+    let line = "";
+    for (let i = 0; i < cols; i++) {
+      const h = ((i * 37 + r * 91 + seed * 13 + r * i * 7) % 100) / 100;
+      line += DITHER_RAMP[Math.floor(Math.pow(h, 0.9) * DITHER_RAMP.length)];
+    }
+    out.push(line);
+  }
+  return out.join("\n");
+}
 
 export function ContributionHeatmap() {
   const [payload, setPayload] = useState<ContributionsPayload | null>(null);
@@ -88,35 +112,44 @@ export function ContributionHeatmap() {
       {error ? (
         <p className={styles.status}>Contribution data is unavailable right now. View the graph on GitHub instead.</p>
       ) : !payload ? (
-        <p className={styles.status} role="status">Loading GitHub contributions...</p>
+        <div className={styles.skeletonWrap} role="status" aria-live="polite" aria-label="Loading GitHub contributions">
+          <pre className={styles.skeleton} aria-hidden="true">{ditherField(7, 52)}</pre>
+          <span className={styles.srOnly}>Loading GitHub contributions…</span>
+        </div>
       ) : (
         <>
           <p className={styles.summary}>
             <strong>{total.toLocaleString()}</strong> contributions in the last year
           </p>
           <div className={styles.scrollArea} ref={scrollRef}>
-            <div className={styles.calendar} role="img" aria-label={`${total.toLocaleString()} GitHub contributions in the last year, shown by day`}>
-              <div className={styles.weekdays} aria-hidden="true">
-                {["", "Mon", "", "Wed", "", "Fri", ""].map((label, index) => <span key={index}>{label}</span>)}
-              </div>
-              <div className={styles.graph}>
-                <div className={styles.months} aria-hidden="true">
-                  {monthLabels.map((label, index) => <span key={index}>{label}</span>)}
+            <div className={styles.blueprintSheet}>
+              <span className={`${styles.corner} ${styles.cornerTL}`} aria-hidden="true" />
+              <span className={`${styles.corner} ${styles.cornerTR}`} aria-hidden="true" />
+              <span className={`${styles.corner} ${styles.cornerBL}`} aria-hidden="true" />
+              <span className={`${styles.corner} ${styles.cornerBR}`} aria-hidden="true" />
+              <div className={styles.calendar} role="img" aria-label={`${total.toLocaleString()} GitHub contributions in the last year, shown by day`}>
+                <div className={styles.weekdays} aria-hidden="true">
+                  {["", "Mon", "", "Wed", "", "Fri", ""].map((label, index) => <span key={index}>{label}</span>)}
                 </div>
-                <div className={`${styles.weeks} ${isVisible ? styles.revealing : ""}`}>
-                  {weeks.map((week, weekIndex) => (
-                    <div className={styles.week} key={weekIndex}>
-                      {week.map((day, weekday) => (
-                        <span
-                          key={weekday}
-                          className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
-                          data-glyph={day ? REVEAL_GLYPHS[(weekIndex + weekday) % REVEAL_GLYPHS.length] : undefined}
-                          style={day ? { "--reveal-delay": `${(weeks.length - 1 - weekIndex) * 18 + weekday * 24}ms` } as React.CSSProperties : undefined}
-                          title={day ? `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}` : undefined}
-                        />
-                      ))}
-                    </div>
-                  ))}
+                <div className={styles.graph}>
+                  <div className={styles.months} aria-hidden="true">
+                    {monthLabels.map((label, index) => <span key={index}>{label}</span>)}
+                  </div>
+                  <div className={`${styles.weeks} ${isVisible ? styles.revealing : ""}`}>
+                    {weeks.map((week, weekIndex) => (
+                      <div className={styles.week} key={weekIndex}>
+                        {week.map((day, weekday) => (
+                          <span
+                            key={weekday}
+                            className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
+                            data-glyph={day ? BP_GLYPHS[(weekIndex * 3 + weekday * 5) % BP_GLYPHS.length] : undefined}
+                            style={day ? { "--reveal-delay": `${(weeks.length - 1 - weekIndex) * 16 + weekday * 22}ms` } as React.CSSProperties : undefined}
+                            title={day ? `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}` : undefined}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
