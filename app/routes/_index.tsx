@@ -9,9 +9,9 @@ import styles from "../styles/Home.module.css";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Agentic Architect // E-Commerce Ops" },
+    { title: "Tirso Navarro — Agentic E-Commerce Site Ops" },
     { name: "description", content: "Command Center for E-Commerce Operations" },
-    { property: "og:title", content: "Agentic Architect // E-Commerce Ops" },
+    { property: "og:title", content: "Tirso Navarro — Agentic E-Commerce Site Ops" },
     { property: "og:description", content: "Command Center for E-Commerce Operations" },
     { property: "og:image", content: "https://tirsonavarro.dev/home-preview.png" },
     { name: "twitter:card", content: "summary_large_image" },

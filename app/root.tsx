@@ -29,7 +29,7 @@ export const links: LinksFunction = () => [
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Agentic Architect // E-Commerce Ops" },
+    { title: "Tirso Navarro — Agentic E-Commerce Site Ops" },
     { name: "description", content: "Portfolio of an Agentic Architect specializing in E-Commerce Operations and Autonomous Systems." },
   ];
 };
