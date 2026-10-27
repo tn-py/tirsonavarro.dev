@@ -3,6 +3,7 @@ import { useLoaderData } from "@remix-run/react";
 import { MCPViz } from "~/components/MCPViz";
 import { ContributionHeatmap } from "~/components/ContributionHeatmap";
 import { TirsoTerminal } from "~/components/TirsoTerminal";
+import Shuffle from "~/components/Shuffle";
 import styles from "../styles/Home.module.css";
 
 export const meta: MetaFunction = () => {
@@ -49,7 +50,22 @@ export default function Index() {
         </div>
         
         <div className={styles.identityInfo}>
-          <h1>TIRSO NAVARRO</h1>
+          <Shuffle
+            tag="h1"
+            text="TIRSO NAVARRO"
+            textAlign="left"
+            effect="slide"
+            shuffleDirection="right"
+            duration={0.35}
+            animationMode="evenodd"
+            shuffleTimes={1}
+            ease="power3.out"
+            stagger={0.03}
+            rootMargin="0px"
+            triggerOnce={true}
+            triggerOnHover={true}
+            respectReducedMotion={true}
+          />
           <div className={styles.identityTitle}>
             WEB OPERATIONS // E-COMMERCE ARCHITECT
           </div>
