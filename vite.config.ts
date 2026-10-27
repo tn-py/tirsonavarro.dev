@@ -9,6 +9,11 @@ export default defineConfig({
   server: {
     allowedHosts: [".tunnelmole.net"],
   },
+  ssr: {
+    // gsap ships CommonJS plugin files whose named exports Node's ESM loader can't detect
+    // on Vercel ("does not provide an export named 'ScrollTrigger'"), so bundle it instead.
+    noExternal: ["gsap", "@gsap/react"],
+  },
   plugins: [
     mdx({
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
