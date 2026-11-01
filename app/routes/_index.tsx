@@ -1,9 +1,7 @@
 import { json, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { MCPViz } from "~/components/MCPViz";
 import { ContributionHeatmap } from "~/components/ContributionHeatmap";
 import { ProjectCarousel } from "~/components/ProjectCarousel";
-import { TirsoTerminal } from "~/components/TirsoTerminal";
 import Shuffle from "~/components/Shuffle";
 import styles from "../styles/Home.module.css";
 
@@ -105,11 +103,6 @@ export default function Index() {
         </div>
       </header>
 
-      <section className={styles.terminalSection} aria-label="Interactive Terminal">
-        <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Interactive Terminal</h2>
-        <TirsoTerminal projects={projects as any} />
-      </section>
-
       <section className={styles.terminalSection} aria-label="Projects">
         <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Projects</h2>
         <ProjectCarousel projects={projects as any} />
@@ -117,11 +110,6 @@ export default function Index() {
 
       <section className={styles.terminalSection} aria-label="GitHub Contributions">
         <ContributionHeatmap />
-      </section>
-
-      <section className={styles.content} aria-label="Architecture Graph">
-        <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Architecture Graph</h2>
-        <MCPViz />
       </section>
     </div>
   );
