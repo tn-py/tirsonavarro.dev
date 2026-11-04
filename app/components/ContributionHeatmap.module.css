@@ -184,6 +184,14 @@
 .level4 { --tile-color: #39d353; }
 .outside { background: transparent; }
 
+/* Keyboard focus ring: 2px light outline + 1px offset (3px total, inside the 4px tile gap and the
+   10px/12px .blueprintSheet padding, so .scrollArea never clips it). The offset leaves a dark
+   sliver against the tile so the ring reads on every level colour. */
+.day:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
 .revealDay {
   position: relative;
   background: transparent;

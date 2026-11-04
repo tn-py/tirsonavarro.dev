@@ -72,6 +72,90 @@ export function buildContributionCalendar(days: ContributionDay[]): {
   return { weeks, total: days.reduce((sum, day) => sum + day.count, 0) };
 }
 
+export interface CalendarPosition {
+  week: number;
+  day: number;
+}
+
+type CalendarWeeks = (ContributionDay | null)[][];
+
+/** Single source of wording for a day's tooltip and accessible name. */
+export function contributionDayLabel(day: ContributionDay): string {
+  return `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`;
+}
+
+/** Keys the heatmap grid handles (and must preventDefault), even when the position cannot change. */
+export const CALENDAR_NAV_KEYS: ReadonlySet<string> = new Set([
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "ArrowDown",
+  "Home",
+  "End",
+]);
+
+function hasDay(weeks: CalendarWeeks, pos: CalendarPosition): boolean {
+  return Boolean(weeks[pos.week]?.[pos.day]);
+}
+
+/** Most recent non-null day, or null when the calendar is empty / has no days. */
+export function initialCalendarFocus(weeks: CalendarWeeks): CalendarPosition | null {
+  for (let week = weeks.length - 1; week >= 0; week--) {
+    for (let day = weeks[week].length - 1; day >= 0; day--) {
+      if (weeks[week][day]) return { week, day };
+    }
+  }
+  return null;
+}
+
+/**
+ * Next focus position for a navigation key. Returns `from` itself when the key is not a
+ * navigation key, the target is outside the calendar or empty (no skipping over nulls), or
+ * `from` does not point at a real day. Never returns an out-of-range position.
+ */
+export function moveCalendarFocus(
+  weeks: CalendarWeeks,
+  from: CalendarPosition,
+  key: string,
+  { ctrl }: { ctrl: boolean } = { ctrl: false },
+): CalendarPosition {
+  if (!hasDay(weeks, from)) return from;
+
+  let target: CalendarPosition | null = null;
+  switch (key) {
+    case "ArrowLeft":
+      target = { week: from.week - 1, day: from.day };
+      break;
+    case "ArrowRight":
+      target = { week: from.week + 1, day: from.day };
+      break;
+    case "ArrowUp":
+      target = { week: from.week, day: from.day - 1 };
+      break;
+    case "ArrowDown":
+      target = { week: from.week, day: from.day + 1 };
+      break;
+    case "Home":
+    case "End": {
+      const first = key === "Home";
+      const weekRange = ctrl ? weeks.map((_, week) => week) : [from.week];
+      if (!first) weekRange.reverse();
+      for (const week of weekRange) {
+        const days = weeks[week].map((_, day) => day);
+        if (!first) days.reverse();
+        const day = days.find((index) => weeks[week][index]);
+        if (day !== undefined) {
+          target = { week, day };
+          break;
+        }
+      }
+      break;
+    }
+  }
+
+  return target && hasDay(weeks, target) ? target : from;
+}
+
 export function parseContributionsHtml(html: string): ContributionDay[] {
   const dateByCell = new Map<string, string>();
   const levelByCell = new Map<string, number>();

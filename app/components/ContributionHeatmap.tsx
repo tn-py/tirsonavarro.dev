@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import {
   buildContributionCalendar,
+  CALENDAR_NAV_KEYS,
+  contributionDayLabel,
   GITHUB_USERNAME,
+  initialCalendarFocus,
+  moveCalendarFocus,
+  type CalendarPosition,
   type ContributionsPayload,
 } from "~/lib/gitContributions";
 import styles from "./ContributionHeatmap.module.css";
@@ -38,6 +43,8 @@ export function ContributionHeatmap() {
   const [error, setError] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [focusPos, setFocusPos] = useState<CalendarPosition | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -97,6 +104,36 @@ export function ContributionHeatmap() {
     return MONTHS[month];
   });
 
+  // Roving tabindex: exactly one day is a tab stop — the last focused one, else the most recent.
+  const tabStop = focusPos && weeks[focusPos.week]?.[focusPos.day] ? focusPos : initialCalendarFocus(weeks);
+
+  function handleGridKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (!tabStop || !CALENDAR_NAV_KEYS.has(event.key) || event.altKey || event.metaKey) return;
+    event.preventDefault(); // handled even at an edge, so the page does not scroll
+
+    const next = moveCalendarFocus(weeks, tabStop, event.key, { ctrl: event.ctrlKey });
+    const cell = gridRef.current?.querySelector<HTMLElement>(`[data-week="${next.week}"][data-day="${next.day}"]`);
+    const scrollArea = scrollRef.current;
+    if (!cell) return;
+
+    setFocusPos(next);
+    cell.focus({ preventScroll: true });
+
+    // Keep the focused cell (plus its ring) inside the horizontally scrolling area.
+    if (scrollArea) {
+      const cellBox = cell.getBoundingClientRect();
+      const areaBox = scrollArea.getBoundingClientRect();
+      const margin = 12;
+      let delta = 0;
+      if (cellBox.left < areaBox.left + margin) delta = cellBox.left - areaBox.left - margin;
+      else if (cellBox.right > areaBox.right - margin) delta = cellBox.right - areaBox.right + margin;
+      if (delta) {
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        scrollArea.scrollBy({ left: delta, behavior: reduceMotion ? "auto" : "smooth" });
+      }
+    }
+  }
+
   return (
     <section className={styles.container} aria-label="GitHub contribution activity">
       <div className={styles.header}>
@@ -127,7 +164,13 @@ export function ContributionHeatmap() {
               <span className={`${styles.corner} ${styles.cornerTR}`} aria-hidden="true" />
               <span className={`${styles.corner} ${styles.cornerBL}`} aria-hidden="true" />
               <span className={`${styles.corner} ${styles.cornerBR}`} aria-hidden="true" />
-              <div className={styles.calendar} role="img" aria-label={`${total.toLocaleString()} GitHub contributions in the last year, shown by day`}>
+              <div
+                className={styles.calendar}
+                role="grid"
+                aria-label={`${total.toLocaleString()} GitHub contributions in the last year, shown by day`}
+                ref={gridRef}
+                onKeyDown={handleGridKeyDown}
+              >
                 <div className={styles.weekdays} aria-hidden="true">
                   {["", "Mon", "", "Wed", "", "Fri", ""].map((label, index) => <span key={index}>{label}</span>)}
                 </div>
@@ -137,14 +180,21 @@ export function ContributionHeatmap() {
                   </div>
                   <div className={`${styles.weeks} ${isVisible ? styles.revealing : ""}`}>
                     {weeks.map((week, weekIndex) => (
-                      <div className={styles.week} key={weekIndex}>
+                      <div className={styles.week} role="row" key={weekIndex}>
                         {week.map((day, weekday) => (
                           <span
                             key={weekday}
                             className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
                             data-glyph={day ? BP_GLYPHS[(weekIndex * 3 + weekday * 5) % BP_GLYPHS.length] : undefined}
                             style={day ? { "--reveal-delay": `${(weeks.length - 1 - weekIndex) * 16 + weekday * 22}ms` } as React.CSSProperties : undefined}
-                            title={day ? `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}` : undefined}
+                            title={day ? contributionDayLabel(day) : undefined}
+                            role={day ? "gridcell" : undefined}
+                            aria-label={day ? contributionDayLabel(day) : undefined}
+                            aria-hidden={day ? undefined : true}
+                            tabIndex={day ? (tabStop?.week === weekIndex && tabStop.day === weekday ? 0 : -1) : undefined}
+                            data-week={day ? weekIndex : undefined}
+                            data-day={day ? weekday : undefined}
+                            onFocus={day ? () => setFocusPos({ week: weekIndex, day: weekday }) : undefined}
                           />
                         ))}
                       </div>
@@ -158,7 +208,7 @@ export function ContributionHeatmap() {
             <span>Last 12 months</span>
             <div className={styles.legend} aria-label="Color scale from fewer to more contributions">
               <span>Less</span>
-              {[0, 1, 2, 3, 4].map((level) => <span key={level} className={`${styles.day} ${styles[`level${level}`]}`} />)}
+              {[0, 1, 2, 3, 4].map((level) => <span key={level} className={`${styles.day} ${styles[`level${level}`]}`} aria-hidden="true" />)}
               <span>More</span>
             </div>
           </div>
