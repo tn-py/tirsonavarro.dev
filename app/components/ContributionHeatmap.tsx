@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import {
   buildContributionCalendar,
   CALENDAR_NAV_KEYS,
+  calendarRows,
   contributionDayLabel,
   GITHUB_USERNAME,
   initialCalendarFocus,
@@ -179,18 +180,20 @@ export function ContributionHeatmap() {
                     {monthLabels.map((label, index) => <span key={index}>{label}</span>)}
                   </div>
                   <div className={`${styles.weeks} ${isVisible ? styles.revealing : ""}`}>
-                    {weeks.map((week, weekIndex) => (
-                      <div className={styles.week} role="row" key={weekIndex}>
-                        {week.map((day, weekday) => (
+                    {/* ARIA rows are weekdays (Sunday first); each holds that weekday across all weeks, so
+                        weeks are the visual columns. Positions outside the range stay in place as
+                        labelless, unfocusable gridcells so every row keeps the same column indices. */}
+                    {calendarRows(weeks).map((row, weekday) => (
+                      <div className={styles.weekRow} role="row" key={weekday}>
+                        {row.map((day, weekIndex) => (
                           <span
-                            key={weekday}
+                            key={weekIndex}
                             className={`${styles.day} ${day ? `${styles.revealDay} ${styles[`level${Math.min(4, Math.max(0, day.level))}`]}` : styles.outside}`}
                             data-glyph={day ? BP_GLYPHS[(weekIndex * 3 + weekday * 5) % BP_GLYPHS.length] : undefined}
                             style={day ? { "--reveal-delay": `${(weeks.length - 1 - weekIndex) * 16 + weekday * 22}ms` } as React.CSSProperties : undefined}
                             title={day ? contributionDayLabel(day) : undefined}
-                            role={day ? "gridcell" : undefined}
+                            role="gridcell"
                             aria-label={day ? contributionDayLabel(day) : undefined}
-                            aria-hidden={day ? undefined : true}
                             tabIndex={day ? (tabStop?.week === weekIndex && tabStop.day === weekday ? 0 : -1) : undefined}
                             data-week={day ? weekIndex : undefined}
                             data-day={day ? weekday : undefined}

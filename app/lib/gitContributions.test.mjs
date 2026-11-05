@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   buildContributionCalendar,
   CALENDAR_NAV_KEYS,
+  calendarRows,
   contributionDayLabel,
   initialCalendarFocus,
   moveCalendarFocus,
@@ -144,4 +145,41 @@ test("moveCalendarFocus never returns an out-of-range or null position from a va
       }
     }
   }
+});
+
+// ARIA grid orientation: weeks are visual columns, weekdays are rows (Sunday first).
+test("calendarRows returns one weekday per row with one position per week, in week order", () => {
+  const { weeks: cal } = buildContributionCalendar([
+    { date: "2026-10-21", count: 1, level: 1 }, // Wed, partial first week
+    ...Array.from({ length: 14 }, (_, i) => ({
+      date: new Date(Date.UTC(2026, 9, 25 + i)).toISOString().slice(0, 10), // Sun 10-25 .. Sat 11-07
+      count: i,
+      level: 0,
+    })),
+    { date: "2026-11-08", count: 4, level: 2 }, // Sun, partial last week
+  ]);
+  assert.equal(cal.length, 4);
+
+  const rows = calendarRows(cal);
+  assert.equal(rows.length, 7);
+  for (let d = 0; d < 7; d++) {
+    assert.equal(rows[d].length, cal.length, `row ${d} has one position per week`);
+    for (let w = 0; w < cal.length; w++) assert.equal(rows[d][w], cal[w][d], `rows[${d}][${w}]`);
+  }
+
+  const dates = (row) => row.map((day) => day?.date ?? null);
+  // Row 0 is Sunday across the weeks, ascending; the partial first week keeps its null in place.
+  assert.deepEqual(dates(rows[0]), [null, "2026-10-25", "2026-11-01", "2026-11-08"]);
+  // Row 3 is Wednesday: the first week's cell exists, the last week's (after the range) is null.
+  assert.deepEqual(dates(rows[3]), ["2026-10-21", "2026-10-28", "2026-11-04", null]);
+  // Row 6 is Saturday: null before the range in week 0 and after the range in the last week.
+  assert.deepEqual(dates(rows[6]), [null, "2026-10-31", "2026-11-07", null]);
+});
+
+test("calendarRows is 7 empty rows for an empty calendar and pads missing positions with null", () => {
+  assert.deepEqual(calendarRows([]), [[], [], [], [], [], [], []]);
+  const rows = calendarRows([[{ date: "2026-10-25", count: 0, level: 0 }]]);
+  assert.equal(rows.length, 7);
+  assert.equal(rows[0][0]?.date, "2026-10-25");
+  for (let d = 1; d < 7; d++) assert.deepEqual(rows[d], [null]);
 });

@@ -84,6 +84,15 @@ export function contributionDayLabel(day: ContributionDay): string {
   return `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`;
 }
 
+/**
+ * Weekday-major view of the calendar for the ARIA grid: `rows[d][w] === weeks[w][d]`. Always 7 rows
+ * (Sunday first), each with one position per week in week order; outside-range positions stay
+ * null in place. An empty calendar is 7 empty rows.
+ */
+export function calendarRows(weeks: CalendarWeeks): CalendarWeeks {
+  return Array.from({ length: 7 }, (_, day) => weeks.map((week) => week[day] ?? null));
+}
+
 /** Keys the heatmap grid handles (and must preventDefault), even when the position cannot change. */
 export const CALENDAR_NAV_KEYS: ReadonlySet<string> = new Set([
   "ArrowLeft",
