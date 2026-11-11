@@ -40,10 +40,10 @@ export default function Index() {
     <div className="home-page">
       <header className={styles.hero}>
         <div className={styles.avatarContainer}>
-          <img 
-            src="https://github.com/tn-py.png" 
-            alt="" 
-            className={styles.avatar} 
+          <img
+            src="/avatar.jpg"
+            alt="Tirso Navarro"
+            className={styles.avatar}
           />
 
         </div>
