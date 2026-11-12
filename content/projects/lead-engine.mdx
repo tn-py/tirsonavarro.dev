@@ -1,0 +1,18 @@
+---
+title: "Lead Engine"
+description: "A case study in automation with a human in the loop and an audit trail, from sourcing to billing. In progress."
+tags: ["Python", "Next.js", "tRPC", "PostgreSQL"]
+order: 10
+status: "In progress"
+---
+
+# Lead Engine
+
+A case study of an internal automation system built around human approval and an audit trail. It is still in progress, and the code is private.
+
+## What it does
+
+- Sources and verifies each lead before anything gets built.
+- Builds a preview site for each lead, and QA and integrity checks must pass before it is published.
+- Sends outreach and billing only after a person approves them. Billing runs in test mode for now.
+- Records each step in a Postgres control plane that replaced an earlier spreadsheet.

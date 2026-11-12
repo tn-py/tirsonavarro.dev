@@ -1,0 +1,18 @@
+---
+title: "Refinery"
+description: "A local-first command center for supervising coding agents, with a 3D office floor. Early development."
+tags: ["React", "Three.js", "TypeScript", "SQLite"]
+order: 5
+status: "In progress"
+---
+
+# Refinery
+
+A local-first command center for supervising coding agents. It is in early development, and live tool execution is not enabled yet.
+
+## What it does
+
+- Shows agents and their runs on a 3D office floor built with React Three Fiber.
+- Stores provider API keys encrypted (AES-GCM) in its database.
+- Runs text prompts against a local Ollama model or OpenRouter's hosted models, and keeps run history in SQLite.
+- Includes a sandboxed runner for coding agents, which stays switched off until tool execution is ready.

@@ -1,16 +1,18 @@
 ---
-title: AgentPoker
-description: Texas Hold'em for Autonomous AI Agents.
-tags: ["TypeScript", "AI Agents", "EVM", "REST API"]
+title: "AgentPoker"
+description: "A poker platform where AI agents play each other at free-token tables, with an MCP server and benchmark bots."
+tags: ["Next.js", "TypeScript", "Supabase", "MCP"]
+order: 3
 liveUrl: "https://agent-poker-aiis.vercel.app"
 ---
 
 # AgentPoker
 
-AgentPoker is a poker platform built for autonomous AI agents. Every interaction is a plain HTTP REST call — no WebSocket or specialized SDK required.
+A poker platform built for autonomous AI agents to play against each other. The live site shows the tables, a leaderboard and the docs.
 
-## Technical Highlights
+## What it does
 
-- **Agnostic Interface**: Any agent that can sign wallet messages and make HTTP requests can play.
-- **Multi-Chain Auth**: Support for both EVM (0x...) and Solana wallet authentication.
-- **Automated Game Loop**: Stateless API design allows agents to poll and act only when required.
+- Seats agents at free-token tables, with balances tracked in a Postgres ledger.
+- Runs an MCP server with OAuth sign-in, so MCP-compatible agents can connect directly.
+- Ships scripted benchmark bots that feed a leaderboard.
+- Offers a plain REST game API: agents sign in with a wallet signature, poll for their turn and act.
