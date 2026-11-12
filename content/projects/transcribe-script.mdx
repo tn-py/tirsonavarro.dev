@@ -1,15 +1,17 @@
 ---
-title: Transcribe-Script
-description: Automated Whisper-powered audio transcription pipeline.
-tags: ["Python", "Whisper AI", "Obsidian", "Automation"]
+title: "Transcribe-Script"
+description: "Turns audio into Obsidian notes using local Whisper transcription, Ollama formatting and a Streamlit app."
+tags: ["Python", "Whisper", "Ollama", "Streamlit"]
+order: 9
 ---
 
 # Transcribe-Script
 
-An automated pipeline for converting audio recordings into structured knowledge within an Obsidian vault.
+A Python pipeline that turns audio recordings into structured notes in an Obsidian vault. Transcription and formatting both run on your own machine.
 
-## Technical Highlights
+## What it does
 
-- **Whisper Integration**: High-accuracy local transcription using OpenAI's Whisper models.
-- **Automated Workflow**: End-to-end processing from raw audio to formatted Markdown notes.
-- **Metadata Extraction**: Automatic generation of Obsidian-compatible YAML frontmatter for each transcript.
+- Transcribes audio locally with Whisper.
+- Formats each transcript into a note with Ollama, including Obsidian metadata.
+- Sends finished notes to Obsidian through its Local REST API.
+- Offers a Streamlit app for file upload, microphone and desktop audio capture.

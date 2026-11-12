@@ -5,6 +5,46 @@ import { sortProjects } from "./projectOrder.ts";
 
 const PROJECTS_DIR = new URL("../../content/projects/", import.meta.url);
 
+// The homepage slider lineup, in display order (`order` is position + 1).
+const LINEUP = [
+  "expo-shopify-storefront",
+  "referral-rewards",
+  "agent-poker",
+  "uhs-mobile-ecosystem",
+  "refinery",
+  "deal-stack",
+  "shopify-ai-shopping",
+  "3mf-studio",
+  "transcribe-script",
+  "lead-engine",
+];
+const IN_PROGRESS = ["referral-rewards", "refinery", "shopify-ai-shopping", "3mf-studio", "lead-engine"];
+const LIVE_URLS = {
+  "agent-poker": "https://agent-poker-aiis.vercel.app",
+  "deal-stack": "https://deal-sigma.vercel.app",
+};
+
+// Public copy must never contain these (case-insensitive substrings).
+const BANNED_TERMS = [
+  "Monopoly", "SoFloDirect", "SoFlo", "Best Vapes", "bestvapes", "vape", "kratom", "USDC", "staked",
+  "wager", "real-money", "real money", "WebSocket", "NetSuite", "Matrixify", "SearchSpring", "OneSignal",
+  "Orchestrated", "Coolify", "ts.net", "tailnet", "tailscale", "omarchy", "Gayou", "cold-call", "cold call",
+  "weak or missing websites", "Google Maps", "seamless", "elevate", "unleash", "next-gen", "high-performance",
+];
+const BANNED_PATTERNS = [
+  ["IPv4 address", /\b\d{1,3}(?:\.\d{1,3}){3}\b/],
+  ["email address", /[\w.+-]+@[\w-]+\.[\w.-]+/],
+  ["US phone number", /(?:\+?1[-.\s])?\(?\b\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b/],
+  ["UUID", /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/i],
+];
+
+export function findBanned(text) {
+  const lower = text.toLowerCase();
+  const hits = BANNED_TERMS.filter((term) => lower.includes(term.toLowerCase()));
+  for (const [label, re] of BANNED_PATTERNS) if (re.test(text)) hits.push(label);
+  return hits;
+}
+
 const PRIVATE_REPOS = [
   "referral-app",
   "agent-poker",
@@ -79,10 +119,10 @@ export function pointsAtPrivateRepo(url, repos = PRIVATE_REPOS) {
 const entries = readdirSync(PROJECTS_DIR)
   .filter((name) => name.endsWith(".mdx"))
   .sort()
-  .map((name) => ({
-    name,
-    frontmatter: parseFrontmatter(readFileSync(new URL(name, PROJECTS_DIR), "utf8"), name),
-  }));
+  .map((name) => {
+    const text = readFileSync(new URL(name, PROJECTS_DIR), "utf8");
+    return { name, text, frontmatter: parseFrontmatter(text, name) };
+  });
 
 test("there are project entries to check", () => {
   assert.ok(entries.length > 0);
@@ -117,6 +157,69 @@ for (const { name, frontmatter: fm } of entries) {
     }
   });
 }
+
+const bodyOf = (text) => text.replace(/\r\n/g, "\n").split("\n---\n").slice(1).join("\n---\n");
+const byName = (name) => entries.find((e) => e.name === `${name}.mdx`);
+
+test("S2-1: the listed slugs are exactly the lineup, with order equal to position", () => {
+  assert.deepEqual(entries.map((e) => e.name.replace(/\.mdx$/, "")).sort(), [...LINEUP].sort());
+  LINEUP.forEach((slug, i) => assert.equal(byName(slug)?.frontmatter.order, i + 1, `${slug} order`));
+});
+
+test("S2-1: titles fit the card (<=44) and descriptions fit (<=120)", () => {
+  for (const { name, frontmatter: fm } of entries) {
+    assert.ok(fm.title.length <= 44, `${name} title is ${fm.title.length} chars`);
+    assert.ok(fm.description.length <= 120, `${name} description is ${fm.description.length} chars`);
+  }
+});
+
+test("S2-1: required titles, status, liveUrl and githubUrl per brief", () => {
+  assert.equal(byName("referral-rewards")?.frontmatter.title, "Referral & Rewards for Shopify");
+  assert.equal(byName("deal-stack")?.frontmatter.title, "Deal Stack");
+  for (const slug of LINEUP) {
+    const fm = byName(slug)?.frontmatter ?? {};
+    assert.equal(fm.status, IN_PROGRESS.includes(slug) ? "In progress" : undefined, `${slug} status`);
+    assert.equal(fm.liveUrl, LIVE_URLS[slug], `${slug} liveUrl`);
+    assert.equal("githubUrl" in fm, slug === "expo-shopify-storefront", `${slug} githubUrl`);
+  }
+});
+
+test("S2-1: each page has a title heading, a short intro and 3-4 'What it does' bullets in 70-110 words", () => {
+  for (const { name, text, frontmatter: fm } of entries) {
+    const body = bodyOf(text).trim();
+    const [head, ...rest] = body.split(/\n## What it does\n/);
+    assert.equal(rest.length, 1, `${name}: needs exactly one '## What it does' section`);
+    const [h1, ...introLines] = head.trim().split("\n");
+    assert.equal(h1, `# ${fm.title}`, `${name}: first heading must be '# <title>'`);
+    const sentences = introLines.join(" ").trim().split(/(?<=[.!?])\s+/).filter(Boolean);
+    assert.ok(sentences.length >= 1 && sentences.length <= 3, `${name}: intro has ${sentences.length} sentences`);
+    const bullets = rest[0].trim().split("\n").filter((l) => l.trim());
+    assert.ok(bullets.every((l) => l.startsWith("- ")), `${name}: 'What it does' must contain only bullets`);
+    assert.ok(bullets.length >= 3 && bullets.length <= 4, `${name}: ${bullets.length} bullets`);
+    const words = body.split(/\s+/).filter(Boolean).length;
+    assert.ok(words >= 70 && words <= 110, `${name}: ${words} words in body`);
+  }
+});
+
+test("S2-2: no banned term or identifier pattern appears in any MDX file", () => {
+  for (const { name, text } of entries) assert.deepEqual(findBanned(text), [], `${name} contains banned content`);
+});
+
+test("S2-2: findBanned catches each kind of banned content", () => {
+  for (const term of BANNED_TERMS) assert.ok(findBanned(`about ${term.toUpperCase()} here`).includes(term), term);
+  assert.deepEqual(findBanned("host 10.0.0.12 up"), ["IPv4 address"]);
+  assert.deepEqual(findBanned("mail me@example.com"), ["email address"]);
+  assert.deepEqual(findBanned("call (305) 555-0123"), ["US phone number"]);
+  assert.deepEqual(findBanned("call 305-555-0123"), ["US phone number"]);
+  assert.deepEqual(findBanned("id 123e4567-e89b-12d3-a456-426614174000"), ["UUID"]);
+  assert.deepEqual(findBanned("Plain store-owner copy with 3 bullets and version 1.2"), []);
+});
+
+// The only digit the UHS file may hold is its frontmatter `order` value; everything else is digit-free.
+test("S2-2: uhs-mobile-ecosystem.mdx contains no digit characters (besides its order line)", () => {
+  const text = byName("uhs-mobile-ecosystem")?.text ?? "x1";
+  assert.doesNotMatch(text.replace(/^order: \d+$/m, ""), /\d/);
+});
 
 test("order values are unique across entries", () => {
   const seen = new Map();
