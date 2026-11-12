@@ -13,6 +13,6 @@ A local-first command center for supervising coding agents. It is in early devel
 ## What it does
 
 - Shows agents and their runs on a 3D office floor built with React Three Fiber.
-- Stores provider keys encrypted, so they stay on your machine.
-- Runs text prompts against local Ollama or OpenRouter models and keeps run history in SQLite.
+- Stores provider API keys encrypted (AES-GCM) in its database.
+- Runs text prompts against a local Ollama model or OpenRouter's hosted models, and keeps run history in SQLite.
 - Includes a sandboxed runner for coding agents, which stays switched off until tool execution is ready.
