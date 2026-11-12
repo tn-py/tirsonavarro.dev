@@ -1,19 +1,32 @@
-import { json, type MetaFunction } from "@remix-run/node";
+import { json, type ActionFunctionArgs, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { ContactSection } from "~/components/ContactSection";
+import { HowIHelp } from "~/components/HowIHelp";
+import { MobileContactButton } from "~/components/MobileContactButton";
+import { contactConfig, handleContact } from "~/lib/contact";
 import { ContributionHeatmap } from "~/components/ContributionHeatmap";
 import { ProjectCarousel } from "~/components/ProjectCarousel";
 import Shuffle from "~/components/Shuffle";
 import styles from "../styles/Home.module.css";
 
+const TITLE = "Tirso Navarro — Agentic E-Commerce Site Ops";
+const DESCRIPTION =
+  "Miami developer helping Shopify stores with big catalogs automate the busywork. Got a question? Ask me directly or book a 15-minute call.";
+
 export const meta: MetaFunction = () => {
   return [
-    { title: "Tirso Navarro — Agentic E-Commerce Site Ops" },
-    { name: "description", content: "Command Center for E-Commerce Operations" },
-    { property: "og:title", content: "Tirso Navarro — Agentic E-Commerce Site Ops" },
-    { property: "og:description", content: "Command Center for E-Commerce Operations" },
+    { title: TITLE },
+    { name: "description", content: DESCRIPTION },
+    { property: "og:title", content: TITLE },
+    { property: "og:description", content: DESCRIPTION },
     { property: "og:image", content: "https://tirsonavarro.dev/home-preview.png" },
     { name: "twitter:card", content: "summary_large_image" },
   ];
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const result = await handleContact(await request.formData(), contactConfig());
+  return json(result, { status: result.ok ? 200 : result.errors.form ? 503 : 400 });
 };
 
 interface ProjectModule {
@@ -31,11 +44,11 @@ export const loader = async () => {
     const slug = path.split("/").pop()!.replace(".mdx", "");
     return { slug, ...mod.frontmatter };
   });
-  return json({ projects });
+  return json({ projects, publicEmail: process.env.CONTACT_PUBLIC_EMAIL || undefined });
 };
 
 export default function Index() {
-  const { projects } = useLoaderData<typeof loader>();
+  const { projects, publicEmail } = useLoaderData<typeof loader>();
   return (
     <div className="home-page">
       <header className={styles.hero}>
@@ -76,6 +89,13 @@ export default function Index() {
               LOC: MIAMI_FL // TZ: EST
             </div>
 
+            <div id="hero-cta" className={styles.ctaRow}>
+              <a href="#contact" className={styles.primaryCta}>
+                Ask me a question →
+              </a>
+              <span className={styles.ctaNote}>Replies within a day, no sales pitch.</span>
+            </div>
+
             <div className={styles.socialLinks}>
               <a href="https://github.com/tn-py" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -96,21 +116,36 @@ export default function Index() {
                   <line x1="8" y1="2" x2="8" y2="6"/>
                   <line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
-                <span>SCHEDULE</span>
+                <span>BOOK 15 MIN</span>
               </a>
             </div>
           </div>
         </div>
       </header>
 
+      <HowIHelp />
+
       <section className={styles.terminalSection} aria-label="Projects">
         <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0, 0, 0, 0)", whiteSpace: "nowrap", borderWidth: 0 }}>Projects</h2>
         <ProjectCarousel projects={projects as any} />
+        {/* Plain links so screen readers, crawlers and no-JS visitors can reach every project. */}
+        <ul className={styles.srOnly}>
+          {projects.map((p) => (
+            <li key={p.slug}>
+              <a href={`/projects/${p.slug}`}>
+                {p.title}: {p.description}
+              </a>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className={styles.terminalSection} aria-label="GitHub Contributions">
         <ContributionHeatmap />
       </section>
+
+      <ContactSection publicEmail={publicEmail} />
+      <MobileContactButton />
     </div>
   );
 }

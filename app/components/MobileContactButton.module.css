@@ -1,0 +1,42 @@
+.button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .button {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    z-index: 20;
+    display: block;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    background: var(--accent-green);
+    color: #0d1117;
+    text-align: center;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(1, 4, 9, 0.55);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .button[data-hidden] {
+    transform: translateY(150%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}

@@ -111,6 +111,58 @@
   font-family: var(--font-mono);
 }
 
+.ctaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1.1rem;
+}
+
+.primaryCta {
+  display: inline-block;
+  padding: 0.65rem 1.1rem;
+  border-radius: 6px;
+  background: #081b2c;
+  color: #e6f4ff;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primaryCta:hover {
+  background: #123c5b;
+  box-shadow: 0 0 14px rgba(8, 27, 44, 0.35);
+}
+
+.primaryCta:active {
+  transform: translateY(1px);
+}
+
+.primaryCta:focus-visible {
+  outline: 2px solid #081b2c;
+  outline-offset: 3px;
+}
+
+.ctaNote {
+  font-size: 0.85rem;
+  color: #12324d;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .socialLinks {
   display: flex;
   gap: 0.75rem;
@@ -155,7 +207,8 @@
 @media (max-width: 768px) {
   .identityPanel { padding: 1rem; }
 
-  .socialLinks {
+  .socialLinks,
+  .ctaRow {
     justify-content: center;
   }
 }
