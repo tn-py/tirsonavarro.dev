@@ -52,7 +52,7 @@ export function getAllAvailableCommands(projects: ProjectEntry[]): string[] {
  * Checks:
  * 1. History match (most recent matching command starting with input)
  * 2. Prefix match against candidate CLI commands
- * 3. Keyword / semantic fallback (e.g. 'shopify' -> 'tirso project shopify-loyalty-rewards --open')
+ * 3. Keyword / semantic fallback (e.g. 'shopify' -> 'tirso project expo-shopify-storefront --open')
  */
 export function getLocalSuggestion(
   input: string,

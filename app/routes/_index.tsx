@@ -4,6 +4,7 @@ import { ContactSection } from "~/components/ContactSection";
 import { HowIHelp } from "~/components/HowIHelp";
 import { MobileContactButton } from "~/components/MobileContactButton";
 import { contactConfig, handleContact } from "~/lib/contact";
+import { sortProjects } from "~/lib/projectOrder";
 import { ContributionHeatmap } from "~/components/ContributionHeatmap";
 import { ProjectCarousel } from "~/components/ProjectCarousel";
 import Shuffle from "~/components/Shuffle";
@@ -35,15 +36,20 @@ interface ProjectModule {
     description: string;
     tags?: string[];
     githubUrl?: string;
+    order?: number;
+    liveUrl?: string;
+    status?: string;
   };
 }
 
 export const loader = async () => {
   const modules = import.meta.glob<ProjectModule>("../../content/projects/*.mdx", { eager: true });
-  const projects = Object.entries(modules).map(([path, mod]) => {
-    const slug = path.split("/").pop()!.replace(".mdx", "");
-    return { slug, ...mod.frontmatter };
-  });
+  const projects = sortProjects(
+    Object.entries(modules).map(([path, mod]) => {
+      const slug = path.split("/").pop()!.replace(".mdx", "");
+      return { slug, ...mod.frontmatter };
+    }),
+  );
   return json({ projects, publicEmail: process.env.CONTACT_PUBLIC_EMAIL || undefined });
 };
 

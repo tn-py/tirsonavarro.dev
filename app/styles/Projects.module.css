@@ -125,3 +125,20 @@
 .githubButton:hover {
   opacity: 0.9;
 }
+
+.linkRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.statusLabel {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--accent-blue);
+  border-radius: 4px;
+  color: var(--accent-blue);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}

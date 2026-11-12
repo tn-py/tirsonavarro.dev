@@ -17,6 +17,9 @@ export interface ProjectEntry {
   description: string;
   tags?: string[];
   githubUrl?: string;
+  order?: number;
+  liveUrl?: string;
+  status?: string;
 }
 
 export type TirsoAction =
