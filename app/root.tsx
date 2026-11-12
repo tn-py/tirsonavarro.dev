@@ -11,7 +11,7 @@ import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import "./styles/global.css";
 import { Layout } from "./components/Layout";
 import { CommandPalette } from "./components/CommandPalette";
-import PixelBlast from "./components/PixelBlast";
+import { SiteBackground } from "./components/SiteBackground";
 
 export const links: LinksFunction = () => [
   { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 export const meta: MetaFunction = () => {
   return [
     { title: "Tirso Navarro — Agentic E-Commerce Site Ops" },
-    { name: "description", content: "Portfolio of an Agentic Architect specializing in E-Commerce Operations and Autonomous Systems." },
+    { name: "description", content: "Tirso Navarro is a Miami developer who helps Shopify stores with big catalogs automate the busywork. Ask a question or book a quick call." },
   ];
 };
 
@@ -58,24 +58,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div className="site-pixel-background" aria-hidden="true">
-          <PixelBlast
-            variant="square"
-            pixelSize={3}
-            color="#58a6ff"
-            accentColor="#7ee787"
-            patternScale={2}
-            patternDensity={0.85}
-            softness={0.6}
-            glow={0.25}
-            twinkle={0.15}
-            drift={0.12}
-            hoverEffect="reveal"
-            enableRipples
-            edgeFade={0.18}
-            dpr={1.5}
-          />
-        </div>
+        <SiteBackground />
         <Layout>
           <Outlet />
         </Layout>
