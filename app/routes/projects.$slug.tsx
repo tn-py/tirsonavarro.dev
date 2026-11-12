@@ -58,19 +58,34 @@ export default function ProjectDetail() {
       <Link to="/" className={styles.backLink}>
         ← Back to Home
       </Link>
+      {frontmatter.status && <span className={styles.statusLabel}>{frontmatter.status}</span>}
       <div className={styles.mdxContent}>
         <Component />
       </div>
 
-      {frontmatter.githubUrl && (
-        <a 
-          href={frontmatter.githubUrl} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className={styles.githubButton}
-        >
-          [ View Source on GitHub ]
-        </a>
+      {(frontmatter.githubUrl || frontmatter.liveUrl) && (
+        <div className={styles.linkRow}>
+          {frontmatter.githubUrl && (
+            <a
+              href={frontmatter.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.githubButton}
+            >
+              [ View Source on GitHub ]
+            </a>
+          )}
+          {frontmatter.liveUrl && (
+            <a
+              href={frontmatter.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.githubButton}
+            >
+              Live site ↗
+            </a>
+          )}
+        </div>
       )}
 
       <div style={{ marginTop: "3rem", padding: "1.5rem", border: "1px solid rgba(126, 231, 135, 0.3)", borderRadius: "8px", backgroundColor: "rgba(126, 231, 135, 0.05)", textAlign: "center" }}>

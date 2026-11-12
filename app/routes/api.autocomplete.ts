@@ -49,7 +49,7 @@ CRITICAL OUTPUT RULES:
 1. Return ONLY the single line CLI command.
 2. Do NOT output markdown code fences, backticks, quotes, or explanatory text.
 3. If the user's input starts a command (e.g. "tirso pr"), finish it logically (e.g. "tirso projects" or "tirso project <slug>").
-4. If the user typed natural language (e.g. "how do i email you", "show me shopify"), map it to the right command (e.g. "tirso contact", "tirso project shopify-loyalty-rewards --open").
+4. If the user typed natural language (e.g. "how do i email you", "show me shopify"), map it to the right command (e.g. "tirso contact", "tirso project expo-shopify-storefront --open").
 5. The output MUST start with "tirso " or "clear".
 `;
 
