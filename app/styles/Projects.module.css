@@ -135,10 +135,25 @@
 .statusLabel {
   display: inline-block;
   margin-top: 1rem;
+  margin-left: 1rem;
   padding: 0.15rem 0.6rem;
   border: 1px solid var(--accent-blue);
   border-radius: 4px;
   color: var(--accent-blue);
   font-family: var(--font-mono);
   font-size: 0.8rem;
+}
+
+.screenshot {
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+.screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
 }

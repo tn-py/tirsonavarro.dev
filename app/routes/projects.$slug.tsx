@@ -63,6 +63,18 @@ export default function ProjectDetail() {
         <Component />
       </div>
 
+      {frontmatter.image && (
+        <figure className={styles.screenshot}>
+          <img
+            src={frontmatter.image}
+            alt={frontmatter.imageAlt ?? `Screenshot of ${frontmatter.title}`}
+            width={1600}
+            height={1200}
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+      )}
       {(frontmatter.githubUrl || frontmatter.liveUrl) && (
         <div className={styles.linkRow}>
           {frontmatter.githubUrl && (

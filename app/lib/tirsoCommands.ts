@@ -20,6 +20,9 @@ export interface ProjectEntry {
   order?: number;
   liveUrl?: string;
   status?: string;
+  image?: string;
+  imageAlt?: string;
+  cardImage?: string;
 }
 
 export type TirsoAction =
