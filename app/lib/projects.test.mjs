@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { sortProjects } from "./projectOrder.ts";
 
@@ -21,7 +21,6 @@ const LINEUP = [
 const IN_PROGRESS = ["referral-rewards", "refinery", "shopify-ai-shopping", "3mf-studio", "lead-engine"];
 const LIVE_URLS = {
   "agent-poker": "https://agent-poker-aiis.vercel.app",
-  "deal-stack": "https://deal-sigma.vercel.app",
 };
 
 // Public copy must never contain these (case-insensitive substrings).
@@ -148,6 +147,17 @@ for (const { name, frontmatter: fm } of entries) {
     if ("status" in fm) {
       assert.equal(typeof fm.status, "string");
       assert.ok(fm.status.trim().length > 0, "status must be non-empty");
+    }
+  });
+
+  test(`${name}: screenshot fields come together and point at real files`, () => {
+    const keys = ["image", "imageAlt", "cardImage"].filter((k) => k in fm);
+    assert.ok(keys.length === 0 || keys.length === 3, `image, imageAlt and cardImage must be set together (got ${keys})`);
+    if (keys.length === 0) return;
+    assert.ok(fm.imageAlt.trim().length >= 20, "imageAlt must describe the screenshot");
+    for (const key of ["image", "cardImage"]) {
+      assert.match(fm[key], /^\/projects\/[a-z0-9-]+\.jpg$/, `${key} must be /projects/<name>.jpg`);
+      assert.ok(existsSync(new URL(`../../public${fm[key]}`, import.meta.url)), `${key} file missing: public${fm[key]}`);
     }
   });
 

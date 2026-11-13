@@ -89,7 +89,8 @@ export function ProjectCarousel({ projects }: { projects: ProjectEntry[] }) {
   const items = useMemo(
     () =>
       projects.map((project, index) => ({
-        src: projectCard(project, index),
+        // Screenshot cards are pre-rendered in the same terminal frame; others are drawn as SVG.
+        src: project.cardImage ?? projectCard(project, index),
         alt: `${project.title}: ${project.description}`,
         title: project.title,
         subtitle: project.tags?.slice(0, MAX_TAGS).join(" / "),

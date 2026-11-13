@@ -39,6 +39,9 @@ interface ProjectModule {
     order?: number;
     liveUrl?: string;
     status?: string;
+    image?: string;
+    imageAlt?: string;
+    cardImage?: string;
   };
 }
 
